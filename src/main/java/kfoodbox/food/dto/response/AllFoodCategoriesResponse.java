@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class FoodCategoriesResponse {
+public class AllFoodCategoriesResponse {
     private List<FoodCategory> foodCategories;
 
     @Getter
