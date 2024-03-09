@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### properties file ###
-src/main/resources/application.properties
+src/main/resources/application.yaml
