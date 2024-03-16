@@ -1,5 +1,6 @@
 package kfoodbox.food.controller;
 
+import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.service.FoodService;
 import lombok.RequiredArgsConstructor;
@@ -16,5 +17,10 @@ public class FoodController {
     @GetMapping("/food-categories/{id}/foods")
     public ResponseEntity<FoodsResponse> findFoodsInCategory(@PathVariable("id") Long id) {
         return ResponseEntity.ok(foodService.findFoodsInCategory(id));
+    }
+
+    @GetMapping("/food-categories")
+    public ResponseEntity<AllFoodCategoriesResponse> findAllFoodCategories() {
+        return ResponseEntity.ok(foodService.findAllFoodCategories());
     }
 }
