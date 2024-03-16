@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kfoodbox.food.repository.FoodRepository">
+    <select id="findFoodsByCategoryId" parameterType="long" resultType="kfoodbox.food.dto.response.FoodsResponse$Food">
+        SELECT *
+        FROM `kfoodbox`.`food`
+        WHERE `food_category_id` = #{id}
+    </select>
+</mapper>
