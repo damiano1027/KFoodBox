@@ -2,6 +2,7 @@ package kfoodbox.food.controller;
 
 import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodCategoryResponse;
+import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.service.FoodService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FoodController {
     private final FoodService foodService;
+
+    @GetMapping("/foods/{id}")
+    public ResponseEntity<FoodResponse> findFood(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(foodService.findFood(id));
+    }
 
     @GetMapping("/food-categories/{id}/foods")
     public ResponseEntity<FoodsResponse> findFoodsInCategory(@PathVariable("id") Long id) {
