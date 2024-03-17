@@ -2,6 +2,7 @@ package kfoodbox.food.service;
 
 import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodCategoryResponse;
+import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FoodServiceImpl implements FoodService {
     private final FoodRepository foodRepository;
+
+    @Override
+    public FoodResponse findFood(Long id) {
+        return foodRepository.findFoodById(id);
+    }
 
     @Override
     public FoodsResponse findFoodsInCategory(Long id) {
