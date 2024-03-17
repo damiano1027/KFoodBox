@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kfoodbox.food.repository.FoodRepository">
+    <select id="findFoodById" parameterType="long" resultMap="Food">
+        SELECT
+            `t1`.`id` `food.id`,
+            `t1`.`name` `food.name`,
+            `t1`.`english_name` `food.english_name`,
+            `t1`.`explanation` `food.explanation`,
+            `t1`.`english_explanation` `food.english_explanation`,
+            `t1`.`explanation_source` `food.explanation_source`,
+            `t1`.`recipe_source` `food.recipe_source`,
+            `t2`.`url` `food_image.url`,
+            `t3`.`name` `recipe_ingredient.name`,
+            `t3`.`quantity` `recipe_ingredient.quantity`,
+            `t4`.`sequence_number` `recipe_sequence.sequence_number`,
+            `t4`.`content` `recipe_sequence.content`
+        FROM (
+            SELECT *
+            FROM `kfoodbox`.`food`
+            WHERE `id` = #{id}
+        ) `t1`
+            LEFT JOIN `kfoodbox`.`food_image` `t2`
+            ON `t1`.`id` = `t2`.`food_id`
+            LEFT JOIN `kfoodbox`.`recipe_ingredient` `t3`
+            ON `t1`.`id` = `t3`.`food_id`
+            LEFT JOIN `kfoodbox`.`recipe_sequence` `t4`
+            ON `t1`.`id` = `t4`.`food_id`
+    </select>
+
     <select id="findFoodsByCategoryId" parameterType="long" resultType="kfoodbox.food.dto.response.FoodsResponse$Food">
         SELECT *
         FROM `kfoodbox`.`food`
@@ -17,4 +44,28 @@
         SELECT *
         FROM `kfoodbox`.`food_category`
     </select>
+
+    <resultMap id="Food" type="kfoodbox.food.dto.response.FoodResponse">
+        <id property="id" column="food.id"/>
+        <result property="name" column="food.name"/>
+        <result property="englishName" column="food.english_name"/>
+        <result property="explanation" column="food.explanation"/>
+        <result property="englishExplanation" column="food.english_explanation"/>
+        <result property="explanationSource" column="food.explanation_source"/>
+        <result property="recipeSource" column="food.recipe_source"/>
+
+        <collection property="imageUrls" javaType="list" ofType="string">
+            <result property="imageUrl" column="food_image.url"/>
+        </collection>
+
+        <collection property="recipeIngredients" javaType="list" ofType="kfoodbox.food.dto.response.FoodResponse$RecipeIngredient">
+            <result property="name" column="recipe_ingredient.name"/>
+            <result property="quantity" column="recipe_ingredient.quantity"/>
+        </collection>
+
+        <collection property="recipeSequence" javaType="list" ofType="kfoodbox.food.dto.response.FoodResponse$RecipeSequence">
+            <result property="sequenceNumber" column="recipe_sequence.sequence_number"/>
+            <result property="content" column="recipe_sequence.content"/>
+        </collection>
+    </resultMap>
 </mapper>

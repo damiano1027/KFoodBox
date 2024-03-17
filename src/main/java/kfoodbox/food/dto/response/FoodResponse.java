@@ -8,8 +8,10 @@ import java.util.List;
 public class FoodResponse {
     private Long id;
     private String name;
+    private String englishName;
     private List<String> imageUrls;
     private String explanation;
+    private String englishExplanation;
     private String explanationSource;
     private String recipeSource;
     private List<RecipeIngredient> recipeIngredients;
@@ -24,6 +26,6 @@ public class FoodResponse {
     @Getter
     private static class RecipeSequence {
         private Long sequenceNumber;
-        private String explanation;
+        private String content;
     }
 }
