@@ -23,4 +23,9 @@
         FROM `kfoodbox`.`language`
         WHERE `id` = #{id}
     </select>
+
+    <select id="findAllLanguages" resultType="kfoodbox.user.entity.Language">
+        SELECT *
+        FROM `kfoodbox`.`language`
+    </select>
 </mapper>
