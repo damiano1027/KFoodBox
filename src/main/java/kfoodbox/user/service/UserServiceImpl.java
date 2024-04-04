@@ -8,6 +8,7 @@ import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
 import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
+import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
@@ -109,13 +110,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public MyEmailResponse getMyEmail() {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
-        User user = (User) servletRequest.getAttribute("user");
+        Long userId = (Long) servletRequest.getAttribute("userId");
 
-        if (user == null) {
+        if (userId == null) {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        user = userRepository.findUserById(user.getId());
+        User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NonCriticalException(ExceptionInformation.NO_USER);
         }
@@ -127,17 +128,41 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public MyNicknameResponse getMyNickname() {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
-        User user = (User) servletRequest.getAttribute("user");
+        Long userId = (Long) servletRequest.getAttribute("userId");
 
-        if (user == null) {
+        if (userId == null) {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        user = userRepository.findUserById(user.getId());
+        User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NonCriticalException(ExceptionInformation.NO_USER);
         }
 
         return new MyNicknameResponse(user.getNickname());
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(UserUpdateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        User sameNicknameUser = userRepository.findUserByNickname(request.getNickname());
+        if (sameNicknameUser != null && !sameNicknameUser.isIdSame(userId)) {
+            throw new NonCriticalException(ExceptionInformation.NICKNAME_DUPLICATES);
+        }
+
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_USER);
+        }
+
+        user.update(request);
+        userRepository.updateUser(user);
     }
 }

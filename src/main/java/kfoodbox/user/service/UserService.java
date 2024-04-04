@@ -2,6 +2,7 @@ package kfoodbox.user.service;
 
 import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
+import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
@@ -17,4 +18,5 @@ public interface UserService {
     void logout();
     MyEmailResponse getMyEmail();
     MyNicknameResponse getMyNickname();
+    void updateUser(UserUpdateRequest request);
 }
