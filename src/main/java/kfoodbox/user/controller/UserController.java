@@ -9,6 +9,7 @@ import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
+import kfoodbox.user.dto.response.MyNicknameResponse;
 import kfoodbox.user.dto.response.NicknameExistenceResponse;
 import kfoodbox.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -64,4 +65,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getMyEmail());
     }
 
+    @Login(Authority.NORMAL)
+    @GetMapping("/user/my-nickname")
+    public ResponseEntity<MyNicknameResponse> getMyNickname() {
+        return ResponseEntity.ok(userService.getMyNickname());
+    }
 }
