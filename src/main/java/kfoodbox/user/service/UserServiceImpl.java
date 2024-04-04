@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public EmailExistenceResponse getExistenceOfEmail(String email) {
         User sameEmailUser = userRepository.findUserByEmail(email);
 
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public NicknameExistenceResponse getExistenceOfNickname(String nickname) {
         User sameNicknameUser = userRepository.findUserByNickname(nickname);
 
@@ -69,12 +71,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public LanguagesResponse getAllLanguages() {
         List<Language> languages = userRepository.findAllLanguages();
         return new LanguagesResponse(languages);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void login(LoginRequest request) {
         User user = userRepository.findUserByEmail(request.getEmail());
 
@@ -88,6 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void logout() {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
         HttpSession session = servletRequest.getSession(false);
