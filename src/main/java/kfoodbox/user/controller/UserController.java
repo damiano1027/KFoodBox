@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/user")
     public ResponseEntity<EmailExistenceResponse> getExistenceOfEmail(@RequestParam("email") String email) {
-        return ResponseEntity.ok(userService.getExistenceOfNickname(email));
+        return ResponseEntity.ok(userService.getExistenceOfEmail(email));
     }
 
     @PostMapping("/user")
