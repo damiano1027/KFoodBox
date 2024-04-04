@@ -28,4 +28,12 @@ public class User {
     public void changePassword(String password) {
         this.password = password;
     }
+
+    public boolean isAdmin() {
+        if (isAdmin == null) {
+            return false;
+        }
+
+        return isAdmin;
+    }
 }

@@ -1,7 +1,11 @@
 package kfoodbox.user.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
+import kfoodbox.common.request.RequestApproacher;
+import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
@@ -22,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public EmailExistenceResponse getExistenceOfEmail(String email) {
         User sameEmailUser = userRepository.findUserByEmail(email);
 
@@ -31,6 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public NicknameExistenceResponse getExistenceOfNickname(String nickname) {
         User sameNicknameUser = userRepository.findUserByNickname(nickname);
 
@@ -65,8 +71,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public LanguagesResponse getAllLanguages() {
         List<Language> languages = userRepository.findAllLanguages();
         return new LanguagesResponse(languages);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void login(LoginRequest request) {
+        User user = userRepository.findUserByEmail(request.getEmail());
+
+        if (user == null || !BCrypt.checkpw(request.getPassword(), user.getPassword())) {
+            throw new NonCriticalException(ExceptionInformation.NO_MEMBER);
+        }
+
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        HttpSession session = servletRequest.getSession();
+        session.setAttribute("userId", user.getId());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void logout() {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        HttpSession session = servletRequest.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
     }
 }
