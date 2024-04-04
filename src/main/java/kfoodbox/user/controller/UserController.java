@@ -2,6 +2,8 @@ package kfoodbox.user.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import kfoodbox.common.authority.Login;
+import kfoodbox.common.authority.Authority;
 import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
@@ -45,6 +47,13 @@ public class UserController {
     @PostMapping("/user/login")
     public ResponseEntity<Void> login(@RequestBody @Valid LoginRequest request) {
         userService.login(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @PostMapping("/user/logout")
+    public ResponseEntity<Void> logout() {
+        userService.logout();
         return ResponseEntity.ok(null);
     }
 }
