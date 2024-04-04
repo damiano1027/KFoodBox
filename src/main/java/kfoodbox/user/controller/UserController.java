@@ -10,6 +10,7 @@ import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
+import kfoodbox.user.dto.response.MyLanguageResponse;
 import kfoodbox.user.dto.response.MyNicknameResponse;
 import kfoodbox.user.dto.response.NicknameExistenceResponse;
 import kfoodbox.user.service.UserService;
@@ -71,6 +72,12 @@ public class UserController {
     @GetMapping("/user/my-nickname")
     public ResponseEntity<MyNicknameResponse> getMyNickname() {
         return ResponseEntity.ok(userService.getMyNickname());
+    }
+
+    @Login(Authority.NORMAL)
+    @GetMapping("/user/my-language")
+    public ResponseEntity<MyLanguageResponse> getMyLanguage() {
+        return ResponseEntity.ok(userService.getMyLanguage());
     }
 
     @Login(Authority.NORMAL)
