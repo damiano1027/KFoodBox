@@ -1,7 +1,11 @@
 package kfoodbox.user.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
+import kfoodbox.common.request.RequestApproacher;
+import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
@@ -68,5 +72,18 @@ public class UserServiceImpl implements UserService {
     public LanguagesResponse getAllLanguages() {
         List<Language> languages = userRepository.findAllLanguages();
         return new LanguagesResponse(languages);
+    }
+
+    @Override
+    public void login(LoginRequest request) {
+        User user = userRepository.findUserByEmail(request.getEmail());
+
+        if (user == null || !BCrypt.checkpw(request.getPassword(), user.getPassword())) {
+            throw new NonCriticalException(ExceptionInformation.NO_MEMBER);
+        }
+
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        HttpSession session = servletRequest.getSession();
+        session.setAttribute("userId", user.getId());
     }
 }

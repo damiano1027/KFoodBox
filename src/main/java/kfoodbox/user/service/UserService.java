@@ -1,5 +1,6 @@
 package kfoodbox.user.service;
 
+import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
@@ -10,4 +11,5 @@ public interface UserService {
     NicknameExistenceResponse getExistenceOfNickname(String nickname);
     void signUp(SignupRequest request);
     LanguagesResponse getAllLanguages();
+    void login(LoginRequest request);
 }
