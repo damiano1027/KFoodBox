@@ -13,8 +13,6 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private static final String INTERNAL_SERVER_ERROR_MESSAGE = "서버에서 에러가 발생했습니다.";
-    private static final String INTERNAL_SERVER_ERROR_CODE = "INTERNAL_SERVER_ERROR";
     private static final String UNPROCESSABLE_ENTITY_CODE = "UNPROCESSABLE_ENTITY";
 
     @ExceptionHandler(Throwable.class)
@@ -52,8 +50,8 @@ public class GlobalExceptionHandler {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(
                             ExceptionResponse.builder()
-                                    .message(INTERNAL_SERVER_ERROR_MESSAGE)
-                                    .code(INTERNAL_SERVER_ERROR_CODE)
+                                    .message(ExceptionInformation.INTERNAL_SERVER_ERROR.getMessage())
+                                    .code(ExceptionInformation.INTERNAL_SERVER_ERROR.name())
                                     .build()
                     );
         }
