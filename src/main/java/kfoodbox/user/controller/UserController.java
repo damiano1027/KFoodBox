@@ -5,7 +5,6 @@ import kfoodbox.common.response.EmptyResponse;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
-import kfoodbox.user.entity.Language;
 import kfoodbox.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
