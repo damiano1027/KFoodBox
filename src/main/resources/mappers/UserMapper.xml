@@ -6,6 +6,12 @@
         VALUES (#{user.languageId}, #{user.email}, #{user.password}, #{user.nickname}, 0);
     </insert>
 
+    <select id="findUserById" parameterType="long" resultType="kfoodbox.user.entity.User">
+        SELECT *
+        FROM `kfoodbox`.`user`
+        WHERE `id` = #{id}
+    </select>
+
     <select id="findUserByEmail" parameterType="string" resultType="kfoodbox.user.entity.User">
         SELECT *
         FROM `kfoodbox`.`user`
