@@ -5,6 +5,7 @@ import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
+import kfoodbox.user.dto.response.NicknameExistenceResponse;
 import kfoodbox.user.entity.Language;
 import kfoodbox.user.entity.User;
 import kfoodbox.user.repository.UserRepository;
@@ -21,12 +22,21 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public EmailExistenceResponse getExistenceOfNickname(String email) {
+    public EmailExistenceResponse getExistenceOfEmail(String email) {
         User sameEmailUser = userRepository.findUserByEmail(email);
 
         return sameEmailUser == null ?
                 new EmailExistenceResponse(false)
                 : new EmailExistenceResponse(true);
+    }
+
+    @Override
+    public NicknameExistenceResponse getExistenceOfNickname(String nickname) {
+        User sameNicknameUser = userRepository.findUserByNickname(nickname);
+
+        return sameNicknameUser == null ?
+                new NicknameExistenceResponse(false)
+                : new NicknameExistenceResponse(true);
     }
 
     @Override
