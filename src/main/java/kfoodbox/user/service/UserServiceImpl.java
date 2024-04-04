@@ -2,6 +2,7 @@ package kfoodbox.user.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import kfoodbox.common.exception.CriticalException;
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
@@ -9,6 +10,7 @@ import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
+import kfoodbox.user.dto.response.MyEmailResponse;
 import kfoodbox.user.dto.response.NicknameExistenceResponse;
 import kfoodbox.user.entity.Language;
 import kfoodbox.user.entity.User;
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserByEmail(request.getEmail());
 
         if (user == null || !BCrypt.checkpw(request.getPassword(), user.getPassword())) {
-            throw new NonCriticalException(ExceptionInformation.NO_MEMBER);
+            throw new NonCriticalException(ExceptionInformation.NO_USER);
         }
 
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
@@ -100,5 +102,23 @@ public class UserServiceImpl implements UserService {
         if (session != null) {
             session.invalidate();
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MyEmailResponse getMyEmail() {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        User user = (User) servletRequest.getAttribute("user");
+
+        if (user == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        user = userRepository.findUserById(user.getId());
+        if (user == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_USER);
+        }
+
+        return new MyEmailResponse(user.getEmail());
     }
 }

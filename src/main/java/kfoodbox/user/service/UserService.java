@@ -4,6 +4,7 @@ import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
+import kfoodbox.user.dto.response.MyEmailResponse;
 import kfoodbox.user.dto.response.NicknameExistenceResponse;
 
 public interface UserService {
@@ -13,4 +14,5 @@ public interface UserService {
     LanguagesResponse getAllLanguages();
     void login(LoginRequest request);
     void logout();
+    MyEmailResponse getMyEmail();
 }
