@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kfoodbox.user.repository.UserRepository">
+    <insert id="saveUser" parameterType="kfoodbox.user.entity.User">
+        INSERT INTO `kfoodbox`.`user` (`language_id`, `email`, `password`, `nickname`, `is_admin`)
+        VALUES (#{user.languageId}, #{user.email}, #{user.password}, #{user.nickname}, 0);
+    </insert>
+
+    <update id="updateUser" parameterType="kfoodbox.user.entity.User">
+        UPDATE `kfoodbox`.`user`
+        SET
+            `language_id` = #{user.languageId},
+            `password` = #{user.password},
+            `nickname`= #{user.nickname}
+        WHERE
+            `id` = #{user.id}
+    </update>
+
+    <select id="findUserById" parameterType="long" resultType="kfoodbox.user.entity.User">
+        SELECT *
+        FROM `kfoodbox`.`user`
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="findUserByEmail" parameterType="string" resultType="kfoodbox.user.entity.User">
+        SELECT *
+        FROM `kfoodbox`.`user`
+        WHERE `email` = #{email}
+    </select>
+
+    <select id="findUserByNickname" parameterType="string" resultType="kfoodbox.user.entity.User">
+        SELECT *
+        FROM `kfoodbox`.`user`
+        WHERE `nickname` = #{nickname}
+    </select>
+
+    <select id="findLanguageById" parameterType="long" resultType="kfoodbox.user.entity.Language">
+        SELECT *
+        FROM `kfoodbox`.`language`
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="findAllLanguages" resultType="kfoodbox.user.entity.Language">
+        SELECT *
+        FROM `kfoodbox`.`language`
+    </select>
+</mapper>
