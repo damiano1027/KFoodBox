@@ -2,7 +2,7 @@ package kfoodbox.user.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import kfoodbox.common.response.EmptyResponse;
+import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
@@ -40,5 +40,11 @@ public class UserController {
     @GetMapping("/languages")
     public ResponseEntity<LanguagesResponse> getAllLanguages() {
         return ResponseEntity.ok(userService.getAllLanguages());
+    }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<Void> login(@RequestBody @Valid LoginRequest request) {
+        userService.login(request);
+        return ResponseEntity.ok(null);
     }
 }
