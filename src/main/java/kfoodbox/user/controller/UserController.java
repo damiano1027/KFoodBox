@@ -32,9 +32,9 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<EmptyResponse> signup(@RequestBody @Valid SignupRequest request) {
+    public ResponseEntity<Void> signup(@RequestBody @Valid SignupRequest request) {
         userService.signUp(request);
-        return ResponseEntity.ok(new EmptyResponse());
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/languages")
