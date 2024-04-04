@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/user")
+    @GetMapping("/email-existence")
     public ResponseEntity<EmailExistenceResponse> getExistenceOfEmail(@RequestParam("email") String email) {
         return ResponseEntity.ok(userService.getExistenceOfEmail(email));
     }
