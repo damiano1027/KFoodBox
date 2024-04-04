@@ -4,6 +4,7 @@ import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
+import kfoodbox.user.dto.response.LanguagesResponse;
 import kfoodbox.user.entity.Language;
 import kfoodbox.user.entity.User;
 import kfoodbox.user.repository.UserRepository;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +52,11 @@ public class UserServiceImpl implements UserService {
         user.changePassword(hashedPassword);
 
         userRepository.saveUser(user);
+    }
+
+    @Override
+    public LanguagesResponse getAllLanguages() {
+        List<Language> languages = userRepository.findAllLanguages();
+        return new LanguagesResponse(languages);
     }
 }
