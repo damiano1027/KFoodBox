@@ -6,6 +6,7 @@ import kfoodbox.common.authority.Login;
 import kfoodbox.common.authority.Authority;
 import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupRequest;
+import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,5 +71,12 @@ public class UserController {
     @GetMapping("/user/my-nickname")
     public ResponseEntity<MyNicknameResponse> getMyNickname() {
         return ResponseEntity.ok(userService.getMyNickname());
+    }
+
+    @Login(Authority.NORMAL)
+    @PutMapping("/user")
+    public ResponseEntity<Void> updateUser(@RequestBody @Valid UserUpdateRequest request) {
+        userService.updateUser(request);
+        return ResponseEntity.ok(null);
     }
 }
