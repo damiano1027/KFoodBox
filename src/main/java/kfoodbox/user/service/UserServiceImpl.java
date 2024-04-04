@@ -86,4 +86,14 @@ public class UserServiceImpl implements UserService {
         HttpSession session = servletRequest.getSession();
         session.setAttribute("userId", user.getId());
     }
+
+    @Override
+    public void logout() {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        HttpSession session = servletRequest.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+    }
 }

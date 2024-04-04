@@ -12,4 +12,5 @@ public interface UserService {
     void signUp(SignupRequest request);
     LanguagesResponse getAllLanguages();
     void login(LoginRequest request);
+    void logout();
 }
