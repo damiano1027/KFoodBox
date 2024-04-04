@@ -45,7 +45,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             }
         }
 
-        request.setAttribute("user", user.get());
+        request.setAttribute("userId", user.get().getId());
         return true;
     }
 

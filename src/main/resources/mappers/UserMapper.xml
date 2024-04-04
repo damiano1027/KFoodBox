@@ -6,6 +6,16 @@
         VALUES (#{user.languageId}, #{user.email}, #{user.password}, #{user.nickname}, 0);
     </insert>
 
+    <update id="updateUser" parameterType="kfoodbox.user.entity.User">
+        UPDATE `kfoodbox`.`user`
+        SET
+            `language_id` = #{user.languageId},
+            `password` = #{user.password},
+            `nickname`= #{user.nickname}
+        WHERE
+            `id` = #{user.id}
+    </update>
+
     <select id="findUserById" parameterType="long" resultType="kfoodbox.user.entity.User">
         SELECT *
         FROM `kfoodbox`.`user`
