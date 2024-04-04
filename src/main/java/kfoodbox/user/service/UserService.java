@@ -5,6 +5,7 @@ import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
+import kfoodbox.user.dto.response.MyNicknameResponse;
 import kfoodbox.user.dto.response.NicknameExistenceResponse;
 
 public interface UserService {
@@ -15,4 +16,5 @@ public interface UserService {
     void login(LoginRequest request);
     void logout();
     MyEmailResponse getMyEmail();
+    MyNicknameResponse getMyNickname();
 }

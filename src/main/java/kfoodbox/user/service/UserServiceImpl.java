@@ -11,6 +11,7 @@ import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
+import kfoodbox.user.dto.response.MyNicknameResponse;
 import kfoodbox.user.dto.response.NicknameExistenceResponse;
 import kfoodbox.user.entity.Language;
 import kfoodbox.user.entity.User;
@@ -120,5 +121,23 @@ public class UserServiceImpl implements UserService {
         }
 
         return new MyEmailResponse(user.getEmail());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MyNicknameResponse getMyNickname() {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        User user = (User) servletRequest.getAttribute("user");
+
+        if (user == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        user = userRepository.findUserById(user.getId());
+        if (user == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_USER);
+        }
+
+        return new MyNicknameResponse(user.getNickname());
     }
 }
