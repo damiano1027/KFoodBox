@@ -3,6 +3,7 @@ package kfoodbox.bookmark.controller;
 import jakarta.validation.Valid;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
@@ -32,6 +33,13 @@ public class BookmarkController {
     @PostMapping("/custom-recipe-article-bookmark")
     public ResponseEntity<Void> createCustomRecipeArticleBookmark(@RequestBody @Valid CustomRecipeArticleBookmarkCreateRequest request) {
         bookmarkService.createCustomRecipeArticleBookmark(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @PostMapping("/food-bookmark")
+    public ResponseEntity<Void> createFoodBookmark(@RequestBody @Valid FoodBookmarkCreateRequest request) {
+        bookmarkService.createFoodBookmark(request);
         return ResponseEntity.ok(null);
     }
 
