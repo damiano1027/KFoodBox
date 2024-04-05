@@ -39,4 +39,67 @@
             INNER JOIN `kfoodbox`.`food` `t2`
             ON `t1`.`food_id` = `t2`.`id`
     </select>
+
+    <select id="findCommunityArticleBookmarkByUserIdAndCommunityArticleId" resultType="kfoodbox.bookmark.entity.CommunityArticleBookmark">
+        SELECT *
+        FROM `kfoodbox`.`community_article_bookmark`
+        WHERE
+            `user_id` = #{userId}
+            AND `community_article_id` = #{communityArticleId}
+    </select>
+
+    <select id="findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId" resultType="kfoodbox.bookmark.entity.CustomRecipeArticleBookmark">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_article_bookmark`
+        WHERE
+            `user_id` = #{userId}
+            AND `custom_recipe_article_id` = #{customRecipeArticleId}
+    </select>
+
+    <select id="findFoodBookmarkByUserIdAndFoodId" resultType="kfoodbox.bookmark.entity.FoodBookmark">
+        SELECT *
+        FROM `kfoodbox`.`food_bookmark`
+        WHERE
+            `user_id` = #{userId}
+            AND `food_id` = #{foodId}
+    </select>
+
+    <insert id="saveCommunityArticleBookmark" parameterType="kfoodbox.bookmark.entity.CommunityArticleBookmark">
+        INSERT INTO `kfoodbox`.`community_article_bookmark` (`user_id`, `community_article_id`)
+        VALUES (#{communityArticleBookmark.userId}, #{communityArticleBookmark.communityArticleId})
+    </insert>
+
+    <insert id="saveCustomRecipeArticleBookmark" parameterType="kfoodbox.bookmark.entity.CustomRecipeArticleBookmark">
+        INSERT INTO `kfoodbox`.`custom_recipe_article_bookmark` (`user_id`, `custom_recipe_article_id`)
+        VALUES (#{customRecipeArticleBookmark.userId}, #{customRecipeArticleBookmark.customRecipeArticleId})
+    </insert>
+
+    <insert id="saveFoodBookmark" parameterType="kfoodbox.bookmark.entity.FoodBookmark">
+        INSERT INTO `kfoodbox`.`food_bookmark` (`user_id`, `food_id`)
+        VALUES (#{foodBookmark.userId}, #{foodBookmark.foodId})
+    </insert>
+
+    <delete id="deleteCommunityArticleBookmark" parameterType="kfoodbox.bookmark.entity.CommunityArticleBookmark">
+        DELETE
+        FROM `kfoodbox`.`community_article_bookmark`
+        WHERE
+            `user_id` = #{communityArticleBookmark.userId}
+            AND `community_article_id` = #{communityArticleBookmark.communityArticleId}
+    </delete>
+
+    <delete id="deleteCustomRecipeArticleBookmark" parameterType="kfoodbox.bookmark.entity.CustomRecipeArticleBookmark">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_article_bookmark`
+        WHERE
+            `user_id` = #{customRecipeArticleBookmark.userId}
+            AND `custom_recipe_article_id` = #{customRecipeArticleBookmark.customRecipeArticleId}
+    </delete>
+
+    <delete id="deleteFoodBookmark" parameterType="kfoodbox.bookmark.entity.FoodBookmark">
+        DELETE
+        FROM `kfoodbox`.`food_bookmark`
+        WHERE
+            `user_id` = #{foodBookmark.userId}
+            AND `food_id` = #{foodBookmark.foodId}
+    </delete>
 </mapper>

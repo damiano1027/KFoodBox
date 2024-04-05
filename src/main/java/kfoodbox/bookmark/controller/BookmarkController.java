@@ -1,5 +1,12 @@
 package kfoodbox.bookmark.controller;
 
+import jakarta.validation.Valid;
+import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
+import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkDeleteRequest;
+import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.FoodBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
@@ -8,13 +15,37 @@ import kfoodbox.common.authority.Authority;
 import kfoodbox.common.authority.Login;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class BookmarkController {
     private final BookmarkService bookmarkService;
+
+    @Login(Authority.NORMAL)
+    @PostMapping("/community-article-bookmark")
+    public ResponseEntity<Void> createCommunityArticleBookmark(@RequestBody @Valid CommunityArticleBookmarkCreateRequest request) {
+        bookmarkService.createCommunityArticleBookmark(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @PostMapping("/custom-recipe-article-bookmark")
+    public ResponseEntity<Void> createCustomRecipeArticleBookmark(@RequestBody @Valid CustomRecipeArticleBookmarkCreateRequest request) {
+        bookmarkService.createCustomRecipeArticleBookmark(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @PostMapping("/food-bookmark")
+    public ResponseEntity<Void> createFoodBookmark(@RequestBody @Valid FoodBookmarkCreateRequest request) {
+        bookmarkService.createFoodBookmark(request);
+        return ResponseEntity.ok(null);
+    }
 
     @Login(Authority.NORMAL)
     @GetMapping("/my-community-article-bookmarks")
@@ -32,5 +63,26 @@ public class BookmarkController {
     @GetMapping("/my-food-bookmarks")
     public ResponseEntity<MyFoodBookmarksResponse> getMyFoodBookmarks() {
         return ResponseEntity.ok(bookmarkService.getMyFoodBookmarks());
+    }
+
+    @Login(Authority.NORMAL)
+    @DeleteMapping("/community-article-bookmark")
+    public ResponseEntity<Void> deleteCommunityArticleBookmark(@RequestBody @Valid CommunityArticleBookmarkDeleteRequest request) {
+        bookmarkService.deleteCommunityArticleBookmark(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @DeleteMapping("/custom-recipe-article-bookmark")
+    public ResponseEntity<Void> deleteCustomRecipeArticleBookmark(@RequestBody @Valid CustomRecipeArticleBookmarkDeleteRequest request) {
+        bookmarkService.deleteCustomRecipeArticleBookmark(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @DeleteMapping("/food-bookmark")
+    public ResponseEntity<Void> deleteFoodBookmark(@RequestBody @Valid FoodBookmarkDeleteRequest request) {
+        bookmarkService.deleteFoodBookmark(request);
+        return ResponseEntity.ok(null);
     }
 }
