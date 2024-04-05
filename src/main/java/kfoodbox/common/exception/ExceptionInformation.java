@@ -14,7 +14,9 @@ public enum ExceptionInformation {
     EMAIL_DUPLICATES("중복되는 이메일이 이미 존재합니다.", HttpStatus.CONFLICT),
     NICKNAME_DUPLICATES("중복되는 닉네임이 이미 존재합니다.", HttpStatus.CONFLICT),
     NON_EXISTENT_LANGUAGE("존재하지 않는 언어입니다.", HttpStatus.NOT_FOUND),
-    NO_USER("회원 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+    NO_USER("회원 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    NO_ARTICLE("게시물 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    BOOKMARK_DUPLICATES("북마크 정보가 이미 존재합니다.", HttpStatus.NOT_FOUND);
 
     private final String message;
     private final HttpStatus httpStatus;
