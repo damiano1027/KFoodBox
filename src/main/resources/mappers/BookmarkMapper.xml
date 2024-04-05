@@ -26,4 +26,17 @@
             INNER JOIN `kfoodbox`.`custom_recipe_article` `t2`
             ON `t1`.`custom_recipe_article_id` = `t2`.`id`
     </select>
+
+    <select id="findBookmarkFoodsByUserId" parameterType="long" resultType="kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse$Bookmark">
+        SELECT
+            `t1`.`food_id` `id`,
+            `t2`.`name` `name`
+        FROM (
+            SELECT *
+            FROM `kfoodbox`.`food_bookmark`
+            WHERE `user_id` = #{id}
+        ) `t1`
+            INNER JOIN `kfoodbox`.`food` `t2`
+            ON `t1`.`food_id` = `t2`.`id`
+    </select>
 </mapper>
