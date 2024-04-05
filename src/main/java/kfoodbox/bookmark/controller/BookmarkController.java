@@ -2,6 +2,7 @@ package kfoodbox.bookmark.controller;
 
 import jakarta.validation.Valid;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
@@ -12,6 +13,7 @@ import kfoodbox.common.authority.Authority;
 import kfoodbox.common.authority.Login;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,5 +61,12 @@ public class BookmarkController {
     @GetMapping("/my-food-bookmarks")
     public ResponseEntity<MyFoodBookmarksResponse> getMyFoodBookmarks() {
         return ResponseEntity.ok(bookmarkService.getMyFoodBookmarks());
+    }
+
+    @Login(Authority.NORMAL)
+    @DeleteMapping("/community-article-bookmark")
+    public ResponseEntity<Void> deleteCommunityArticleBookmark(@RequestBody @Valid CommunityArticleBookmarkDeleteRequest request) {
+        bookmarkService.deleteCommunityArticleBookmark(request);
+        return ResponseEntity.ok(null);
     }
 }
