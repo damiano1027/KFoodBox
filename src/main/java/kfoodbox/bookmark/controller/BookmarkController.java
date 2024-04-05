@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
@@ -67,6 +68,13 @@ public class BookmarkController {
     @DeleteMapping("/community-article-bookmark")
     public ResponseEntity<Void> deleteCommunityArticleBookmark(@RequestBody @Valid CommunityArticleBookmarkDeleteRequest request) {
         bookmarkService.deleteCommunityArticleBookmark(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @DeleteMapping("/custom-recipe-article-bookmark")
+    public ResponseEntity<Void> deleteCustomRecipeArticleBookmark(@RequestBody @Valid CustomRecipeArticleBookmarkDeleteRequest request) {
+        bookmarkService.deleteCustomRecipeArticleBookmark(request);
         return ResponseEntity.ok(null);
     }
 }
