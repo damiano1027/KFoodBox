@@ -39,4 +39,17 @@
             INNER JOIN `kfoodbox`.`food` `t2`
             ON `t1`.`food_id` = `t2`.`id`
     </select>
+
+    <select id="findCommunityArticleBookmarkByUserIdAndCommunityArticleId" resultType="kfoodbox.bookmark.entity.CommunityArticleBookmark">
+        SELECT *
+        FROM `kfoodbox`.`community_article_bookmark`
+        WHERE
+            `user_id` = #{userId}
+            AND `community_article_id` = #{communityArticleId}
+    </select>
+
+    <insert id="saveCommunityArticleBookmark" parameterType="kfoodbox.bookmark.entity.CommunityArticleBookmark">
+        INSERT INTO `kfoodbox`.`community_article_bookmark` (`user_id`, `community_article_id`)
+        VALUES (#{communityArticleBookmark.userId}, #{communityArticleBookmark.communityArticleId})
+    </insert>
 </mapper>
