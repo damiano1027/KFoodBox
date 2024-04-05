@@ -13,6 +13,6 @@ public class MyCommunityArticleBookmarksResponse {
     @Getter
     public static class Bookmark {
         private Long id;
-        private String titleName;
+        private String title;
     }
 }

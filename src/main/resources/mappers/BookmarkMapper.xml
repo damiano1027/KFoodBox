@@ -4,7 +4,7 @@
     <select id="findBookmarkCommunityArticlesByUserId" parameterType="long" resultType="kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse$Bookmark">
         SELECT
             `t1`.`community_article_id` `id`,
-            `t2`.`title` `title_name`
+            `t2`.`title` `title`
         FROM (
             SELECT *
             FROM `kfoodbox`.`community_article_bookmark`
