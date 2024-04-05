@@ -3,6 +3,7 @@ package kfoodbox.bookmark.service;
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
+import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
 import kfoodbox.bookmark.repository.BookmarkRepository;
 import kfoodbox.common.exception.CriticalException;
 import kfoodbox.common.exception.ExceptionInformation;
@@ -40,5 +41,18 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
 
         return new MyCustomRecipeArticleBookmarksResponse(bookmarkRepository.findBookmarkCustomRecipeArticlesByUserId(userId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MyFoodBookmarksResponse getMyFoodBookmarks() {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        return new MyFoodBookmarksResponse(bookmarkRepository.findBookmarkFoodsByUserId(userId));
     }
 }
