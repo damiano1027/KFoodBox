@@ -2,12 +2,16 @@ package kfoodbox.bookmark.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.entity.CommunityArticle;
+import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.repository.CommunityArticleRepository;
+import kfoodbox.article.repository.CustomRecipeArticleRepository;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
 import kfoodbox.bookmark.entity.CommunityArticleBookmark;
+import kfoodbox.bookmark.entity.CustomRecipeArticleBookmark;
 import kfoodbox.bookmark.repository.BookmarkRepository;
 import kfoodbox.common.exception.CriticalException;
 import kfoodbox.common.exception.ExceptionInformation;
@@ -22,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookmarkServiceImpl implements BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final CommunityArticleRepository communityArticleRepository;
+    private final CustomRecipeArticleRepository customRecipeArticleRepository;
 
     @Override
     @Transactional
@@ -46,6 +51,31 @@ public class BookmarkServiceImpl implements BookmarkService {
         CommunityArticleBookmark newBookmark = CommunityArticleBookmark.from(request);
         newBookmark.changeUserId(userId);
         bookmarkRepository.saveCommunityArticleBookmark(newBookmark);
+    }
+
+    @Override
+    @Transactional
+    public void createCustomRecipeArticleBookmark(CustomRecipeArticleBookmarkCreateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleById(request.getCustomRecipeArticleId());
+        if (customRecipeArticle == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        CustomRecipeArticleBookmark existingBookmark = bookmarkRepository.findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId(userId, request.getCustomRecipeArticleId());
+        if (existingBookmark != null) {
+            throw new NonCriticalException(ExceptionInformation.BOOKMARK_DUPLICATES);
+        }
+
+        CustomRecipeArticleBookmark newBookmark = CustomRecipeArticleBookmark.from(request);
+        newBookmark.changeUserId(userId);
+        bookmarkRepository.saveCustomRecipeArticleBookmark(newBookmark);
     }
 
     @Override
