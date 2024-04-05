@@ -8,6 +8,7 @@ import kfoodbox.article.repository.CustomRecipeArticleRepository;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
@@ -169,5 +170,28 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
 
         bookmarkRepository.deleteCommunityArticleBookmark(existingBookmark);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCustomRecipeArticleBookmark(CustomRecipeArticleBookmarkDeleteRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleById(request.getCustomRecipeArticleId());
+        if (customRecipeArticle == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        CustomRecipeArticleBookmark existingBookmark = bookmarkRepository.findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId(userId, request.getCustomRecipeArticleId());
+        if (existingBookmark == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_BOOKMARK);
+        }
+
+        bookmarkRepository.deleteCustomRecipeArticleBookmark(existingBookmark);
     }
 }
