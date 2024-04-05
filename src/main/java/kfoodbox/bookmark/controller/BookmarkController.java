@@ -6,6 +6,7 @@ import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.FoodBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
@@ -75,6 +76,13 @@ public class BookmarkController {
     @DeleteMapping("/custom-recipe-article-bookmark")
     public ResponseEntity<Void> deleteCustomRecipeArticleBookmark(@RequestBody @Valid CustomRecipeArticleBookmarkDeleteRequest request) {
         bookmarkService.deleteCustomRecipeArticleBookmark(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @DeleteMapping("/food-bookmark")
+    public ResponseEntity<Void> deleteFoodBookmark(@RequestBody @Valid FoodBookmarkDeleteRequest request) {
+        bookmarkService.deleteFoodBookmark(request);
         return ResponseEntity.ok(null);
     }
 }
