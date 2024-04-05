@@ -22,4 +22,5 @@ public interface BookmarkRepository {
     void saveFoodBookmark(@Param("foodBookmark") FoodBookmark foodBookmark);
     void deleteCommunityArticleBookmark(@Param("communityArticleBookmark") CommunityArticleBookmark communityArticleBookmark);
     void deleteCustomRecipeArticleBookmark(@Param("customRecipeArticleBookmark") CustomRecipeArticleBookmark customRecipeArticleBookmark);
+    void deleteFoodBookmark(@Param("foodBookmark") FoodBookmark foodBookmark);
 }

@@ -94,4 +94,12 @@
             `user_id` = #{customRecipeArticleBookmark.userId}
             AND `custom_recipe_article_id` = #{customRecipeArticleBookmark.customRecipeArticleId}
     </delete>
+
+    <delete id="deleteFoodBookmark" parameterType="kfoodbox.bookmark.entity.FoodBookmark">
+        DELETE
+        FROM `kfoodbox`.`food_bookmark`
+        WHERE
+            `user_id` = #{foodBookmark.userId}
+            AND `food_id` = #{foodBookmark.foodId}
+    </delete>
 </mapper>
