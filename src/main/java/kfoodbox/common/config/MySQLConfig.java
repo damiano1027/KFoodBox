@@ -11,7 +11,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = {"kfoodbox.food.repository", "kfoodbox.user.repository", "kfoodbox.bookmark.repository"})
+@MapperScan(basePackages = {"kfoodbox.food.repository", "kfoodbox.user.repository", "kfoodbox.bookmark.repository", "kfoodbox.article.repository"})
 public class MySQLConfig {
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {

@@ -28,6 +28,12 @@
             ON `t1`.`id` = `t4`.`food_id`
     </select>
 
+    <select id="findFoodEntityById" parameterType="long" resultType="kfoodbox.food.entity.Food">
+        SELECT *
+        FROM `kfoodbox`.`food`
+        WHERE `id` = #{id}
+    </select>
+
     <select id="findFoodsByCategoryId" parameterType="long" resultType="kfoodbox.food.dto.response.FoodsResponse$Food">
         SELECT *
         FROM `kfoodbox`.`food`
