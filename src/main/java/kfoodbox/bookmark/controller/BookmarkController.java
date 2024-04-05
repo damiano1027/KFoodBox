@@ -1,5 +1,7 @@
 package kfoodbox.bookmark.controller;
 
+import jakarta.validation.Valid;
+import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
@@ -9,12 +11,21 @@ import kfoodbox.common.authority.Login;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class BookmarkController {
     private final BookmarkService bookmarkService;
+
+    @Login(Authority.NORMAL)
+    @PostMapping("/community-article-bookmark")
+    public ResponseEntity<Void> createCommunityArticleBookmark(@RequestBody @Valid CommunityArticleBookmarkCreateRequest request) {
+        bookmarkService.createCommunityArticleBookmark(request);
+        return ResponseEntity.ok(null);
+    }
 
     @Login(Authority.NORMAL)
     @GetMapping("/my-community-article-bookmarks")
