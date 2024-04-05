@@ -86,4 +86,12 @@
             `user_id` = #{communityArticleBookmark.userId}
             AND `community_article_id` = #{communityArticleBookmark.communityArticleId}
     </delete>
+
+    <delete id="deleteCustomRecipeArticleBookmark" parameterType="kfoodbox.bookmark.entity.CustomRecipeArticleBookmark">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_article_bookmark`
+        WHERE
+            `user_id` = #{customRecipeArticleBookmark.userId}
+            AND `custom_recipe_article_id` = #{customRecipeArticleBookmark.customRecipeArticleId}
+    </delete>
 </mapper>
