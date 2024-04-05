@@ -56,6 +56,14 @@
             AND `custom_recipe_article_id` = #{customRecipeArticleId}
     </select>
 
+    <select id="findFoodBookmarkByUserIdAndFoodId" resultType="kfoodbox.bookmark.entity.FoodBookmark">
+        SELECT *
+        FROM `kfoodbox`.`food_bookmark`
+        WHERE
+            `user_id` = #{userId}
+            AND `food_id` = #{foodId}
+    </select>
+
     <insert id="saveCommunityArticleBookmark" parameterType="kfoodbox.bookmark.entity.CommunityArticleBookmark">
         INSERT INTO `kfoodbox`.`community_article_bookmark` (`user_id`, `community_article_id`)
         VALUES (#{communityArticleBookmark.userId}, #{communityArticleBookmark.communityArticleId})
@@ -64,5 +72,10 @@
     <insert id="saveCustomRecipeArticleBookmark" parameterType="kfoodbox.bookmark.entity.CustomRecipeArticleBookmark">
         INSERT INTO `kfoodbox`.`custom_recipe_article_bookmark` (`user_id`, `custom_recipe_article_id`)
         VALUES (#{customRecipeArticleBookmark.userId}, #{customRecipeArticleBookmark.customRecipeArticleId})
+    </insert>
+
+    <insert id="saveFoodBookmark" parameterType="kfoodbox.bookmark.entity.FoodBookmark">
+        INSERT INTO `kfoodbox`.`food_bookmark` (`user_id`, `food_id`)
+        VALUES (#{foodBookmark.userId}, #{foodBookmark.foodId})
     </insert>
 </mapper>
