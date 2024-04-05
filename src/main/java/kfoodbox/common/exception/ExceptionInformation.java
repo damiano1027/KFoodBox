@@ -16,6 +16,7 @@ public enum ExceptionInformation {
     NON_EXISTENT_LANGUAGE("존재하지 않는 언어입니다.", HttpStatus.NOT_FOUND),
     NO_USER("회원 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     NO_ARTICLE("게시물 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    NO_FOOD("음식 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     BOOKMARK_DUPLICATES("북마크 정보가 이미 존재합니다.", HttpStatus.NOT_FOUND);
 
     private final String message;
