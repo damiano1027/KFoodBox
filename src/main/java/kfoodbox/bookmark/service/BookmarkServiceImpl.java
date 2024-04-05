@@ -7,16 +7,20 @@ import kfoodbox.article.repository.CommunityArticleRepository;
 import kfoodbox.article.repository.CustomRecipeArticleRepository;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
 import kfoodbox.bookmark.entity.CommunityArticleBookmark;
 import kfoodbox.bookmark.entity.CustomRecipeArticleBookmark;
+import kfoodbox.bookmark.entity.FoodBookmark;
 import kfoodbox.bookmark.repository.BookmarkRepository;
 import kfoodbox.common.exception.CriticalException;
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
+import kfoodbox.food.entity.Food;
+import kfoodbox.food.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final CommunityArticleRepository communityArticleRepository;
     private final CustomRecipeArticleRepository customRecipeArticleRepository;
+    private final FoodRepository foodRepository;
 
     @Override
     @Transactional
@@ -76,6 +81,31 @@ public class BookmarkServiceImpl implements BookmarkService {
         CustomRecipeArticleBookmark newBookmark = CustomRecipeArticleBookmark.from(request);
         newBookmark.changeUserId(userId);
         bookmarkRepository.saveCustomRecipeArticleBookmark(newBookmark);
+    }
+
+    @Override
+    @Transactional
+    public void createFoodBookmark(FoodBookmarkCreateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        Food food = foodRepository.findFoodEntityById(request.getFoodId());
+        if (food == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_FOOD);
+        }
+
+        FoodBookmark existingBookmark = bookmarkRepository.findFoodBookmarkByUserIdAndFoodId(userId, request.getFoodId());
+        if (existingBookmark != null) {
+            throw new NonCriticalException(ExceptionInformation.BOOKMARK_DUPLICATES);
+        }
+
+        FoodBookmark newBookmark = FoodBookmark.from(request);
+        newBookmark.changeUserId(userId);
+        bookmarkRepository.saveFoodBookmark(newBookmark);
     }
 
     @Override
