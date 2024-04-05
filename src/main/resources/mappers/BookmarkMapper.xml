@@ -48,8 +48,21 @@
             AND `community_article_id` = #{communityArticleId}
     </select>
 
+    <select id="findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId" resultType="kfoodbox.bookmark.entity.CustomRecipeArticleBookmark">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_article_bookmark`
+        WHERE
+            `user_id` = #{userId}
+            AND `custom_recipe_article_id` = #{customRecipeArticleId}
+    </select>
+
     <insert id="saveCommunityArticleBookmark" parameterType="kfoodbox.bookmark.entity.CommunityArticleBookmark">
         INSERT INTO `kfoodbox`.`community_article_bookmark` (`user_id`, `community_article_id`)
         VALUES (#{communityArticleBookmark.userId}, #{communityArticleBookmark.communityArticleId})
+    </insert>
+
+    <insert id="saveCustomRecipeArticleBookmark" parameterType="kfoodbox.bookmark.entity.CustomRecipeArticleBookmark">
+        INSERT INTO `kfoodbox`.`custom_recipe_article_bookmark` (`user_id`, `custom_recipe_article_id`)
+        VALUES (#{customRecipeArticleBookmark.userId}, #{customRecipeArticleBookmark.customRecipeArticleId})
     </insert>
 </mapper>

@@ -4,6 +4,7 @@ import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
 import kfoodbox.bookmark.entity.CommunityArticleBookmark;
+import kfoodbox.bookmark.entity.CustomRecipeArticleBookmark;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,5 +14,7 @@ public interface BookmarkRepository {
     List<MyCustomRecipeArticleBookmarksResponse.Bookmark> findBookmarkCustomRecipeArticlesByUserId(@Param("id") Long id);
     List<MyFoodBookmarksResponse.Bookmark> findBookmarkFoodsByUserId(@Param("id") Long id);
     CommunityArticleBookmark findCommunityArticleBookmarkByUserIdAndCommunityArticleId(@Param("userId") Long userId, @Param("communityArticleId") Long communityArticleId);
+    CustomRecipeArticleBookmark findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId(@Param("userId") Long userId, @Param("customRecipeArticleId") Long customRecipeArticleId);
     void saveCommunityArticleBookmark(@Param("communityArticleBookmark") CommunityArticleBookmark communityArticleBookmark);
+    void saveCustomRecipeArticleBookmark(@Param("customRecipeArticleBookmark") CustomRecipeArticleBookmark customRecipeArticleBookmark);
 }
