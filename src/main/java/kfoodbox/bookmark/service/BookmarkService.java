@@ -1,6 +1,7 @@
 package kfoodbox.bookmark.service;
 
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
@@ -14,4 +15,5 @@ public interface BookmarkService {
     MyCommunityArticleBookmarksResponse getMyCommunityArticleBookmarks();
     MyCustomRecipeArticleBookmarksResponse getMyCustomRecipeArticleBookmarks();
     MyFoodBookmarksResponse getMyFoodBookmarks();
+    void deleteCommunityArticleBookmark(CommunityArticleBookmarkDeleteRequest request);
 }

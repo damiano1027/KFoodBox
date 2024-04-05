@@ -6,6 +6,7 @@ import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.repository.CommunityArticleRepository;
 import kfoodbox.article.repository.CustomRecipeArticleRepository;
 import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
@@ -145,5 +146,28 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
 
         return new MyFoodBookmarksResponse(bookmarkRepository.findBookmarkFoodsByUserId(userId));
+    }
+
+    @Override
+    @Transactional
+    public void deleteCommunityArticleBookmark(CommunityArticleBookmarkDeleteRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleById(request.getCommunityArticleId());
+        if (communityArticle == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        CommunityArticleBookmark existingBookmark = bookmarkRepository.findCommunityArticleBookmarkByUserIdAndCommunityArticleId(userId, request.getCommunityArticleId());
+        if (existingBookmark == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_BOOKMARK);
+        }
+
+        bookmarkRepository.deleteCommunityArticleBookmark(existingBookmark);
     }
 }
