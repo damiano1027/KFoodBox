@@ -10,6 +10,7 @@ import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
 import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
+import kfoodbox.bookmark.dto.request.FoodBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
@@ -193,5 +194,28 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
 
         bookmarkRepository.deleteCustomRecipeArticleBookmark(existingBookmark);
+    }
+
+    @Override
+    @Transactional
+    public void deleteFoodBookmark(FoodBookmarkDeleteRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        Food food = foodRepository.findFoodEntityById(request.getFoodId());
+        if (food == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_FOOD);
+        }
+
+        FoodBookmark existingBookmark = bookmarkRepository.findFoodBookmarkByUserIdAndFoodId(userId, request.getFoodId());
+        if (existingBookmark == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_BOOKMARK);
+        }
+
+        bookmarkRepository.deleteFoodBookmark(existingBookmark);
     }
 }
