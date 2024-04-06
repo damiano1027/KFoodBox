@@ -39,20 +39,20 @@ public class UserController {
     @GetMapping("/email-existence")
     @Operation(summary = "이메일 존재 여부 조회")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = EmailExistenceResponse.class))),
+            @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<EmailExistenceResponse> getExistenceOfEmail(@RequestParam("email") String email) {
+    public ResponseEntity<EmailExistenceResponse> getExistenceOfEmail(@RequestParam("email") @Schema(description = "이메일") String email) {
         return ResponseEntity.ok(userService.getExistenceOfEmail(email));
     }
 
     @GetMapping("/nickname-existence")
     @Operation(summary = "닉네임 존재 여부 조회")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = NicknameExistenceResponse.class))),
+            @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<NicknameExistenceResponse> getExistenceOfNickname(@RequestParam("nickname") String nickname) {
+    public ResponseEntity<NicknameExistenceResponse> getExistenceOfNickname(@RequestParam("nickname") @Schema(description = "닉네임") String nickname) {
         return ResponseEntity.ok(userService.getExistenceOfNickname(nickname));
     }
 
@@ -73,7 +73,7 @@ public class UserController {
     @GetMapping("/languages")
     @Operation(summary = "모든 언어 조회")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = LanguagesResponse.class))),
+            @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     public ResponseEntity<LanguagesResponse> getAllLanguages() {
@@ -111,7 +111,7 @@ public class UserController {
     @GetMapping("/my-email")
     @Operation(summary = "나의 이메일 조회")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = MyEmailResponse.class))),
+            @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "404", description = "회원 정보 없음 (NO_USER)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
@@ -125,7 +125,7 @@ public class UserController {
     @GetMapping("/my-nickname")
     @Operation(summary = "나의 닉네임 조회")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = MyNicknameResponse.class))),
+            @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "404", description = "회원 정보 없음 (NO_USER)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
@@ -139,7 +139,7 @@ public class UserController {
     @GetMapping("/my-language")
     @Operation(summary = "나의 언어 조회")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = MyLanguageResponse.class))),
+            @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "404", description = "회원 정보 없음 (NO_USER)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
