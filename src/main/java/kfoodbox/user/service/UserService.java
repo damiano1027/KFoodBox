@@ -2,6 +2,7 @@ package kfoodbox.user.service;
 
 import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupAuthenticationNumberSendRequest;
+import kfoodbox.user.dto.request.SignupAuthenticationNumberVerityRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
@@ -15,6 +16,7 @@ public interface UserService {
     EmailExistenceResponse getExistenceOfEmail(String email);
     NicknameExistenceResponse getExistenceOfNickname(String nickname);
     void sendSignupAuthenticationNumber(SignupAuthenticationNumberSendRequest request);
+    void verifySignupAuthenticationNumber(SignupAuthenticationNumberVerityRequest request);
     void signUp(SignupRequest request);
     LanguagesResponse getAllLanguages();
     void login(LoginRequest request);
