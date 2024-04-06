@@ -12,6 +12,8 @@ import kfoodbox.common.authority.Authority;
 import kfoodbox.common.exception.ExceptionResponse;
 import kfoodbox.common.exception.UnprocessableEntityExceptionResponse;
 import kfoodbox.user.dto.request.LoginRequest;
+import kfoodbox.user.dto.request.SignupAuthenticationNumberSendRequest;
+import kfoodbox.user.dto.request.SignupAuthenticationNumberVerityRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
@@ -54,6 +56,31 @@ public class UserController {
     })
     public ResponseEntity<NicknameExistenceResponse> getExistenceOfNickname(@RequestParam("nickname") @Schema(description = "닉네임") String nickname) {
         return ResponseEntity.ok(userService.getExistenceOfNickname(nickname));
+    }
+
+    @PostMapping("/authentication-number")
+    @Operation(summary = "이메일 인증번호 전송 (회원가입)")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<Void> sendSignupAuthenticationNumber(@RequestBody @Valid SignupAuthenticationNumberSendRequest request) {
+        userService.sendSignupAuthenticationNumber(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/signup-authentication")
+    @Operation(summary = "이메일 인증번호 확인 (회원가입)")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "403", description = "잘못된 접근 (BAD_ACCESS)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<Void> verifySignupAuthenticationNumber(@RequestBody @Valid SignupAuthenticationNumberVerityRequest request) {
+        userService.verifySignupAuthenticationNumber(request);
+        return ResponseEntity.ok(null);
     }
 
     @PostMapping("/user")

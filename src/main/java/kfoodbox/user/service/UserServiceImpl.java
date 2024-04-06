@@ -6,7 +6,11 @@ import kfoodbox.common.exception.CriticalException;
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
+import kfoodbox.common.util.EmailSender;
+import kfoodbox.common.util.RedisClient;
 import kfoodbox.user.dto.request.LoginRequest;
+import kfoodbox.user.dto.request.SignupAuthenticationNumberSendRequest;
+import kfoodbox.user.dto.request.SignupAuthenticationNumberVerityRequest;
 import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
@@ -19,16 +23,20 @@ import kfoodbox.user.entity.Language;
 import kfoodbox.user.entity.User;
 import kfoodbox.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final EmailSender emailSender;
+    private final RedisClient redisClient;
 
     @Override
     @Transactional(readOnly = true)
@@ -48,6 +56,28 @@ public class UserServiceImpl implements UserService {
         return sameNicknameUser == null ?
                 new NicknameExistenceResponse(false)
                 : new NicknameExistenceResponse(true);
+    }
+
+    @Override
+    public void sendSignupAuthenticationNumber(SignupAuthenticationNumberSendRequest request) {
+        String authenticationNumber = RandomStringUtils.randomNumeric(6);
+        redisClient.putSignupAuthenticationNumber(request.getEmail(), authenticationNumber);
+        emailSender.sendAuthenticationNumber(request.getEmail(), authenticationNumber);
+    }
+
+    @Override
+    public void verifySignupAuthenticationNumber(SignupAuthenticationNumberVerityRequest request) {
+        // brute force 공격을 막기 위해 조회시 바로 삭제한다. (한번의 인증 메일 전송에 대해 1번의 인증 기회만 부여)
+        Optional<String> authenticationNumberInRedis = redisClient.getSignupAuthenticationNumberAndDelete(request.getEmail());
+
+        if (authenticationNumberInRedis.isEmpty()) {
+            throw new NonCriticalException(ExceptionInformation.BAD_ACCESS);
+        }
+
+        String authenticationNumber = authenticationNumberInRedis.get();
+        if (!authenticationNumber.equals(request.getAuthenticationNumber())) {
+            throw new NonCriticalException(ExceptionInformation.BAD_ACCESS);
+        }
     }
 
     @Override
