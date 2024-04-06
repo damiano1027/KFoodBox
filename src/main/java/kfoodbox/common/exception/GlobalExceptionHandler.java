@@ -39,9 +39,9 @@ public class GlobalExceptionHandler {
             return ResponseEntity
                     .status(HttpStatus.UNPROCESSABLE_ENTITY)
                     .body(
-                            RequestedDataExceptionResponse.builder()
+                            UnprocessableEntityExceptionResponse.builder()
                                     .messages(messages)
-                                    .code(UNPROCESSABLE_ENTITY_CODE)
+                                    .code(ExceptionInformation.UNPROCESSABLE_ENTITY.name())
                                     .build()
                     );
         } else {

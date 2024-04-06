@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
         Language language = userRepository.findLanguageById(request.getLanguageId());
         if (language == null) {
-            throw new NonCriticalException(ExceptionInformation.NON_EXISTENT_LANGUAGE);
+            throw new NonCriticalException(ExceptionInformation.NO_LANGUAGE);
         }
 
         User user = User.from(request);
