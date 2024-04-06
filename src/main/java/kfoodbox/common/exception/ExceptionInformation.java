@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ExceptionInformation {
     UNAUTHORIZED("인증된 회원이 아닙니다.", HttpStatus.UNAUTHORIZED),
     FORBIDDEN("권한이 없습니다.", HttpStatus.FORBIDDEN),
+    UNPROCESSABLE_ENTITY("요청 데이터 제약조건을 위반하였습니다.", HttpStatus.UNPROCESSABLE_ENTITY),
     INTERNAL_SERVER_ERROR("서버에서 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 
     EMAIL_DUPLICATES("중복되는 이메일이 이미 존재합니다.", HttpStatus.CONFLICT),
