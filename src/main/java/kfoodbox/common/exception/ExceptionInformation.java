@@ -12,6 +12,7 @@ public enum ExceptionInformation {
     UNPROCESSABLE_ENTITY("요청 데이터 제약조건을 위반하였습니다.", HttpStatus.UNPROCESSABLE_ENTITY),
     INTERNAL_SERVER_ERROR("서버에서 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 
+    BAD_ACCESS("잘못된 접근입니다.", HttpStatus.FORBIDDEN),
     EMAIL_DUPLICATES("중복되는 이메일이 이미 존재합니다.", HttpStatus.CONFLICT),
     NICKNAME_DUPLICATES("중복되는 닉네임이 이미 존재합니다.", HttpStatus.CONFLICT),
     BOOKMARK_DUPLICATES("북마크 정보가 이미 존재합니다.", HttpStatus.CONFLICT),
