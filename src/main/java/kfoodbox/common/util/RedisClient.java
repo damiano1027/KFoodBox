@@ -26,6 +26,8 @@ public class RedisClient {
 
     public Optional<String> getSignupAuthenticationNumberAndDelete(String email) {
         String key = String.format("%s/%s", SIGNUP_AUTHENTICATION_NUMBER_PREFIX, email);
-        return Optional.ofNullable(valueOperations.getAndDelete(key));
+        String value = valueOperations.get(key);
+        valueOperations.getOperations().delete(key);
+        return Optional.ofNullable(value);
     }
 }
