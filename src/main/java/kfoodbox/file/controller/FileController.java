@@ -1,5 +1,8 @@
 package kfoodbox.file.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import kfoodbox.common.authority.Authority;
+import kfoodbox.common.authority.Login;
 import kfoodbox.file.domain.FileUploadType;
 import kfoodbox.file.dto.ImageUrlsResponse;
 import kfoodbox.file.service.FileService;
@@ -21,6 +24,7 @@ import java.util.Optional;
 public class FileController {
     private final FileService fileService;
 
+    @Login(Authority.NORMAL)
     @PostMapping("/images")
     public ResponseEntity<ImageUrlsResponse> uploadImage(@RequestPart("images") List<MultipartFile> multipartFiles, @RequestPart("type") String type, BindingResult bindingResult) throws Exception {
         if (multipartFiles.isEmpty()) {
