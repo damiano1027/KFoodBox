@@ -1,6 +1,5 @@
 package kfoodbox.common.util;
 
-import com.amazonaws.services.apigateway.model.Op;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
