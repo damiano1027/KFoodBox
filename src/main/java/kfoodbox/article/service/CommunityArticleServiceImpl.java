@@ -3,13 +3,18 @@ package kfoodbox.article.service;
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
 import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
+import kfoodbox.article.dto.response.CommunityArticleResponse;
 import kfoodbox.article.entity.CommunityArticle;
 import kfoodbox.article.entity.CommunityArticleImage;
 import kfoodbox.article.repository.CommunityArticleRepository;
+import kfoodbox.bookmark.entity.CommunityArticleBookmark;
+import kfoodbox.bookmark.repository.BookmarkRepository;
 import kfoodbox.common.exception.CriticalException;
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
+import kfoodbox.like.entity.CommunityArticleLike;
+import kfoodbox.like.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +29,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommunityArticleServiceImpl implements CommunityArticleService {
     private final CommunityArticleRepository communityArticleRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     @Transactional
@@ -48,6 +55,33 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public CommunityArticleResponse getCommunityArticle(Long communityArticleId) {
+        CommunityArticleResponse response = communityArticleRepository.findCommunityArticleById(communityArticleId);
+        if (response == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        response.resetCount();
+
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+        response.setIsMine(response.getUserId().equals(userId));
+
+        if (userId == null) {
+            response.setIsBookmarked(false);
+            response.setLike(false);
+        } else {
+            CommunityArticleBookmark bookmark = bookmarkRepository.findCommunityArticleBookmarkByUserIdAndCommunityArticleId(userId, communityArticleId);
+            response.setIsBookmarked(bookmark != null);
+            CommunityArticleLike like = likeRepository.findCommunityArticleLikeByCommunityArticleIdAndUserId(communityArticleId, userId);
+            response.setLike(like != null);
+        }
+
+        return response;
+    }
+
+    @Override
     @Transactional
     public void updateCommunityArticle(Long communityArticleId, CommunityArticleUpdateRequest request) {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
@@ -57,7 +91,7 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleById(communityArticleId);
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(communityArticleId);
         if (communityArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
@@ -97,7 +131,7 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleById(communityArticleId);
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(communityArticleId);
         if (communityArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
