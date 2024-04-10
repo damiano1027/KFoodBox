@@ -90,7 +90,7 @@ public class CommunityArticleController {
 
     @Login(Authority.NORMAL)
     @PostMapping("/community-articles/{id}/comment")
-    @Operation(summary = "자유게시판 특정 게시물 게시물에 댓글 생성")
+    @Operation(summary = "자유게시판 특정 게시물에 댓글 생성")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
