@@ -46,7 +46,7 @@ public class CommunityArticleController {
         return ResponseEntity.ok(null);
     }
 
-    @PostMapping("/community-articles/{id}")
+    @GetMapping("/community-articles/{id}")
     @Operation(summary = "자유게시판 게시물 조회")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
