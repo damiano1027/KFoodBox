@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
 import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
 import kfoodbox.article.dto.request.CommunityCommentCreateRequest;
+import kfoodbox.article.dto.request.CommunityCommentUpdateRequest;
 import kfoodbox.article.dto.response.CommunityArticleResponse;
 import kfoodbox.article.entity.CommunityArticle;
 import kfoodbox.article.entity.CommunityArticleImage;
@@ -165,5 +166,29 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
         communityComment.changeUserId(userId);
 
         communityArticleRepository.saveCommunityComment(communityComment);
+    }
+
+    @Override
+    @Transactional
+    public void updateCommunityComment(Long communityCommentId, CommunityCommentUpdateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CommunityComment communityComment = communityArticleRepository.findCommunityCommentEntityById(communityCommentId);
+        if (communityComment == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_COMMENT);
+        }
+        if (!communityComment.hasSameUserId(userId)) {
+            throw new NonCriticalException(ExceptionInformation.FORBIDDEN);
+        }
+
+        if (communityComment.isUpdateRequired(request)) {
+            communityComment.update(request);
+            communityArticleRepository.updateCommunityComment(communityComment);
+        }
     }
 }
