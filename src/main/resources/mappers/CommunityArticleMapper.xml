@@ -1,10 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kfoodbox.article.repository.CommunityArticleRepository">
-    <select id="findCommunityArticleById" parameterType="long" resultType="kfoodbox.article.entity.CommunityArticle">
+    <select id="findCommunityArticleEntityById" parameterType="long" resultType="kfoodbox.article.entity.CommunityArticle">
         SELECT *
         FROM `kfoodbox`.`community_article`
         WHERE `id` = #{id}
+    </select>
+
+    <select id="findCommunityArticleById" parameterType="long" resultType="kfoodbox.article.dto.response.CommunityArticleResponse">
+        SELECT
+            `t1`.`id`,
+            `t1`.`title`,
+            `t1`.`user_id`,
+            `t1`.`content`,
+            `t1`.`created_at`,
+            `t1`.`updated_at`,
+            `t2`.`nickname`,
+            `t3`.`count` `like_count`,
+            `t4`.`count` `comment_count`
+        FROM (
+            SELECT *
+            FROM `kfoodbox`.`community_article`
+            WHERE `id` = #{id}
+        ) `t1`
+            LEFT JOIN `kfoodbox`.`user` `t2`
+            ON `t1`.`user_id` = `t2`.`id`
+            LEFT JOIN (
+                SELECT `community_article_id`, COUNT(*) `count`
+                FROM `kfoodbox`.`community_article_like`
+                GROUP BY `community_article_id`
+            ) `t3`
+            ON `t1`.`id` = `t3`.`community_article_id`
+            LEFT JOIN (
+                SELECT `community_article_id`, COUNT(*) `count`
+                FROM `kfoodbox`.`community_comment`
+                GROUP BY `community_article_id`
+            ) `t4`
+            ON `t1`.`id` = `t4`.`community_article_id`
     </select>
 
     <insert id="saveCommunityArticle" parameterType="kfoodbox.article.entity.CommunityArticle" useGeneratedKeys="true" keyProperty="id">

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
 import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
+import kfoodbox.article.dto.response.CommunityArticleResponse;
 import kfoodbox.article.service.CommunityArticleService;
 import kfoodbox.common.authority.Authority;
 import kfoodbox.common.authority.Login;
@@ -44,6 +45,17 @@ public class CommunityArticleController {
         return ResponseEntity.ok(null);
     }
 
+    @PostMapping("/community-article/{id}")
+    @Operation(summary = "자유게시판 게시물 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<CommunityArticleResponse> getCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+        return ResponseEntity.ok(communityArticleService.getCommunityArticle(id));
+    }
+
     @Login(Authority.NORMAL)
     @PutMapping("/community-article/{id}")
     @Operation(summary = "자유게시판 게시물 수정")
@@ -70,8 +82,8 @@ public class CommunityArticleController {
             @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> deleteCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long communityArticleId) {
-        communityArticleService.deleteCommunityArticle(communityArticleId);
+    public ResponseEntity<Void> deleteCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+        communityArticleService.deleteCommunityArticle(id);
         return ResponseEntity.ok(null);
     }
 }
