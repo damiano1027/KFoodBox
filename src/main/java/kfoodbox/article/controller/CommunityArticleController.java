@@ -45,7 +45,7 @@ public class CommunityArticleController {
         return ResponseEntity.ok(null);
     }
 
-    @PostMapping("/community-article/{id}")
+    @PostMapping("/community-articles/{id}")
     @Operation(summary = "자유게시판 게시물 조회")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
@@ -57,7 +57,7 @@ public class CommunityArticleController {
     }
 
     @Login(Authority.NORMAL)
-    @PutMapping("/community-article/{id}")
+    @PutMapping("/community-articles/{id}")
     @Operation(summary = "자유게시판 게시물 수정")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
@@ -73,7 +73,7 @@ public class CommunityArticleController {
     }
 
     @Login(Authority.NORMAL)
-    @DeleteMapping("/community-article/{id}")
+    @DeleteMapping("/community-articles/{id}")
     @Operation(summary = "자유게시판 게시물 삭제")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
