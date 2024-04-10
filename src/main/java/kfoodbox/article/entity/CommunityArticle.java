@@ -1,10 +1,12 @@
 package kfoodbox.article.entity;
 
+import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Date;
 
-@Getter
+@Getter @Builder
 public class CommunityArticle {
     private Long id;
     private Long userId;
@@ -13,4 +15,19 @@ public class CommunityArticle {
     private Boolean isNotice;
     private Date createdAt;
     private Date updatedAt;
+
+    public static CommunityArticle from(CommunityArticleCreateRequest request) {
+        return CommunityArticle.builder()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .build();
+    }
+
+    public void changeUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public void changeToNonNotice() {
+        isNotice = false;
+    }
 }
