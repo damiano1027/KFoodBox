@@ -86,4 +86,26 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
             communityArticleRepository.deleteCommunityArticleImages(communityArticleId, new ArrayList<>(existingImageUrlSet));
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteCommunityArticle(Long communityArticleId) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleById(communityArticleId);
+        if (communityArticle == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+        if (!communityArticle.hasSameUserId(userId)) {
+            throw new NonCriticalException(ExceptionInformation.FORBIDDEN);
+        }
+
+        // community_article 테이블 레코드 삭제시 community_article_image 테이블에 있는 연관 레코드도 삭제됨
+        communityArticleRepository.deleteCommunityArticleById(communityArticleId);
+    }
 }
