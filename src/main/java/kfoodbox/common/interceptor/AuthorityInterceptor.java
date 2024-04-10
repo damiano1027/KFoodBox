@@ -29,6 +29,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
         Login login = handlerMethod.getMethod().getDeclaredAnnotation(Login.class);
         if (login == null) {
+            Optional<User> user = findUser(request);
+            user.ifPresent(value -> request.setAttribute("userId", value.getId()));
             return true;
         }
 
