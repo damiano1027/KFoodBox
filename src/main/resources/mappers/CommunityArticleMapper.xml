@@ -49,4 +49,10 @@
                 <foreach collection="urls" item="item" separator=",">#{item}</foreach>
             )
     </delete>
+
+    <delete id="deleteCommunityArticleById" parameterType="long">
+        DELETE
+        FROM `kfoodbox`.`community_article`
+        WHERE `id` = #{id}
+    </delete>
 </mapper>

@@ -13,4 +13,5 @@ public interface CommunityArticleRepository {
     List<CommunityArticleImage> findCommunityArticleImagesByCommunityArticleId(@Param("communityArticleId") Long communityArticleId);
     void updateCommunityArticle(@Param("communityArticle") CommunityArticle communityArticle);
     void deleteCommunityArticleImages(@Param("communityArticleId") Long communityArticleId, @Param("urls") List<String> urls);
+    void deleteCommunityArticleById(@Param("id") Long id);
 }
