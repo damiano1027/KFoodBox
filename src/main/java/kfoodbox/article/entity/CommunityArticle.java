@@ -1,6 +1,7 @@
 package kfoodbox.article.entity;
 
 import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
+import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,11 +24,24 @@ public class CommunityArticle {
                 .build();
     }
 
+    public boolean isUpdateRequired(CommunityArticleUpdateRequest request) {
+        return !title.equals(request.getTitle()) || !content.equals(request.getContent());
+    }
+
+    public void update(CommunityArticleUpdateRequest request) {
+        title = request.getTitle();
+        content = request.getContent();
+    }
+
     public void changeUserId(long userId) {
         this.userId = userId;
     }
 
     public void changeToNonNotice() {
         isNotice = false;
+    }
+
+    public boolean hasSameUserId(long userId) {
+        return this.userId.equals(userId);
     }
 }

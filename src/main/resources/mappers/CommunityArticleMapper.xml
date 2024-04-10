@@ -25,4 +25,28 @@
             )
         </foreach>
     </insert>
+
+    <select id="findCommunityArticleImagesByCommunityArticleId" parameterType="long" resultType="kfoodbox.article.entity.CommunityArticleImage">
+        SELECT *
+        FROM `kfoodbox`.`community_article_image`
+        WHERE `community_article_id` = #{communityArticleId}
+    </select>
+
+    <update id="updateCommunityArticle" parameterType="kfoodbox.article.entity.CommunityArticle">
+        UPDATE `kfoodbox`.`community_article`
+        SET
+            `title` = #{communityArticle.title},
+            `content` = #{communityArticle.content}
+        WHERE `id` = #{communityArticle.id}
+    </update>
+
+    <delete id="deleteCommunityArticleImages">
+        DELETE
+        FROM `kfoodbox`.`community_article_image`
+        WHERE
+            `community_article_id` = #{communityArticleId}
+            AND `url` IN (
+                <foreach collection="urls" item="item" separator=",">#{item}</foreach>
+            )
+    </delete>
 </mapper>
