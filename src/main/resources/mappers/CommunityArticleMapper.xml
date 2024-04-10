@@ -6,4 +6,23 @@
         FROM `kfoodbox`.`community_article`
         WHERE `id` = #{id}
     </select>
+
+    <insert id="saveCommunityArticle" parameterType="kfoodbox.article.entity.CommunityArticle" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `kfoodbox`.`community_article` (`user_id`, `title`, `content`, `is_notice`)
+        VALUES (#{communityArticle.userId}, #{communityArticle.title}, #{communityArticle.content}, #{communityArticle.isNotice})
+    </insert>
+
+    <insert id="saveCommunityArticleImages" parameterType="list">
+        INSERT INTO `kfoodbox`.`community_article_image` (
+            `community_article_id`,
+            `url`
+        )
+        VALUES
+        <foreach collection="communityArticleImages" item="item" separator=",">
+            (
+                #{item.communityArticleId},
+                #{item.url}
+            )
+        </foreach>
+    </insert>
 </mapper>
