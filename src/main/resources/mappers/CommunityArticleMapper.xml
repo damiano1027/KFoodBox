@@ -92,4 +92,16 @@
         INSERT INTO `kfoodbox`.`community_comment` (`community_article_id`, `user_id`, `content`)
         VALUES (#{communityComment.communityArticleId}, #{communityComment.userId}, #{communityComment.content});
     </insert>
+
+    <select id="findCommunityCommentEntityById" parameterType="long" resultType="kfoodbox.article.entity.CommunityComment">
+        SELECT *
+        FROM `kfoodbox`.`community_comment`
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="updateCommunityComment" parameterType="kfoodbox.article.entity.CommunityComment">
+        UPDATE `kfoodbox`.`community_comment`
+        SET `content` = #{communityComment.content}
+        WHERE `id` = #{communityComment.id}
+    </select>
 </mapper>

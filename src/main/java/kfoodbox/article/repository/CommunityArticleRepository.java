@@ -18,4 +18,6 @@ public interface CommunityArticleRepository {
     void deleteCommunityArticleImages(@Param("communityArticleId") Long communityArticleId, @Param("urls") List<String> urls);
     void deleteCommunityArticleById(@Param("id") Long id);
     void saveCommunityComment(@Param("communityComment") CommunityComment communityComment);
+    CommunityComment findCommunityCommentEntityById(@Param("id") Long id);
+    void updateCommunityComment(@Param("communityComment") CommunityComment communityComment);
 }
