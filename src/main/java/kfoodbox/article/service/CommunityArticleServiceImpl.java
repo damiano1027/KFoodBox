@@ -3,9 +3,11 @@ package kfoodbox.article.service;
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
 import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
+import kfoodbox.article.dto.request.CommunityCommentCreateRequest;
 import kfoodbox.article.dto.response.CommunityArticleResponse;
 import kfoodbox.article.entity.CommunityArticle;
 import kfoodbox.article.entity.CommunityArticleImage;
+import kfoodbox.article.entity.CommunityComment;
 import kfoodbox.article.repository.CommunityArticleRepository;
 import kfoodbox.bookmark.entity.CommunityArticleBookmark;
 import kfoodbox.bookmark.repository.BookmarkRepository;
@@ -141,5 +143,27 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
 
         // community_article 테이블 레코드 삭제시 community_article_image 테이블에 있는 연관 레코드도 삭제됨
         communityArticleRepository.deleteCommunityArticleById(communityArticleId);
+    }
+
+    @Override
+    @Transactional
+    public void createCommunityComment(Long communityArticleId, CommunityCommentCreateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(communityArticleId);
+        if (communityArticle == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        CommunityComment communityComment = CommunityComment.from(request);
+        communityComment.changeCommunityArticleId(communityArticleId);
+        communityComment.changeUserId(userId);
+
+        communityArticleRepository.saveCommunityComment(communityComment);
     }
 }
