@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
 import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
+import kfoodbox.article.dto.request.CommunityCommentCreateRequest;
 import kfoodbox.article.dto.response.CommunityArticleResponse;
 import kfoodbox.article.service.CommunityArticleService;
 import kfoodbox.common.authority.Authority;
@@ -84,6 +85,22 @@ public class CommunityArticleController {
     })
     public ResponseEntity<Void> deleteCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
         communityArticleService.deleteCommunityArticle(id);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @PostMapping("/community-articles/{id}/comment")
+    @Operation(summary = "자유게시판 특정 게시물 게시물에 댓글 생성")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<Void> createCommunityComment(@PathVariable("id") @Schema(description = "게시물 id") Long id, @RequestBody @Valid CommunityCommentCreateRequest request) {
+        communityArticleService.createCommunityComment(id, request);
         return ResponseEntity.ok(null);
     }
 }
