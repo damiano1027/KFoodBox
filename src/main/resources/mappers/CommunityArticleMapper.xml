@@ -87,4 +87,9 @@
         FROM `kfoodbox`.`community_article`
         WHERE `id` = #{id}
     </delete>
+
+    <insert id="saveCommunityComment" parameterType="kfoodbox.article.entity.CommunityComment">
+        INSERT INTO `kfoodbox`.`community_comment` (`community_article_id`, `user_id`, `content`)
+        VALUES (#{communityComment.communityArticleId}, #{communityComment.userId}, #{communityComment.content});
+    </insert>
 </mapper>
