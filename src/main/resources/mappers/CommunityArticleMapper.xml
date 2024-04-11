@@ -121,4 +121,10 @@
         LEFT JOIN `kfoodbox`.`user` `t2`
         ON `t1`.`user_id` = `t2`.`id`
     </select>
+
+    <delete id="deleteCommunityCommentById" parameterType="long">
+        DELETE
+        FROM `kfoodbox`.`community_comment`
+        WHERE `id` = #{id}
+    </delete>
 </mapper>

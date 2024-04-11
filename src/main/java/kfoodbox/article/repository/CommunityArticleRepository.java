@@ -22,4 +22,5 @@ public interface CommunityArticleRepository {
     CommunityComment findCommunityCommentEntityById(@Param("id") Long id);
     void updateCommunityComment(@Param("communityComment") CommunityComment communityComment);
     List<CommunityCommentsResponse.Comment> findCommunityCommentsByCommunityArticleId(@Param("communityArticleId") Long communityArticleId);
+    void deleteCommunityCommentById(@Param("id") Long id);
 }
