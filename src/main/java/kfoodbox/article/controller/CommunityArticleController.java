@@ -12,6 +12,7 @@ import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
 import kfoodbox.article.dto.request.CommunityCommentCreateRequest;
 import kfoodbox.article.dto.request.CommunityCommentUpdateRequest;
 import kfoodbox.article.dto.response.CommunityArticleResponse;
+import kfoodbox.article.dto.response.CommunityCommentsResponse;
 import kfoodbox.article.service.CommunityArticleService;
 import kfoodbox.common.authority.Authority;
 import kfoodbox.common.authority.Login;
@@ -106,9 +107,20 @@ public class CommunityArticleController {
         return ResponseEntity.ok(null);
     }
 
+    @GetMapping("/community-articles/{id}/comments")
+    @Operation(summary = "특정 자유게시판 게시물의 모든 댓글 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<CommunityCommentsResponse> getAllCommentsOfCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+        return ResponseEntity.ok(communityArticleService.getAllCommentsOfCommunityArticle(id));
+    }
+
     @Login(Authority.NORMAL)
-    @PutMapping("/community-comment/{id}")
-    @Operation(summary = "자유게시판 댓글 수정")
+    @PutMapping("/community-comments/{id}")
+    @Operation(summary = "자유게시판 게시물 댓글 수정")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
