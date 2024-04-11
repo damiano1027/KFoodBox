@@ -5,12 +5,6 @@ import kfoodbox.article.entity.CommunityArticle;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.repository.CommunityArticleRepository;
 import kfoodbox.article.repository.CustomRecipeArticleRepository;
-import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
-import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkDeleteRequest;
-import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
-import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkDeleteRequest;
-import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
-import kfoodbox.bookmark.dto.request.FoodBookmarkDeleteRequest;
 import kfoodbox.bookmark.dto.response.MyCommunityArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyCustomRecipeArticleBookmarksResponse;
 import kfoodbox.bookmark.dto.response.MyFoodBookmarksResponse;
@@ -38,7 +32,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public void createCommunityArticleBookmark(CommunityArticleBookmarkCreateRequest request) {
+    public void createCommunityArticleBookmark(Long communityArticleId) {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
         Long userId = (Long) servletRequest.getAttribute("userId");
 
@@ -46,24 +40,24 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(request.getCommunityArticleId());
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(communityArticleId);
         if (communityArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
 
-        CommunityArticleBookmark existingBookmark = bookmarkRepository.findCommunityArticleBookmarkByUserIdAndCommunityArticleId(userId, request.getCommunityArticleId());
+        CommunityArticleBookmark existingBookmark = bookmarkRepository.findCommunityArticleBookmarkByUserIdAndCommunityArticleId(userId, communityArticleId);
         if (existingBookmark != null) {
             throw new NonCriticalException(ExceptionInformation.BOOKMARK_DUPLICATES);
         }
 
-        CommunityArticleBookmark newBookmark = CommunityArticleBookmark.from(request);
+        CommunityArticleBookmark newBookmark = CommunityArticleBookmark.from(communityArticleId);
         newBookmark.changeUserId(userId);
         bookmarkRepository.saveCommunityArticleBookmark(newBookmark);
     }
 
     @Override
     @Transactional
-    public void createCustomRecipeArticleBookmark(CustomRecipeArticleBookmarkCreateRequest request) {
+    public void createCustomRecipeArticleBookmark(Long customRecipeArticleId) {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
         Long userId = (Long) servletRequest.getAttribute("userId");
 
@@ -71,24 +65,24 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleById(request.getCustomRecipeArticleId());
+        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleById(customRecipeArticleId);
         if (customRecipeArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
 
-        CustomRecipeArticleBookmark existingBookmark = bookmarkRepository.findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId(userId, request.getCustomRecipeArticleId());
+        CustomRecipeArticleBookmark existingBookmark = bookmarkRepository.findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId(userId, customRecipeArticleId);
         if (existingBookmark != null) {
             throw new NonCriticalException(ExceptionInformation.BOOKMARK_DUPLICATES);
         }
 
-        CustomRecipeArticleBookmark newBookmark = CustomRecipeArticleBookmark.from(request);
+        CustomRecipeArticleBookmark newBookmark = CustomRecipeArticleBookmark.from(customRecipeArticleId);
         newBookmark.changeUserId(userId);
         bookmarkRepository.saveCustomRecipeArticleBookmark(newBookmark);
     }
 
     @Override
     @Transactional
-    public void createFoodBookmark(FoodBookmarkCreateRequest request) {
+    public void createFoodBookmark(Long foodId) {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
         Long userId = (Long) servletRequest.getAttribute("userId");
 
@@ -96,17 +90,17 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        Food food = foodRepository.findFoodEntityById(request.getFoodId());
+        Food food = foodRepository.findFoodEntityById(foodId);
         if (food == null) {
             throw new NonCriticalException(ExceptionInformation.NO_FOOD);
         }
 
-        FoodBookmark existingBookmark = bookmarkRepository.findFoodBookmarkByUserIdAndFoodId(userId, request.getFoodId());
+        FoodBookmark existingBookmark = bookmarkRepository.findFoodBookmarkByUserIdAndFoodId(userId, foodId);
         if (existingBookmark != null) {
             throw new NonCriticalException(ExceptionInformation.BOOKMARK_DUPLICATES);
         }
 
-        FoodBookmark newBookmark = FoodBookmark.from(request);
+        FoodBookmark newBookmark = FoodBookmark.from(foodId);
         newBookmark.changeUserId(userId);
         bookmarkRepository.saveFoodBookmark(newBookmark);
     }
@@ -152,7 +146,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public void deleteCommunityArticleBookmark(CommunityArticleBookmarkDeleteRequest request) {
+    public void deleteCommunityArticleBookmark(Long communityArticleId) {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
         Long userId = (Long) servletRequest.getAttribute("userId");
 
@@ -160,12 +154,12 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(request.getCommunityArticleId());
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(communityArticleId);
         if (communityArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
 
-        CommunityArticleBookmark existingBookmark = bookmarkRepository.findCommunityArticleBookmarkByUserIdAndCommunityArticleId(userId, request.getCommunityArticleId());
+        CommunityArticleBookmark existingBookmark = bookmarkRepository.findCommunityArticleBookmarkByUserIdAndCommunityArticleId(userId, communityArticleId);
         if (existingBookmark == null) {
             throw new NonCriticalException(ExceptionInformation.NO_BOOKMARK);
         }
@@ -175,7 +169,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public void deleteCustomRecipeArticleBookmark(CustomRecipeArticleBookmarkDeleteRequest request) {
+    public void deleteCustomRecipeArticleBookmark(Long customRecipeArticleId) {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
         Long userId = (Long) servletRequest.getAttribute("userId");
 
@@ -183,12 +177,12 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleById(request.getCustomRecipeArticleId());
+        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleById(customRecipeArticleId);
         if (customRecipeArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
 
-        CustomRecipeArticleBookmark existingBookmark = bookmarkRepository.findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId(userId, request.getCustomRecipeArticleId());
+        CustomRecipeArticleBookmark existingBookmark = bookmarkRepository.findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId(userId, customRecipeArticleId);
         if (existingBookmark == null) {
             throw new NonCriticalException(ExceptionInformation.NO_BOOKMARK);
         }
@@ -198,7 +192,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public void deleteFoodBookmark(FoodBookmarkDeleteRequest request) {
+    public void deleteFoodBookmark(Long foodId) {
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
         Long userId = (Long) servletRequest.getAttribute("userId");
 
@@ -206,12 +200,12 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        Food food = foodRepository.findFoodEntityById(request.getFoodId());
+        Food food = foodRepository.findFoodEntityById(foodId);
         if (food == null) {
             throw new NonCriticalException(ExceptionInformation.NO_FOOD);
         }
 
-        FoodBookmark existingBookmark = bookmarkRepository.findFoodBookmarkByUserIdAndFoodId(userId, request.getFoodId());
+        FoodBookmark existingBookmark = bookmarkRepository.findFoodBookmarkByUserIdAndFoodId(userId, foodId);
         if (existingBookmark == null) {
             throw new NonCriticalException(ExceptionInformation.NO_BOOKMARK);
         }

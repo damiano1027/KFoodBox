@@ -1,6 +1,5 @@
 package kfoodbox.bookmark.entity;
 
-import kfoodbox.bookmark.dto.request.CommunityArticleBookmarkCreateRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,9 +9,9 @@ public class CommunityArticleBookmark {
     private Long userId;
     private Long communityArticleId;
 
-    public static CommunityArticleBookmark from(CommunityArticleBookmarkCreateRequest request) {
+    public static CommunityArticleBookmark from(Long communityArticleId) {
         return CommunityArticleBookmark.builder()
-                .communityArticleId(request.getCommunityArticleId())
+                .communityArticleId(communityArticleId)
                 .build();
     }
 

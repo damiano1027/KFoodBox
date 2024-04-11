@@ -1,6 +1,5 @@
 package kfoodbox.bookmark.entity;
 
-import kfoodbox.bookmark.dto.request.FoodBookmarkCreateRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,9 +9,9 @@ public class FoodBookmark {
     private Long userId;
     private Long foodId;
 
-    public static FoodBookmark from(FoodBookmarkCreateRequest request) {
+    public static FoodBookmark from(Long foodId) {
         return FoodBookmark.builder()
-                .foodId(request.getFoodId())
+                .foodId(foodId)
                 .build();
     }
 
