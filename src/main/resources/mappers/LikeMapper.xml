@@ -13,4 +13,12 @@
             `community_article_id` = #{communityArticleId}
             AND `user_id` = #{userId}
     </select>
+
+    <delete id="deleteCommunityArticleLike" parameterType="kfoodbox.like.entity.CommunityArticleLike">
+        DELETE
+        FROM `kfoodbox`.`community_article_like`
+        WHERE
+            `community_article_id` = #{communityArticleLike.communityArticleId}
+            AND `user_id` = #{communityArticleLike.userId}
+    </delete>
 </mapper>

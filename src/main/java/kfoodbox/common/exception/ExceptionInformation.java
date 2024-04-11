@@ -23,7 +23,8 @@ public enum ExceptionInformation {
     NO_COMMENT("댓글 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     NO_FOOD("음식 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     NO_FOOD_CATEGORY("음식 카테고리가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-    NO_BOOKMARK("북마크 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+    NO_BOOKMARK("북마크 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    NO_LIKE("좋아요 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
 
     private final String message;
     private final HttpStatus httpStatus;
