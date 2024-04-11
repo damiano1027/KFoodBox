@@ -6,6 +6,7 @@ import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
 import kfoodbox.article.dto.request.CommunityCommentCreateRequest;
 import kfoodbox.article.dto.request.CommunityCommentUpdateRequest;
 import kfoodbox.article.dto.response.CommunityArticleResponse;
+import kfoodbox.article.dto.response.CommunityCommentsResponse;
 import kfoodbox.article.entity.CommunityArticle;
 import kfoodbox.article.entity.CommunityArticleImage;
 import kfoodbox.article.entity.CommunityComment;
@@ -166,6 +167,25 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
         communityComment.changeUserId(userId);
 
         communityArticleRepository.saveCommunityComment(communityComment);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CommunityCommentsResponse getAllCommentsOfCommunityArticle(Long communityArticleId) {
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(communityArticleId);
+        if (communityArticle == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        List<CommunityCommentsResponse.Comment> comments = communityArticleRepository.findCommunityCommentsByCommunityArticleId(communityArticleId);
+        for (CommunityCommentsResponse.Comment comment : comments) {
+            comment.setIsMine(comment.getUserId().equals(userId));
+        }
+
+        return new CommunityCommentsResponse(comments);
     }
 
     @Override
