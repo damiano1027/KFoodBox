@@ -1,6 +1,7 @@
 package kfoodbox.article.repository;
 
 import kfoodbox.article.dto.response.CommunityArticleResponse;
+import kfoodbox.article.dto.response.CommunityCommentsResponse;
 import kfoodbox.article.entity.CommunityArticle;
 import kfoodbox.article.entity.CommunityArticleImage;
 import kfoodbox.article.entity.CommunityComment;
@@ -20,4 +21,5 @@ public interface CommunityArticleRepository {
     void saveCommunityComment(@Param("communityComment") CommunityComment communityComment);
     CommunityComment findCommunityCommentEntityById(@Param("id") Long id);
     void updateCommunityComment(@Param("communityComment") CommunityComment communityComment);
+    List<CommunityCommentsResponse.Comment> findCommunityCommentsByCommunityArticleId(@Param("communityArticleId") Long communityArticleId);
 }
