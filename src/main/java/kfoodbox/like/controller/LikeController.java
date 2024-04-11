@@ -34,7 +34,7 @@ public class LikeController {
             @ApiResponse(responseCode = "409", description = "이미 좋아요가 되어있음 (LIKE_DUPLICATES)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> createCommunityArticleLike(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
+    public ResponseEntity<Void> createCommunityArticleLike(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
         likeService.createCommunityArticleLike(id);
         return ResponseEntity.ok(null);
     }
@@ -49,7 +49,7 @@ public class LikeController {
             @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE) | 좋아요 정보가 없음 (NO_LIKE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> deleteCommunityArticleLike(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
+    public ResponseEntity<Void> deleteCommunityArticleLike(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
         likeService.deleteCommunityArticleLike(id);
         return ResponseEntity.ok(null);
     }
