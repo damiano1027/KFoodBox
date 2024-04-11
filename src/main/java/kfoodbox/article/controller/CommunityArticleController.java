@@ -133,4 +133,19 @@ public class CommunityArticleController {
         communityArticleService.updateCommunityComment(id, request);
         return ResponseEntity.ok(null);
     }
+
+    @Login(Authority.NORMAL)
+    @DeleteMapping("/community-comments/{id}")
+    @Operation(summary = "자유게시판 게시물 댓글 삭제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "404", description = "댓글이 존재하지 않음 (NO_COMMENT)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<Void> deleteCommunityComment(@PathVariable("id") @Schema(description = "댓글 id") Long id) {
+        communityArticleService.deleteCommunityComment(id);
+        return ResponseEntity.ok(null);
+    }
 }
