@@ -1,8 +1,9 @@
 package kfoodbox.like.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 
-@Getter
+@Getter @Builder
 public class CommunityArticleLike {
     private Long id;
     private Long communityArticleId;

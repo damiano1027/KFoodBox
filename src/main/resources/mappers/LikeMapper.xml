@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kfoodbox.like.repository.LikeRepository">
+    <insert id="saveCommunityArticleLike" parameterType="kfoodbox.like.entity.CommunityArticleLike">
+        INSERT INTO `kfoodbox`.`community_article_like` (`community_article_id`, `user_id`)
+        VALUES (#{communityArticleLike.communityArticleId}, #{communityArticleLike.userId})
+    </insert>
+
     <select id="findCommunityArticleLikeByCommunityArticleIdAndUserId" resultType="kfoodbox.like.entity.CommunityArticleLike">
         SELECT *
         FROM `kfoodbox`.`community_article_like`
