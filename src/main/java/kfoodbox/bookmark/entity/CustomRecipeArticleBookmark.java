@@ -1,6 +1,5 @@
 package kfoodbox.bookmark.entity;
 
-import kfoodbox.bookmark.dto.request.CustomRecipeArticleBookmarkCreateRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,9 +9,9 @@ public class CustomRecipeArticleBookmark {
     private Long userId;
     private Long customRecipeArticleId;
 
-    public static CustomRecipeArticleBookmark from(CustomRecipeArticleBookmarkCreateRequest request) {
+    public static CustomRecipeArticleBookmark from(Long customRecipeArticleId) {
         return CustomRecipeArticleBookmark.builder()
-                .customRecipeArticleId(request.getCustomRecipeArticleId())
+                .customRecipeArticleId(customRecipeArticleId)
                 .build();
     }
 
