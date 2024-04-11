@@ -12,7 +12,6 @@ import kfoodbox.food.dto.response.FoodCategoryResponse;
 import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.service.FoodService;
-import kfoodbox.user.dto.response.EmailExistenceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +31,7 @@ public class FoodController {
             @ApiResponse(responseCode = "404", description = "음식 정보 없음 (NO_FOOD)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<FoodResponse> findFood(@PathVariable("id") @Schema(description = "음식 id") Long id) {
+    public ResponseEntity<FoodResponse> findFood(@PathVariable("id") @Schema(description = "음식 id", type = "long") Long id) {
         return ResponseEntity.ok(foodService.findFood(id));
     }
 
@@ -43,7 +42,7 @@ public class FoodController {
             @ApiResponse(responseCode = "404", description = "음식 카테고리 없음 (NO_FOOD_CATEGORY)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<FoodsResponse> findFoodsInCategory(@PathVariable("id") @Schema(description = "음식 카테고리 id") Long id) {
+    public ResponseEntity<FoodsResponse> findFoodsInCategory(@PathVariable("id") @Schema(description = "음식 카테고리 id", type = "long") Long id) {
         return ResponseEntity.ok(foodService.findFoodsInCategory(id));
     }
 
@@ -54,7 +53,7 @@ public class FoodController {
             @ApiResponse(responseCode = "404", description = "음식 카테고리 없음 (NO_FOOD_CATEGORY)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<FoodCategoryResponse> findFoodCategory(@PathVariable("id") @Schema(description = "음식 카테고리 id") Long id) {
+    public ResponseEntity<FoodCategoryResponse> findFoodCategory(@PathVariable("id") @Schema(description = "음식 카테고리 id", type = "long") Long id) {
         return ResponseEntity.ok(foodService.findFoodCategory(id));
     }
 

@@ -38,7 +38,7 @@ public class BookmarkController {
             @ApiResponse(responseCode = "409", description = "이미 북마크가 되어있음 (BOOKMARK_DUPLICATES)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> createCommunityArticleBookmark(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+    public ResponseEntity<Void> createCommunityArticleBookmark(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
         bookmarkService.createCommunityArticleBookmark(id);
         return ResponseEntity.ok(null);
     }
@@ -54,7 +54,7 @@ public class BookmarkController {
             @ApiResponse(responseCode = "409", description = "이미 북마크가 되어있음 (BOOKMARK_DUPLICATES)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> createCustomRecipeArticleBookmark(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+    public ResponseEntity<Void> createCustomRecipeArticleBookmark(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
         bookmarkService.createCustomRecipeArticleBookmark(id);
         return ResponseEntity.ok(null);
     }
@@ -70,7 +70,7 @@ public class BookmarkController {
             @ApiResponse(responseCode = "409", description = "이미 북마크가 되어있음 (BOOKMARK_DUPLICATES)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> createFoodBookmark(@PathVariable("id") @Schema(description = "음식 id") Long id) {
+    public ResponseEntity<Void> createFoodBookmark(@PathVariable("id") @Schema(description = "음식 id", type = "long") Long id) {
         bookmarkService.createFoodBookmark(id);
         return ResponseEntity.ok(null);
     }
@@ -124,7 +124,7 @@ public class BookmarkController {
             @ApiResponse(responseCode = "404", description = "게시물이 없음 (NO_ARTICLE) | 북마크가 없음 (NO_BOOKMARK)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> deleteCommunityArticleBookmark(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+    public ResponseEntity<Void> deleteCommunityArticleBookmark(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
         bookmarkService.deleteCommunityArticleBookmark(id);
         return ResponseEntity.ok(null);
     }
@@ -139,7 +139,7 @@ public class BookmarkController {
             @ApiResponse(responseCode = "404", description = "게시물이 없음 (NO_ARTICLE) | 북마크가 없음 (NO_BOOKMARK)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> deleteCustomRecipeArticleBookmark(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+    public ResponseEntity<Void> deleteCustomRecipeArticleBookmark(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
         bookmarkService.deleteCustomRecipeArticleBookmark(id);
         return ResponseEntity.ok(null);
     }
@@ -154,7 +154,7 @@ public class BookmarkController {
             @ApiResponse(responseCode = "404", description = "음식 정보가 없음 (NO_FOOD) | 북마크가 없음 (NO_BOOKMARK)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> deleteFoodBookmark(@PathVariable("id") @Schema(description = "음식 id") Long id) {
+    public ResponseEntity<Void> deleteFoodBookmark(@PathVariable("id") @Schema(description = "음식 id", type = "long") Long id) {
         bookmarkService.deleteFoodBookmark(id);
         return ResponseEntity.ok(null);
     }
