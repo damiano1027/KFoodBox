@@ -46,7 +46,7 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleById(request.getCommunityArticleId());
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(request.getCommunityArticleId());
         if (communityArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
@@ -160,7 +160,7 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleById(request.getCommunityArticleId());
+        CommunityArticle communityArticle = communityArticleRepository.findCommunityArticleEntityById(request.getCommunityArticleId());
         if (communityArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
