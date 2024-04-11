@@ -15,4 +15,5 @@ public interface CommunityArticleService {
     void createCommunityComment(Long communityArticleId, CommunityCommentCreateRequest request);
     CommunityCommentsResponse getAllCommentsOfCommunityArticle(Long communityArticleId);
     void updateCommunityComment(Long communityCommentId, CommunityCommentUpdateRequest request);
+    void deleteCommunityComment(Long communityCommentId);
 }

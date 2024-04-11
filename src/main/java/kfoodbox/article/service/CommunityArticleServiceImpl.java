@@ -211,4 +211,25 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
             communityArticleRepository.updateCommunityComment(communityComment);
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteCommunityComment(Long communityCommentId) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CommunityComment communityComment = communityArticleRepository.findCommunityCommentEntityById(communityCommentId);
+        if (communityComment == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_COMMENT);
+        }
+        if (!communityComment.hasSameUserId(userId)) {
+            throw new NonCriticalException(ExceptionInformation.FORBIDDEN);
+        }
+
+        communityArticleRepository.deleteCommunityCommentById(communityCommentId);
+    }
 }
