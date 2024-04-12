@@ -25,4 +25,5 @@ public interface UserService {
     MyNicknameResponse getMyNickname();
     MyLanguageResponse getMyLanguage();
     void updateUser(UserUpdateRequest request);
+    void deleteUser();
 }

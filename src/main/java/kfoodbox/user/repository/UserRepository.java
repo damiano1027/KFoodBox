@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserRepository {
     void saveUser(@Param("user") User user);
     void updateUser(@Param("user") User user);
+    void deleteUserById(@Param("id") Long id);
     User findUserById(@Param("id") Long id);
     User findUserByEmail(@Param("email") String email);
     User findUserByNickname(@Param("nickname") String nickname);
