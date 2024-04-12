@@ -70,7 +70,7 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
 
         HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
         Long userId = (Long) servletRequest.getAttribute("userId");
-        response.setIsMine(response.getUserId().equals(userId));
+        response.setIsMine(response.getUserId() != null && response.getUserId().equals(userId));
 
         if (userId == null) {
             response.setIsBookmarked(false);
@@ -182,7 +182,7 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
 
         List<CommunityCommentsResponse.Comment> comments = communityArticleRepository.findCommunityCommentsByCommunityArticleId(communityArticleId);
         for (CommunityCommentsResponse.Comment comment : comments) {
-            comment.setIsMine(comment.getUserId().equals(userId));
+            comment.setIsMine(comment.getUserId() != null && comment.getUserId().equals(userId));
         }
 
         return new CommunityCommentsResponse(comments);

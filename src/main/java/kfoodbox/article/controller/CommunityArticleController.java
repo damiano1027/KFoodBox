@@ -50,7 +50,7 @@ public class CommunityArticleController {
     }
 
     @GetMapping("/community-articles/{id}")
-    @Operation(summary = "자유게시판 게시물 조회")
+    @Operation(summary = "자유게시판 게시물 조회", description = "nickname이 null이라면 해당 회원이 탈퇴한 경우임")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
@@ -108,7 +108,7 @@ public class CommunityArticleController {
     }
 
     @GetMapping("/community-articles/{id}/comments")
-    @Operation(summary = "특정 자유게시판 게시물의 모든 댓글 조회")
+    @Operation(summary = "특정 자유게시판 게시물의 모든 댓글 조회", description = "nickname이 null이라면 해당 회원이 탈퇴한 경우임")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
