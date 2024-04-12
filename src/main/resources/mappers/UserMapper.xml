@@ -16,6 +16,12 @@
             `id` = #{user.id}
     </update>
 
+    <delete id="deleteUserById" parameterType="long">
+        DELETE
+        FROM `kfoodbox`.`user`
+        WHERE `id` = #{id}
+    </delete>
+
     <select id="findUserById" parameterType="long" resultType="kfoodbox.user.entity.User">
         SELECT *
         FROM `kfoodbox`.`user`
