@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter @Setter
 public class CommunityArticleResponse {
@@ -29,6 +30,9 @@ public class CommunityArticleResponse {
 
     @Schema(description = "내용")
     private String content;
+
+    @Schema(description = "이미지 URL 리스트")
+    private List<String> imageUrls;
 
     @Schema(description = "작성 날짜 및 시간 (UTC±00:00)")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
