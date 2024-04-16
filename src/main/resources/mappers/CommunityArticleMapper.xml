@@ -7,7 +7,7 @@
         WHERE `id` = #{id}
     </select>
 
-    <select id="findCommunityArticleById" parameterType="long" resultType="kfoodbox.article.dto.response.CommunityArticleResponse">
+    <select id="findCommunityArticleById" parameterType="long" resultMap="CommunityArticle">
         SELECT
             `t1`.`id`,
             `t1`.`title`,
@@ -17,7 +17,8 @@
             `t1`.`updated_at`,
             `t2`.`nickname`,
             `t3`.`count` `like_count`,
-            `t4`.`count` `comment_count`
+            `t4`.`count` `comment_count`,
+            `t5`.`url` `image_url`
         FROM (
             SELECT *
             FROM `kfoodbox`.`community_article`
@@ -37,6 +38,8 @@
                 GROUP BY `community_article_id`
             ) `t4`
             ON `t1`.`id` = `t4`.`community_article_id`
+            LEFT JOIN `kfoodbox`.`community_article_image` `t5`
+            ON `t1`.`id` = `t5`.`community_article_id`
     </select>
 
     <insert id="saveCommunityArticle" parameterType="kfoodbox.article.entity.CommunityArticle" useGeneratedKeys="true" keyProperty="id">
@@ -127,4 +130,19 @@
         FROM `kfoodbox`.`community_comment`
         WHERE `id` = #{id}
     </delete>
+
+    <resultMap id="CommunityArticle" type="kfoodbox.article.dto.response.CommunityArticleResponse">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="userId" column="user_id"/>
+        <result property="content" column="content"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="nickname" column="nickname"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <collection property="imageUrls" javaType="list" ofType="string">
+            <result property="imageUrl" column="image_url"/>
+        </collection>
+    </resultMap>
 </mapper>
