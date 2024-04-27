@@ -50,13 +50,13 @@ public class CommunityArticleController {
     }
 
     @GetMapping("/community-articles/{id}")
-    @Operation(summary = "자유게시판 게시물 조회")
+    @Operation(summary = "자유게시판 게시물 조회", description = "nickname이 null이라면 해당 회원이 탈퇴한 경우임")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<CommunityArticleResponse> getCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
+    public ResponseEntity<CommunityArticleResponse> getCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
         return ResponseEntity.ok(communityArticleService.getCommunityArticle(id));
     }
 
@@ -71,7 +71,7 @@ public class CommunityArticleController {
             @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> updateCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long communityArticleId, @RequestBody @Valid CommunityArticleUpdateRequest request) {
+    public ResponseEntity<Void> updateCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long communityArticleId, @RequestBody @Valid CommunityArticleUpdateRequest request) {
         communityArticleService.updateCommunityArticle(communityArticleId, request);
         return ResponseEntity.ok(null);
     }
@@ -86,7 +86,7 @@ public class CommunityArticleController {
             @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> deleteCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
+    public ResponseEntity<Void> deleteCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
         communityArticleService.deleteCommunityArticle(id);
         return ResponseEntity.ok(null);
     }
@@ -102,19 +102,19 @@ public class CommunityArticleController {
             @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> createCommunityComment(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id, @RequestBody @Valid CommunityCommentCreateRequest request) {
+    public ResponseEntity<Void> createCommunityComment(@PathVariable("id") @Schema(description = "게시물 id") Long id, @RequestBody @Valid CommunityCommentCreateRequest request) {
         communityArticleService.createCommunityComment(id, request);
         return ResponseEntity.ok(null);
     }
 
     @GetMapping("/community-articles/{id}/comments")
-    @Operation(summary = "특정 자유게시판 게시물의 모든 댓글 조회")
+    @Operation(summary = "특정 자유게시판 게시물의 모든 댓글 조회", description = "nickname이 null이라면 해당 회원이 탈퇴한 경우임")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<CommunityCommentsResponse> getAllCommentsOfCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id", type = "long") Long id) {
+    public ResponseEntity<CommunityCommentsResponse> getAllCommentsOfCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
         return ResponseEntity.ok(communityArticleService.getAllCommentsOfCommunityArticle(id));
     }
 
@@ -129,7 +129,7 @@ public class CommunityArticleController {
             @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> updateCommunityComment(@PathVariable("id") @Schema(description = "댓글 id", type = "long") Long id, @RequestBody @Valid CommunityCommentUpdateRequest request) {
+    public ResponseEntity<Void> updateCommunityComment(@PathVariable("id") @Schema(description = "댓글 id") Long id, @RequestBody @Valid CommunityCommentUpdateRequest request) {
         communityArticleService.updateCommunityComment(id, request);
         return ResponseEntity.ok(null);
     }
@@ -144,7 +144,7 @@ public class CommunityArticleController {
             @ApiResponse(responseCode = "404", description = "댓글이 존재하지 않음 (NO_COMMENT)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> deleteCommunityComment(@PathVariable("id") @Schema(description = "댓글 id", type = "long") Long id) {
+    public ResponseEntity<Void> deleteCommunityComment(@PathVariable("id") @Schema(description = "댓글 id") Long id) {
         communityArticleService.deleteCommunityComment(id);
         return ResponseEntity.ok(null);
     }

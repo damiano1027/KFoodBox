@@ -24,10 +24,10 @@ public class SignupRequest {
                           "- 공백문자만 있으면 안됨")
     private String password;
 
-    @NotBlank @Size(min = 1, max = 8)
+    @NotBlank @Size(min = 1, max = 16)
     @Schema(description = "닉네임\n" +
                           "- Not null\n" +
-                          "- 길이가 1 이상 8 이하\n" +
+                          "- 길이가 1 이상 16 이하\n" +
                           "- 공백문자만 있으면 안됨")
     private String nickname;
 

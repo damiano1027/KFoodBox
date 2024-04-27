@@ -25,6 +25,7 @@ import kfoodbox.user.dto.response.NicknameExistenceResponse;
 import kfoodbox.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -190,6 +191,20 @@ public class UserController {
     })
     public ResponseEntity<Void> updateUser(@RequestBody @Valid UserUpdateRequest request) {
         userService.updateUser(request);
+        return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @DeleteMapping("/user")
+    @Operation(summary = "회원 정보 삭제 (탈퇴)", description = "현재 로그인된 회원 정보가 삭제된다. 단, 회원이 작성했던 게시물과 댓글은 삭제되지 않는다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<Void> deleteUser() {
+        userService.deleteUser();
         return ResponseEntity.ok(null);
     }
 }

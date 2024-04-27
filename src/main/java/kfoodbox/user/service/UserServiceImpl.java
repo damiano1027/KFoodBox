@@ -214,4 +214,22 @@ public class UserServiceImpl implements UserService {
         user.update(request);
         userRepository.updateUser(user);
     }
+
+    @Override
+    @Transactional
+    public void deleteUser() {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        HttpSession session = servletRequest.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        userRepository.deleteUserById(userId);
+    }
 }

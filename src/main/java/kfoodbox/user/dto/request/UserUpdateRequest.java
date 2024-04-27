@@ -7,10 +7,10 @@ import lombok.Getter;
 
 @Getter
 public class UserUpdateRequest {
-    @NotBlank @Size(min = 1, max = 8)
+    @NotBlank @Size(min = 1, max = 16)
     @Schema(description = "이메일\n" +
                           "- Not null\n" +
-                          "- 길이가 1 이상\n" +
+                          "- 길이가 1 이상 16 이하\n" +
                           "- 공백문자만 있으면 안됨\n" +
                           "- 이메일 형식이어야 함")
     private String nickname;
