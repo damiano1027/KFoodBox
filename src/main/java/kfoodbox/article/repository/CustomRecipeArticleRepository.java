@@ -1,5 +1,6 @@
 package kfoodbox.article.repository;
 
+import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
 import kfoodbox.article.entity.CustomRecipeIngredient;
@@ -13,5 +14,6 @@ public interface CustomRecipeArticleRepository {
     void saveCustomRecipeSequences(@Param("customRecipeSequences") List<CustomRecipeSequence> customRecipeSequences);
     void saveCustomRecipeIngredients(@Param("customRecipeIngredients") List<CustomRecipeIngredient> customRecipeIngredients);
     void saveCustomRecipeArticleImages(@Param("customRecipeArticleImages") List<CustomRecipeArticleImage> customRecipeArticleImages);
-    CustomRecipeArticle findCustomRecipeArticleById(@Param("id") Long id);
+    CustomRecipeArticle findCustomRecipeArticleEntityById(@Param("id") Long id);
+    CustomRecipeArticleResponse findCustomRecipeArticleById(@Param("id") Long id);
 }

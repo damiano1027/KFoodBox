@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kfoodbox.article.dto.request.CustomRecipeArticleCreateRequest;
+import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
 import kfoodbox.article.service.CustomRecipeArticleService;
 import kfoodbox.common.authority.Authority;
 import kfoodbox.common.authority.Login;
@@ -18,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashSet;
 import java.util.Set;
 
-@Tag(name = "나만의 레시피 게시판", description = "나만의 레시피 게시판 API")
+@Tag(name = "레시피 게시판", description = "레시피 게시판 API")
 @RestController
 @RequiredArgsConstructor
 public class CustomRecipeArticleController {
@@ -33,7 +36,7 @@ public class CustomRecipeArticleController {
 
     @Login(Authority.NORMAL)
     @PostMapping("/custom-recipe-article")
-    @Operation(summary = "나만의 레시피 게시판 게시물 생성")
+    @Operation(summary = "레시피 게시판 게시물 생성")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
@@ -55,5 +58,16 @@ public class CustomRecipeArticleController {
 
         customRecipeArticleService.createCustomRecipeArticle(request);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/custom-recipe-articles/{id}")
+    @Operation(summary = "레시피 게시판 게시물 조회", description = "nickname이 null이라면 해당 회원이 탈퇴한 경우임")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<CustomRecipeArticleResponse> getCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+        return ResponseEntity.ok(customRecipeArticleService.getCustomRecipeArticle(id));
     }
 }

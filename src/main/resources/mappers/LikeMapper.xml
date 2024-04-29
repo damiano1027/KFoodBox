@@ -14,6 +14,14 @@
             AND `user_id` = #{userId}
     </select>
 
+    <select id="findCustomRecipeArticleLikeByCustomRecipeArticleIdAndUserId" resultType="kfoodbox.like.entity.CustomRecipeArticleLike">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_article_like`
+        WHERE
+            `custom_recipe_article_id` = #{customRecipeArticleId}
+            AND `user_id` = #{userId}
+    </select>
+
     <delete id="deleteCommunityArticleLike" parameterType="kfoodbox.like.entity.CommunityArticleLike">
         DELETE
         FROM `kfoodbox`.`community_article_like`

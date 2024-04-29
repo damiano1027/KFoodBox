@@ -65,7 +65,7 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleById(customRecipeArticleId);
+        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleEntityById(customRecipeArticleId);
         if (customRecipeArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }
@@ -177,7 +177,7 @@ public class BookmarkServiceImpl implements BookmarkService {
             throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
         }
 
-        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleById(customRecipeArticleId);
+        CustomRecipeArticle customRecipeArticle = customRecipeArticleRepository.findCustomRecipeArticleEntityById(customRecipeArticleId);
         if (customRecipeArticle == null) {
             throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
         }

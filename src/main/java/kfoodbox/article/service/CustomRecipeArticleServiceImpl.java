@@ -2,17 +2,23 @@ package kfoodbox.article.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CustomRecipeArticleCreateRequest;
+import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
 import kfoodbox.article.entity.CustomRecipeIngredient;
 import kfoodbox.article.entity.CustomRecipeSequence;
 import kfoodbox.article.repository.CustomRecipeArticleRepository;
+import kfoodbox.bookmark.entity.CustomRecipeArticleBookmark;
+import kfoodbox.bookmark.repository.BookmarkRepository;
 import kfoodbox.common.exception.CriticalException;
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
 import kfoodbox.food.entity.Food;
 import kfoodbox.food.repository.FoodRepository;
+import kfoodbox.like.entity.CommunityArticleLike;
+import kfoodbox.like.entity.CustomRecipeArticleLike;
+import kfoodbox.like.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +31,8 @@ import java.util.Objects;
 public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleService {
     private final CustomRecipeArticleRepository customRecipeArticleRepository;
     private final FoodRepository foodRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     @Transactional
@@ -55,5 +63,30 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
 
         List<CustomRecipeArticleImage> images = CustomRecipeArticleImage.from(article.getId(), request);
         customRecipeArticleRepository.saveCustomRecipeArticleImages(images);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomRecipeArticleResponse getCustomRecipeArticle(Long customRecipeArticleId) {
+        CustomRecipeArticleResponse response = customRecipeArticleRepository.findCustomRecipeArticleById(customRecipeArticleId);
+        if (Objects.isNull(response)) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+        response.setIsMine(response.getUserId() != null && response.getUserId().equals(userId));
+
+        if (Objects.isNull(userId)) {
+            response.setIsBookmarked(false);
+            response.setLike(false);
+        } else {
+            CustomRecipeArticleBookmark bookmark = bookmarkRepository.findCustomRecipeArticleBookmarkByUserIdAndCustomRecipeArticleId(userId, customRecipeArticleId);
+            response.setIsBookmarked(!Objects.isNull(bookmark));
+            CustomRecipeArticleLike like = likeRepository.findCustomRecipeArticleLikeByCustomRecipeArticleIdAndUserId(customRecipeArticleId, userId);
+            response.setLike(!Objects.isNull(like));
+        }
+
+        return response;
     }
 }
