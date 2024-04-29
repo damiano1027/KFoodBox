@@ -6,6 +6,11 @@
         VALUES (#{communityArticleLike.communityArticleId}, #{communityArticleLike.userId})
     </insert>
 
+    <insert id="saveCustomRecipeArticleLike" parameterType="kfoodbox.like.entity.CustomRecipeArticleLike">
+        INSERT INTO `kfoodbox`.`custom_recipe_article_like` (`custom_recipe_article_id`, `user_id`)
+        VALUES (#{customRecipeArticleLike.customRecipeArticleId}, #{customRecipeArticleLike.userId})
+    </insert>
+
     <select id="findCommunityArticleLikeByCommunityArticleIdAndUserId" resultType="kfoodbox.like.entity.CommunityArticleLike">
         SELECT *
         FROM `kfoodbox`.`community_article_like`
