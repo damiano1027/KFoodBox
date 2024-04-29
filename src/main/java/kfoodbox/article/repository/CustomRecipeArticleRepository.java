@@ -16,4 +16,5 @@ public interface CustomRecipeArticleRepository {
     void saveCustomRecipeArticleImages(@Param("customRecipeArticleImages") List<CustomRecipeArticleImage> customRecipeArticleImages);
     CustomRecipeArticle findCustomRecipeArticleEntityById(@Param("id") Long id);
     CustomRecipeArticleResponse findCustomRecipeArticleById(@Param("id") Long id);
+    void deleteCustomRecipeArticleById(@Param("id") Long id);
 }

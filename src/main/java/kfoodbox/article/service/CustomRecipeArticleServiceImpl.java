@@ -16,7 +16,6 @@ import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
 import kfoodbox.food.entity.Food;
 import kfoodbox.food.repository.FoodRepository;
-import kfoodbox.like.entity.CommunityArticleLike;
 import kfoodbox.like.entity.CustomRecipeArticleLike;
 import kfoodbox.like.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
@@ -88,5 +87,27 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
         }
 
         return response;
+    }
+
+    @Override
+    @Transactional
+    public void deleteCustomRecipeArticle(Long customRecipeArticleId) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CustomRecipeArticle article = customRecipeArticleRepository.findCustomRecipeArticleEntityById(customRecipeArticleId);
+        if (Objects.isNull(article)) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+        if (!article.hasSameUserId(userId)) {
+            throw new NonCriticalException(ExceptionInformation.FORBIDDEN);
+        }
+
+        // custom_recipe_article 테이블 레코드 삭제시 연관 테이블들도 삭제됨
+        customRecipeArticleRepository.deleteCustomRecipeArticleById(customRecipeArticleId);
     }
 }

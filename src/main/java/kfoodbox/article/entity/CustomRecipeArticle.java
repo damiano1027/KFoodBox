@@ -27,4 +27,8 @@ public class CustomRecipeArticle {
     public void changeUserId(long userId) {
         this.userId = userId;
     }
+
+    public boolean hasSameUserId(long userId) {
+        return this.userId.equals(userId);
+    }
 }

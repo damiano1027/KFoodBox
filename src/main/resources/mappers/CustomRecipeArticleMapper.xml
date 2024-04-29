@@ -104,6 +104,12 @@
         ON `t1`.`id` = `t7`.`custom_recipe_article_id`
     </select>
 
+    <delete id="deleteCustomRecipeArticleById" parameterType="long">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_article`
+        WHERE `id` = #{id}
+    </delete>
+
     <resultMap id="CustomRecipeArticle" type="kfoodbox.article.dto.response.CustomRecipeArticleResponse">
         <id property="id" column="custom_recipe_article.id"/>
         <result property="title" column="custom_recipe_article.title"/>
