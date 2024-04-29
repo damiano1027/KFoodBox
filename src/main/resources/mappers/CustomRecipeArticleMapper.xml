@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kfoodbox.article.repository.CustomRecipeArticleRepository">
+    <insert id="saveCustomRecipeArticle" parameterType="kfoodbox.article.entity.CustomRecipeArticle" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `kfoodbox`.`custom_recipe_article` (`food_id`, `user_id`, `title`, `content`)
+        VALUES (#{customRecipeArticle.foodId}, #{customRecipeArticle.userId}, #{customRecipeArticle.title}, #{customRecipeArticle.content})
+    </insert>
+
+    <insert id="saveCustomRecipeSequences" parameterType="list">
+        INSERT INTO `kfoodbox`.`custom_recipe_sequence` (
+            `custom_recipe_article_id`,
+            `sequence_number`,
+            `content`,
+            `image_url`
+        )
+        VALUES
+        <foreach collection="customRecipeSequences" item="item" separator=",">
+            (
+                #{item.customRecipeArticleId},
+                #{item.sequenceNumber},
+                #{item.content},
+                #{item.imageUrl}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveCustomRecipeIngredients" parameterType="list">
+        INSERT INTO `kfoodbox`.`custom_recipe_ingredient` (
+            `custom_recipe_article_id`,
+            `name`,
+            `quantity`
+        )
+        VALUES
+        <foreach collection="customRecipeIngredients" item="item" separator=",">
+            (
+                #{item.customRecipeArticleId},
+                #{item.name},
+                #{item.quantity}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveCustomRecipeArticleImages" parameterType="list">
+        INSERT INTO `kfoodbox`.`custom_recipe_article_image` (
+            `custom_recipe_article_id`,
+            `url`
+        )
+        VALUES
+        <foreach collection="customRecipeArticleImages" item="item" separator=",">
+            (
+                #{item.customRecipeArticleId},
+                #{item.url}
+            )
+        </foreach>
+    </insert>
+
     <select id="findCustomRecipeArticleById" parameterType="long" resultType="kfoodbox.article.entity.CustomRecipeArticle">
         SELECT *
         FROM `kfoodbox`.`custom_recipe_article`
