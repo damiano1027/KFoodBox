@@ -10,4 +10,5 @@ public interface LikeRepository {
     CommunityArticleLike findCommunityArticleLikeByCommunityArticleIdAndUserId(@Param("communityArticleId") Long communityArticleId, @Param("userId") Long userId);
     CustomRecipeArticleLike findCustomRecipeArticleLikeByCustomRecipeArticleIdAndUserId(@Param("customRecipeArticleId") Long customRecipeArticleId, @Param("userId") Long userId);
     void deleteCommunityArticleLike(@Param("communityArticleLike") CommunityArticleLike communityArticleLike);
+    void deleteCustomRecipeArticleLike(@Param("customRecipeArticleLike") CustomRecipeArticleLike customRecipeArticleLike);
 }

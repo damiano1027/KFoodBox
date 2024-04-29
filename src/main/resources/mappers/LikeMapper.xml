@@ -34,4 +34,12 @@
             `community_article_id` = #{communityArticleLike.communityArticleId}
             AND `user_id` = #{communityArticleLike.userId}
     </delete>
+
+    <delete id="deleteCustomRecipeArticleLike" parameterType="kfoodbox.like.entity.CustomRecipeArticleLike">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_article_like`
+        WHERE
+            `custom_recipe_article_id` = #{customRecipeArticleLike.customRecipeArticleId}
+            AND `user_id` = #{customRecipeArticleLike.userId}
+    </delete>
 </mapper>

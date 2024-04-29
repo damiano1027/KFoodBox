@@ -103,4 +103,27 @@ public class LikeServiceImpl implements LikeService {
 
         likeRepository.saveCustomRecipeArticleLike(newLike);
     }
+
+    @Override
+    @Transactional
+    public void deleteCustomRecipeArticleLike(Long customRecipeArticleId) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CustomRecipeArticle article = customRecipeArticleRepository.findCustomRecipeArticleEntityById(customRecipeArticleId);
+        if (Objects.isNull(article)) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        CustomRecipeArticleLike existingLike = likeRepository.findCustomRecipeArticleLikeByCustomRecipeArticleIdAndUserId(customRecipeArticleId, userId);
+        if (Objects.isNull(existingLike)) {
+            throw new NonCriticalException(ExceptionInformation.NO_LIKE);
+        }
+
+        likeRepository.deleteCustomRecipeArticleLike(existingLike);
+    }
 }
