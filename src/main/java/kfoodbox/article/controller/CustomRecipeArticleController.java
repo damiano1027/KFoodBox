@@ -15,9 +15,15 @@ import kfoodbox.common.exception.ExceptionResponse;
 import kfoodbox.common.exception.UnprocessableEntityExceptionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Tag(name = "나만의 레시피 게시판", description = "나만의 레시피 게시판 API")
 @RestController
@@ -32,10 +38,22 @@ public class CustomRecipeArticleController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "404", description = "food_id로 요청한 음식 정보가 존재하지 않음 (NO_FOOD)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> createCustomRecipeArticle(@RequestBody @Valid CustomRecipeArticleCreateRequest request) {
+    public ResponseEntity<Void> createCustomRecipeArticle(@RequestBody @Valid CustomRecipeArticleCreateRequest request, BindingResult bindingResult) throws Exception {
+        // 레시피 순서 번호 중복 확인
+        Set<Long> set = new HashSet<>();
+        request.getSequences().forEach(sequence -> {
+            set.add(sequence.getSequenceNumber());
+        });
+        if (set.size() != request.getSequences().size()) {
+            bindingResult.addError(new FieldError("sequenceNumber", "sequenceNumber", "순서 번호가 중복되면 안됩니다."));
+            throw new BindException(bindingResult);
+        }
+
+        customRecipeArticleService.createCustomRecipeArticle(request);
         return ResponseEntity.ok(null);
     }
 }
