@@ -2,9 +2,11 @@ package kfoodbox.article.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CustomRecipeArticleCreateRequest;
+import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
+import kfoodbox.article.entity.CustomRecipeComment;
 import kfoodbox.article.entity.CustomRecipeIngredient;
 import kfoodbox.article.entity.CustomRecipeSequence;
 import kfoodbox.article.repository.CustomRecipeArticleRepository;
@@ -109,5 +111,27 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
 
         // custom_recipe_article 테이블 레코드 삭제시 연관 테이블들도 삭제됨
         customRecipeArticleRepository.deleteCustomRecipeArticleById(customRecipeArticleId);
+    }
+
+    @Override
+    @Transactional
+    public void createCustomRecipeComment(Long customRecipeArticleId, CustomRecipeCommentCreateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CustomRecipeArticle article = customRecipeArticleRepository.findCustomRecipeArticleEntityById(customRecipeArticleId);
+        if (Objects.isNull(article)) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        CustomRecipeComment comment = CustomRecipeComment.from(request);
+        comment.changeCustomRecipeArticleId(customRecipeArticleId);
+        comment.changeUserId(userId);
+
+        customRecipeArticleRepository.saveCustomRecipeComment(comment);
     }
 }

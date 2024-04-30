@@ -110,6 +110,11 @@
         WHERE `id` = #{id}
     </delete>
 
+    <insert id="saveCustomRecipeComment" parameterType="kfoodbox.article.entity.CustomRecipeComment">
+        INSERT INTO `kfoodbox`.`custom_recipe_comment` (`custom_recipe_article_id`, `user_id`, `content`)
+        VALUES (#{customRecipeComment.customRecipeArticleId}, #{customRecipeComment.userId}, #{customRecipeComment.content})
+    </insert>
+
     <resultMap id="CustomRecipeArticle" type="kfoodbox.article.dto.response.CustomRecipeArticleResponse">
         <id property="id" column="custom_recipe_article.id"/>
         <result property="title" column="custom_recipe_article.title"/>

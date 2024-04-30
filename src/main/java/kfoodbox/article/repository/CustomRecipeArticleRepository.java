@@ -3,6 +3,7 @@ package kfoodbox.article.repository;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
+import kfoodbox.article.entity.CustomRecipeComment;
 import kfoodbox.article.entity.CustomRecipeIngredient;
 import kfoodbox.article.entity.CustomRecipeSequence;
 import org.apache.ibatis.annotations.Param;
@@ -17,4 +18,5 @@ public interface CustomRecipeArticleRepository {
     CustomRecipeArticle findCustomRecipeArticleEntityById(@Param("id") Long id);
     CustomRecipeArticleResponse findCustomRecipeArticleById(@Param("id") Long id);
     void deleteCustomRecipeArticleById(@Param("id") Long id);
+    void saveCustomRecipeComment(@Param("customRecipeComment") CustomRecipeComment customRecipeComment);
 }
