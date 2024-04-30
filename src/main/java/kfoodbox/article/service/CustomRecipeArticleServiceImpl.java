@@ -159,4 +159,25 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
             customRecipeArticleRepository.updateCustomRecipeComment(comment);
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteCustomRecipeComment(Long customRecipeCommentId) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CustomRecipeComment comment = customRecipeArticleRepository.findCustomRecipeCommentEntityById(customRecipeCommentId);
+        if (Objects.isNull(comment)) {
+            throw new NonCriticalException(ExceptionInformation.NO_COMMENT);
+        }
+        if (!comment.hasSameUserId(userId)) {
+            throw new NonCriticalException(ExceptionInformation.FORBIDDEN);
+        }
+
+        customRecipeArticleRepository.deleteCustomRecipeCommentById(customRecipeCommentId);
+    }
 }

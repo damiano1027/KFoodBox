@@ -11,4 +11,5 @@ public interface CustomRecipeArticleService {
     void deleteCustomRecipeArticle(Long customRecipeArticleId);
     void createCustomRecipeComment(Long customRecipeArticleId, CustomRecipeCommentCreateRequest request);
     void updateCustomRecipeComment(Long customRecipeCommentId, CustomRecipeCommentUpdateRequest request);
+    void deleteCustomRecipeComment(Long customRecipeCommentId);
 }

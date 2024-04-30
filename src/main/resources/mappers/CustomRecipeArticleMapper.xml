@@ -127,6 +127,12 @@
         WHERE `id` = #{customRecipeComment.id}
     </update>
 
+    <delete id="deleteCustomRecipeCommentById" parameterType="long">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_comment`
+        WHERE `id` = #{id}
+    </delete>
+
     <resultMap id="CustomRecipeArticle" type="kfoodbox.article.dto.response.CustomRecipeArticleResponse">
         <id property="id" column="custom_recipe_article.id"/>
         <result property="title" column="custom_recipe_article.title"/>
