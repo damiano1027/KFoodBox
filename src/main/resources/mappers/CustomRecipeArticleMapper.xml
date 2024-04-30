@@ -115,6 +115,18 @@
         VALUES (#{customRecipeComment.customRecipeArticleId}, #{customRecipeComment.userId}, #{customRecipeComment.content})
     </insert>
 
+    <select id="findCustomRecipeCommentEntityById" resultType="kfoodbox.article.entity.CustomRecipeComment">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_comment`
+        WHERE `id` = #{id}
+    </select>
+
+    <update id="updateCustomRecipeComment" parameterType="kfoodbox.article.entity.CustomRecipeComment">
+        UPDATE `kfoodbox`.`custom_recipe_comment`
+        SET `content` = #{customRecipeComment.content}
+        WHERE `id` = #{customRecipeComment.id}
+    </update>
+
     <resultMap id="CustomRecipeArticle" type="kfoodbox.article.dto.response.CustomRecipeArticleResponse">
         <id property="id" column="custom_recipe_article.id"/>
         <result property="title" column="custom_recipe_article.title"/>

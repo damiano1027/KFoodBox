@@ -19,4 +19,6 @@ public interface CustomRecipeArticleRepository {
     CustomRecipeArticleResponse findCustomRecipeArticleById(@Param("id") Long id);
     void deleteCustomRecipeArticleById(@Param("id") Long id);
     void saveCustomRecipeComment(@Param("customRecipeComment") CustomRecipeComment customRecipeComment);
+    CustomRecipeComment findCustomRecipeCommentEntityById(@Param("id") Long id);
+    void updateCustomRecipeComment(@Param("customRecipeComment") CustomRecipeComment customRecipeComment);
 }

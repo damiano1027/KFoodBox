@@ -1,6 +1,7 @@
 package kfoodbox.article.entity;
 
 import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
+import kfoodbox.article.dto.request.CustomRecipeCommentUpdateRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -27,5 +28,17 @@ public class CustomRecipeComment {
 
     public void changeUserId(long userId) {
         this.userId = userId;
+    }
+
+    public boolean hasSameUserId(long userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean isUpdateRequired(CustomRecipeCommentUpdateRequest request) {
+        return !content.equals(request.getContent());
+    }
+
+    public void update(CustomRecipeCommentUpdateRequest request) {
+        content = request.getContent();
     }
 }

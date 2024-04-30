@@ -3,6 +3,7 @@ package kfoodbox.article.service;
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CustomRecipeArticleCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
+import kfoodbox.article.dto.request.CustomRecipeCommentUpdateRequest;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
@@ -133,5 +134,29 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
         comment.changeUserId(userId);
 
         customRecipeArticleRepository.saveCustomRecipeComment(comment);
+    }
+
+    @Override
+    @Transactional
+    public void updateCustomRecipeComment(Long customRecipeCommentId, CustomRecipeCommentUpdateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CustomRecipeComment comment = customRecipeArticleRepository.findCustomRecipeCommentEntityById(customRecipeCommentId);
+        if (Objects.isNull(comment)) {
+            throw new NonCriticalException(ExceptionInformation.NO_COMMENT);
+        }
+        if (!comment.hasSameUserId(userId)) {
+            throw new NonCriticalException(ExceptionInformation.FORBIDDEN);
+        }
+
+        if (comment.isUpdateRequired(request)) {
+            comment.update(request);
+            customRecipeArticleRepository.updateCustomRecipeComment(comment);
+        }
     }
 }

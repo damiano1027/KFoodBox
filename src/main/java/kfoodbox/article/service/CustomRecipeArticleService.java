@@ -2,6 +2,7 @@ package kfoodbox.article.service;
 
 import kfoodbox.article.dto.request.CustomRecipeArticleCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
+import kfoodbox.article.dto.request.CustomRecipeCommentUpdateRequest;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
 
 public interface CustomRecipeArticleService {
@@ -9,4 +10,5 @@ public interface CustomRecipeArticleService {
     CustomRecipeArticleResponse getCustomRecipeArticle(Long customRecipeArticleId);
     void deleteCustomRecipeArticle(Long customRecipeArticleId);
     void createCustomRecipeComment(Long customRecipeArticleId, CustomRecipeCommentCreateRequest request);
+    void updateCustomRecipeComment(Long customRecipeCommentId, CustomRecipeCommentUpdateRequest request);
 }
