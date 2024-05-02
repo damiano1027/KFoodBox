@@ -6,6 +6,7 @@ import kfoodbox.article.dto.request.CustomRecipeArticleUpdateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentUpdateRequest;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
+import kfoodbox.article.dto.response.CustomRecipeCommentsResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
 import kfoodbox.article.entity.CustomRecipeComment;
@@ -226,6 +227,25 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
         comment.changeUserId(userId);
 
         customRecipeArticleRepository.saveCustomRecipeComment(comment);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomRecipeCommentsResponse getAllCommentsOfCustomRecipeArticle(Long customRecipeArticleId) {
+        CustomRecipeArticle article = customRecipeArticleRepository.findCustomRecipeArticleEntityById(customRecipeArticleId);
+        if (Objects.isNull(article)) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        List<CustomRecipeCommentsResponse.Comment> comments = customRecipeArticleRepository.findCustomRecipeCommentsByCustomRecipeArticleId(customRecipeArticleId);
+        for (CustomRecipeCommentsResponse.Comment comment : comments) {
+            comment.setIsMine(comment.getUserId() != null && comment.getUserId().equals(userId));
+        }
+
+        return new CustomRecipeCommentsResponse(comments);
     }
 
     @Override

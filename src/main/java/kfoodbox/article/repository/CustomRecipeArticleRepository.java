@@ -1,6 +1,7 @@
 package kfoodbox.article.repository;
 
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
+import kfoodbox.article.dto.response.CustomRecipeCommentsResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
 import kfoodbox.article.entity.CustomRecipeComment;
@@ -25,6 +26,7 @@ public interface CustomRecipeArticleRepository {
     void deleteCustomRecipeArticleById(@Param("id") Long id);
     void saveCustomRecipeComment(@Param("customRecipeComment") CustomRecipeComment customRecipeComment);
     CustomRecipeComment findCustomRecipeCommentEntityById(@Param("id") Long id);
+    List<CustomRecipeCommentsResponse.Comment> findCustomRecipeCommentsByCustomRecipeArticleId(@Param("customRecipeArticleId") Long customRecipeArticleId);
     void updateCustomRecipeComment(@Param("customRecipeComment") CustomRecipeComment customRecipeComment);
     void deleteCustomRecipeCommentById(@Param("id") Long id);
     List<CustomRecipeSequence> findCustomRecipeSequencesByCustomRecipeArticleId(@Param("customRecipeArticleId") Long customRecipeArticleId);

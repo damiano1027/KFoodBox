@@ -12,6 +12,7 @@ import kfoodbox.article.dto.request.CustomRecipeArticleUpdateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentUpdateRequest;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
+import kfoodbox.article.dto.response.CustomRecipeCommentsResponse;
 import kfoodbox.article.service.CustomRecipeArticleService;
 import kfoodbox.common.authority.Authority;
 import kfoodbox.common.authority.Login;
@@ -120,6 +121,17 @@ public class CustomRecipeArticleController {
     public ResponseEntity<Void> createCustomRecipeComment(@PathVariable("id") @Schema(description = "게시물 id") Long id, @RequestBody @Valid CustomRecipeCommentCreateRequest request) {
         customRecipeArticleService.createCustomRecipeComment(id, request);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/custom-recipe-articles/{id}/comments")
+    @Operation(summary = "특정 레시피 게시판 게시물의 모든 댓글 조회", description = "nickname이 null이라면 해당 회원이 탈퇴한 경우임")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<CustomRecipeCommentsResponse> getAllCommentsOfCustomRecipeArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+        return ResponseEntity.ok(customRecipeArticleService.getAllCommentsOfCustomRecipeArticle(id));
     }
 
     @Login(Authority.NORMAL)
