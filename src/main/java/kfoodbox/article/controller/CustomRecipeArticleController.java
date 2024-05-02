@@ -72,7 +72,7 @@ public class CustomRecipeArticleController {
             @ApiResponse(responseCode = "404", description = "게시물이 존재하지 않음 (NO_ARTICLE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<CustomRecipeArticleResponse> getCommunityArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
+    public ResponseEntity<CustomRecipeArticleResponse> getCustomRecipeArticle(@PathVariable("id") @Schema(description = "게시물 id") Long id) {
         return ResponseEntity.ok(customRecipeArticleService.getCustomRecipeArticle(id));
     }
 
@@ -133,7 +133,7 @@ public class CustomRecipeArticleController {
             @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> updateCommunityComment(@PathVariable("id") @Schema(description = "댓글 id") Long id, @RequestBody @Valid CustomRecipeCommentUpdateRequest request) {
+    public ResponseEntity<Void> updateCustomRecipeComment(@PathVariable("id") @Schema(description = "댓글 id") Long id, @RequestBody @Valid CustomRecipeCommentUpdateRequest request) {
         customRecipeArticleService.updateCustomRecipeComment(id, request);
         return ResponseEntity.ok(null);
     }
@@ -148,7 +148,7 @@ public class CustomRecipeArticleController {
             @ApiResponse(responseCode = "404", description = "댓글이 존재하지 않음 (NO_COMMENT)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<Void> deleteCommunityComment(@PathVariable("id") @Schema(description = "댓글 id") Long id) {
+    public ResponseEntity<Void> deleteCustomRecipeComment(@PathVariable("id") @Schema(description = "댓글 id") Long id) {
         customRecipeArticleService.deleteCustomRecipeComment(id);
         return ResponseEntity.ok(null);
     }
