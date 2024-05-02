@@ -7,7 +7,7 @@
     </insert>
 
     <insert id="saveCustomRecipeSequences" parameterType="list">
-        INSERT INTO `kfoodbox`.`custom_recipe_sequence` (
+        INSERT IGNORE INTO `kfoodbox`.`custom_recipe_sequence` (
             `custom_recipe_article_id`,
             `sequence_number`,
             `content`,
@@ -24,8 +24,28 @@
         </foreach>
     </insert>
 
+    <update id="updateCustomRecipeSequences" parameterType="list">
+        <foreach collection="customRecipeSequences" item="item" separator=";">
+            UPDATE `kfoodbox`.`custom_recipe_sequence`
+            SET
+                `content` = #{item.content},
+                `image_url` = #{item.image_url}
+            WHERE
+                `custom_recipe_article_id` = #{item.custom_recipe_article_id}
+                AND `sequence_number` = #{item.sequence_number}
+        </foreach>
+    </update>
+
+    <delete id="deleteCustomRecipeSequences" parameterType="list">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_sequence`
+        WHERE `id` IN (
+            <foreach collection="customRecipeSequences" item="item" separator=",">#{item.id}</foreach>
+        )
+    </delete>
+
     <insert id="saveCustomRecipeIngredients" parameterType="list">
-        INSERT INTO `kfoodbox`.`custom_recipe_ingredient` (
+        INSERT IGNORE INTO `kfoodbox`.`custom_recipe_ingredient` (
             `custom_recipe_article_id`,
             `name`,
             `quantity`
@@ -53,6 +73,12 @@
             )
         </foreach>
     </insert>
+
+    <select id="findCustomRecipeArticleImagesByCustomRecipeArticleId" parameterType="long" resultType="kfoodbox.article.entity.CustomRecipeArticleImage">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_article_image`
+        WHERE `custom_recipe_article_id` = #{customRecipeArticleId}
+    </select>
 
     <select id="findCustomRecipeArticleEntityById" parameterType="long" resultType="kfoodbox.article.entity.CustomRecipeArticle">
         SELECT *
@@ -104,6 +130,25 @@
         ON `t1`.`id` = `t7`.`custom_recipe_article_id`
     </select>
 
+    <update id="updateCustomRecipeArticle" parameterType="kfoodbox.article.entity.CustomRecipeArticle">
+        UPDATE `kfoodbox`.`custom_recipe_article`
+        SET
+            `food_id` = #{customRecipeArticle.foodId},
+            `title` = #{customRecipeArticle.title},
+            `content` = #{customRecipeArticle.content}
+        WHERE `id` = #{customRecipeArticle.id}
+    </update>
+
+    <delete id="deleteCustomRecipeArticleImages">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_article_image`
+        WHERE
+            `custom_recipe_article_id` = #{customRecipeArticleId}
+            AND `url` IN (
+                <foreach collection="urls" item="item" separator=",">#{item}</foreach>
+            )
+    </delete>
+
     <delete id="deleteCustomRecipeArticleById" parameterType="long">
         DELETE
         FROM `kfoodbox`.`custom_recipe_article`
@@ -132,6 +177,37 @@
         FROM `kfoodbox`.`custom_recipe_comment`
         WHERE `id` = #{id}
     </delete>
+
+    <select id="findCustomRecipeSequencesByCustomRecipeArticleId" resultType="kfoodbox.article.entity.CustomRecipeSequence">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_sequence`
+        WHERE `custom_recipe_article_id` = #{customRecipeArticleId}
+    </select>
+
+    <select id="findCustomRecipeIngredientsByCustomRecipeArticleId" resultType="kfoodbox.article.entity.CustomRecipeIngredient">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_ingredient`
+        WHERE `custom_recipe_article_id` = #{customRecipeArticleId}
+    </select>
+
+    <delete id="deleteCustomRecipeIngredients" parameterType="list">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_ingredient`
+        WHERE `id` IN (
+            <foreach collection="customRecipeIngredients" item="item" separator=",">#{item.id}</foreach>
+        )
+    </delete>
+
+    <update id="updateCustomRecipeIngredients" parameterType="list">
+        <foreach collection="customRecipeIngredients" item="item" separator=";">
+            UPDATE `kfoodbox`.`custom_recipe_ingredient`
+            SET
+                `quantity` = #{item.quantity}
+            WHERE
+                `custom_recipe_article_id` = #{item.custom_recipe_article_id}
+                AND `name` = #{item.name}
+        </foreach>
+    </update>
 
     <resultMap id="CustomRecipeArticle" type="kfoodbox.article.dto.response.CustomRecipeArticleResponse">
         <id property="id" column="custom_recipe_article.id"/>

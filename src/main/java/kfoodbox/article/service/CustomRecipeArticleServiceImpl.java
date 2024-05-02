@@ -2,6 +2,7 @@ package kfoodbox.article.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CustomRecipeArticleCreateRequest;
+import kfoodbox.article.dto.request.CustomRecipeArticleUpdateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentUpdateRequest;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
@@ -25,8 +26,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -90,6 +95,93 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
         }
 
         return response;
+    }
+
+    @Override
+    @Transactional
+    public void updateCustomRecipeArticle(Long customRecipeArticleId, CustomRecipeArticleUpdateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        CustomRecipeArticle article = customRecipeArticleRepository.findCustomRecipeArticleEntityById(customRecipeArticleId);
+        if (Objects.isNull(article)) {
+            throw new NonCriticalException(ExceptionInformation.NO_ARTICLE);
+        }
+        if (!article.hasSameUserId(userId)) {
+            throw new NonCriticalException(ExceptionInformation.FORBIDDEN);
+        }
+
+        if (!Objects.isNull(request.getFoodId())) {
+            Food food = foodRepository.findFoodEntityById(request.getFoodId());
+            if (Objects.isNull(food)) {
+                throw new NonCriticalException(ExceptionInformation.NO_FOOD);
+            }
+        }
+
+        if (article.isUpdateRequired(request)) {
+            article.update(request);
+            customRecipeArticleRepository.updateCustomRecipeArticle(article);
+        }
+
+        List<CustomRecipeArticleImage> existingImages = customRecipeArticleRepository.findCustomRecipeArticleImagesByCustomRecipeArticleId(customRecipeArticleId);
+        Set<String> existingImageUrlSet = CustomRecipeArticleImage.getUrlSet(existingImages);
+        Set<String> requestedImageUrlSet = request.imageUrlSet();
+        Set<String> copiedRequestedImageUrlSet = new HashSet<>(requestedImageUrlSet);
+
+        requestedImageUrlSet.removeAll(existingImageUrlSet); // db에 삽입할 URL 집합을 추려냄
+        existingImageUrlSet.removeAll(copiedRequestedImageUrlSet); // db에서 삭제할 URL 집합을 추려냄
+
+        if (!requestedImageUrlSet.isEmpty()) {
+            List<CustomRecipeArticleImage> additionalImages = CustomRecipeArticleImage.getList(customRecipeArticleId, requestedImageUrlSet);
+            customRecipeArticleRepository.saveCustomRecipeArticleImages(additionalImages);
+        }
+        if (!existingImageUrlSet.isEmpty()) {
+            customRecipeArticleRepository.deleteCustomRecipeArticleImages(customRecipeArticleId, new ArrayList<>(existingImageUrlSet));
+        }
+
+        // custom_recipe_sequence 테이블
+        List<CustomRecipeSequence> existingSequences = customRecipeArticleRepository.findCustomRecipeSequencesByCustomRecipeArticleId(customRecipeArticleId);
+        Set<Long> requestedSequencesNumberSet = request.getSequences().stream()
+                .map(CustomRecipeArticleUpdateRequest.Sequence::getSequenceNumber)
+                .collect(Collectors.toSet());
+
+        List<CustomRecipeSequence> deletedSequences = new ArrayList<>();
+        existingSequences.forEach(sequence -> {
+            if (!requestedSequencesNumberSet.contains(sequence.getSequenceNumber())) {
+                deletedSequences.add(sequence);
+            }
+        });
+        if (!deletedSequences.isEmpty()) {
+            customRecipeArticleRepository.deleteCustomRecipeSequences(deletedSequences);
+        }
+
+        List<CustomRecipeSequence> sequences = CustomRecipeSequence.from(customRecipeArticleId, request);
+        customRecipeArticleRepository.saveCustomRecipeSequences(sequences);
+        customRecipeArticleRepository.updateCustomRecipeSequences(sequences);
+
+        // custom_recipe_ingredient 테이블
+        List<CustomRecipeIngredient> existingIngredients = customRecipeArticleRepository.findCustomRecipeIngredientsByCustomRecipeArticleId(customRecipeArticleId);
+        Set<String> requestedIngredientNameSet = request.getIngredients().stream()
+                .map(CustomRecipeArticleUpdateRequest.Ingredient::getName)
+                .collect(Collectors.toSet());
+
+        List<CustomRecipeIngredient> deletedIngredients = new ArrayList<>();
+        existingIngredients.forEach(ingredient -> {
+            if (!requestedIngredientNameSet.contains(ingredient.getName())) {
+                deletedIngredients.add(ingredient);
+            }
+        });
+        if (!deletedIngredients.isEmpty()) {
+            customRecipeArticleRepository.deleteCustomRecipeIngredients(deletedIngredients);
+        }
+
+        List<CustomRecipeIngredient> ingredients = CustomRecipeIngredient.from(customRecipeArticleId, request);
+        customRecipeArticleRepository.saveCustomRecipeIngredients(ingredients);
+        customRecipeArticleRepository.updateCustomRecipeIngredients(ingredients);
     }
 
     @Override
