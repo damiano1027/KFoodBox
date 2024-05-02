@@ -1,9 +1,253 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kfoodbox.article.repository.CustomRecipeArticleRepository">
-    <select id="findCustomRecipeArticleById" parameterType="long" resultType="kfoodbox.article.entity.CustomRecipeArticle">
+    <insert id="saveCustomRecipeArticle" parameterType="kfoodbox.article.entity.CustomRecipeArticle" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `kfoodbox`.`custom_recipe_article` (`food_id`, `user_id`, `title`, `content`)
+        VALUES (#{customRecipeArticle.foodId}, #{customRecipeArticle.userId}, #{customRecipeArticle.title}, #{customRecipeArticle.content})
+    </insert>
+
+    <insert id="saveCustomRecipeSequences" parameterType="list">
+        INSERT IGNORE INTO `kfoodbox`.`custom_recipe_sequence` (
+            `custom_recipe_article_id`,
+            `sequence_number`,
+            `content`,
+            `image_url`
+        )
+        VALUES
+        <foreach collection="customRecipeSequences" item="item" separator=",">
+            (
+                #{item.customRecipeArticleId},
+                #{item.sequenceNumber},
+                #{item.content},
+                #{item.imageUrl}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateCustomRecipeSequences" parameterType="list">
+        <foreach collection="customRecipeSequences" item="item" separator=";">
+            UPDATE `kfoodbox`.`custom_recipe_sequence`
+            SET
+                `content` = #{item.content},
+                `image_url` = #{item.image_url}
+            WHERE
+                `custom_recipe_article_id` = #{item.custom_recipe_article_id}
+                AND `sequence_number` = #{item.sequence_number}
+        </foreach>
+    </update>
+
+    <delete id="deleteCustomRecipeSequences" parameterType="list">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_sequence`
+        WHERE `id` IN (
+            <foreach collection="customRecipeSequences" item="item" separator=",">#{item.id}</foreach>
+        )
+    </delete>
+
+    <insert id="saveCustomRecipeIngredients" parameterType="list">
+        INSERT IGNORE INTO `kfoodbox`.`custom_recipe_ingredient` (
+            `custom_recipe_article_id`,
+            `name`,
+            `quantity`
+        )
+        VALUES
+        <foreach collection="customRecipeIngredients" item="item" separator=",">
+            (
+                #{item.customRecipeArticleId},
+                #{item.name},
+                #{item.quantity}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveCustomRecipeArticleImages" parameterType="list">
+        INSERT INTO `kfoodbox`.`custom_recipe_article_image` (
+            `custom_recipe_article_id`,
+            `url`
+        )
+        VALUES
+        <foreach collection="customRecipeArticleImages" item="item" separator=",">
+            (
+                #{item.customRecipeArticleId},
+                #{item.url}
+            )
+        </foreach>
+    </insert>
+
+    <select id="findCustomRecipeArticleImagesByCustomRecipeArticleId" parameterType="long" resultType="kfoodbox.article.entity.CustomRecipeArticleImage">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_article_image`
+        WHERE `custom_recipe_article_id` = #{customRecipeArticleId}
+    </select>
+
+    <select id="findCustomRecipeArticleEntityById" parameterType="long" resultType="kfoodbox.article.entity.CustomRecipeArticle">
         SELECT *
         FROM `kfoodbox`.`custom_recipe_article`
         WHERE `id` = #{id}
     </select>
+
+    <select id="findCustomRecipeArticleById" parameterType="long" resultMap="CustomRecipeArticle">
+        SELECT
+            `t1`.`id` `custom_recipe_article.id`,
+            `t1`.`title` `custom_recipe_article.title`,
+            `t1`.`user_id` `custom_recipe_article.user_id`,
+            `t1`.`content` `custom_recipe_article.content`,
+            `t1`.`created_at` `custom_recipe_article.created_at`,
+            `t1`.`updated_at` `custom_recipe_article.updated_at`,
+            `t2`.`nickname` `user.nickname`,
+            COALESCE(`t3`.`count`, 0) `like_count`,
+            COALESCE(`t4`.`count`, 0) `comment_count`,
+            `t5`.`sequence_number` `custom_recipe_sequence.sequence_number`,
+            `t5`.`content` `custom_recipe_sequence.content`,
+            `t5`.`image_url` `custom_recipe_sequence.image_url`,
+            `t6`.`name` `custom_recipe_ingredient.name`,
+            `t6`.`quantity` `custom_recipe_ingredient.quantity`,
+            `t7`.`url` `custom_recipe_article_image.image_url`
+        FROM (
+            SELECT *
+            FROM `kfoodbox`.`custom_recipe_article`
+            WHERE `id` = #{id}
+        ) `t1`
+        LEFT JOIN `kfoodbox`.`user` `t2`
+        ON `t1`.`user_id` = `t2`.`id`
+        LEFT JOIN (
+            SELECT `custom_recipe_article_id`, COUNT(*) `count`
+            FROM `kfoodbox`.`custom_recipe_article_like`
+            GROUP BY `custom_recipe_article_id`
+        ) `t3`
+        ON `t1`.`id` = `t3`.`custom_recipe_article_id`
+        LEFT JOIN (
+            SELECT `custom_recipe_article_id`, COUNT(*) `count`
+            FROM `kfoodbox`.`custom_recipe_comment`
+            GROUP BY `custom_recipe_article_id`
+        ) `t4`
+        ON `t1`.`id` = `t4`.`custom_recipe_article_id`
+        LEFT JOIN `kfoodbox`.`custom_recipe_sequence` `t5`
+        ON `t1`.`id` = `t5`.`custom_recipe_article_id`
+        LEFT JOIN `kfoodbox`.`custom_recipe_ingredient` `t6`
+        ON `t1`.`id` = `t6`.`custom_recipe_article_id`
+        LEFT JOIN `kfoodbox`.`custom_recipe_article_image` `t7`
+        ON `t1`.`id` = `t7`.`custom_recipe_article_id`
+    </select>
+
+    <update id="updateCustomRecipeArticle" parameterType="kfoodbox.article.entity.CustomRecipeArticle">
+        UPDATE `kfoodbox`.`custom_recipe_article`
+        SET
+            `food_id` = #{customRecipeArticle.foodId},
+            `title` = #{customRecipeArticle.title},
+            `content` = #{customRecipeArticle.content}
+        WHERE `id` = #{customRecipeArticle.id}
+    </update>
+
+    <delete id="deleteCustomRecipeArticleImages">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_article_image`
+        WHERE
+            `custom_recipe_article_id` = #{customRecipeArticleId}
+            AND `url` IN (
+                <foreach collection="urls" item="item" separator=",">#{item}</foreach>
+            )
+    </delete>
+
+    <delete id="deleteCustomRecipeArticleById" parameterType="long">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_article`
+        WHERE `id` = #{id}
+    </delete>
+
+    <insert id="saveCustomRecipeComment" parameterType="kfoodbox.article.entity.CustomRecipeComment">
+        INSERT INTO `kfoodbox`.`custom_recipe_comment` (`custom_recipe_article_id`, `user_id`, `content`)
+        VALUES (#{customRecipeComment.customRecipeArticleId}, #{customRecipeComment.userId}, #{customRecipeComment.content})
+    </insert>
+
+    <select id="findCustomRecipeCommentEntityById" resultType="kfoodbox.article.entity.CustomRecipeComment">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_comment`
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="findCustomRecipeCommentsByCustomRecipeArticleId" parameterType="long" resultType="kfoodbox.article.dto.response.CustomRecipeCommentsResponse$Comment">
+        SELECT
+            `t1`.`id`,
+            `t1`.`user_id`,
+            `t2`.`nickname`,
+            `t1`.`created_at`,
+            `t1`.`updated_at`,
+            `t1`.`content`
+        FROM (
+            SELECT *
+            FROM `kfoodbox`.`custom_recipe_comment`
+            WHERE `custom_recipe_article_id` = #{customRecipeArticleId}
+        ) `t1`
+        LEFT JOIN `kfoodbox`.`user` `t2`
+        ON `t1`.`user_id` = `t2`.`id`
+    </select>
+
+    <update id="updateCustomRecipeComment" parameterType="kfoodbox.article.entity.CustomRecipeComment">
+        UPDATE `kfoodbox`.`custom_recipe_comment`
+        SET `content` = #{customRecipeComment.content}
+        WHERE `id` = #{customRecipeComment.id}
+    </update>
+
+    <delete id="deleteCustomRecipeCommentById" parameterType="long">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_comment`
+        WHERE `id` = #{id}
+    </delete>
+
+    <select id="findCustomRecipeSequencesByCustomRecipeArticleId" resultType="kfoodbox.article.entity.CustomRecipeSequence">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_sequence`
+        WHERE `custom_recipe_article_id` = #{customRecipeArticleId}
+    </select>
+
+    <select id="findCustomRecipeIngredientsByCustomRecipeArticleId" resultType="kfoodbox.article.entity.CustomRecipeIngredient">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_ingredient`
+        WHERE `custom_recipe_article_id` = #{customRecipeArticleId}
+    </select>
+
+    <delete id="deleteCustomRecipeIngredients" parameterType="list">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_ingredient`
+        WHERE `id` IN (
+            <foreach collection="customRecipeIngredients" item="item" separator=",">#{item.id}</foreach>
+        )
+    </delete>
+
+    <update id="updateCustomRecipeIngredients" parameterType="list">
+        <foreach collection="customRecipeIngredients" item="item" separator=";">
+            UPDATE `kfoodbox`.`custom_recipe_ingredient`
+            SET
+                `quantity` = #{item.quantity}
+            WHERE
+                `custom_recipe_article_id` = #{item.custom_recipe_article_id}
+                AND `name` = #{item.name}
+        </foreach>
+    </update>
+
+    <resultMap id="CustomRecipeArticle" type="kfoodbox.article.dto.response.CustomRecipeArticleResponse">
+        <id property="id" column="custom_recipe_article.id"/>
+        <result property="title" column="custom_recipe_article.title"/>
+        <result property="userId" column="custom_recipe_article.user_id"/>
+        <result property="content" column="custom_recipe_article.content"/>
+        <result property="createdAt" column="custom_recipe_article.created_at"/>
+        <result property="updatedAt" column="custom_recipe_article.updated_at"/>
+        <result property="nickname" column="user.nickname"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <collection property="sequences" javaType="list" ofType="kfoodbox.article.dto.response.CustomRecipeArticleResponse$Sequence">
+            <result property="sequenceNumber" column="custom_recipe_sequence.sequence_number"/>
+            <result property="content" column="custom_recipe_sequence.content"/>
+            <result property="imageUrl" column="custom_recipe_sequence.image_url"/>
+        </collection>
+        <collection property="ingredients" javaType="list" ofType="kfoodbox.article.dto.response.CustomRecipeArticleResponse$Ingredient">
+            <result property="name" column="custom_recipe_ingredient.name"/>
+            <result property="quantity" column="custom_recipe_ingredient.quantity"/>
+        </collection>
+
+        <collection property="imageUrls" javaType="list" ofType="string">
+            <result property="imageUrl" column="custom_recipe_article_image.image_url"/>
+        </collection>
+    </resultMap>
 </mapper>

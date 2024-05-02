@@ -6,11 +6,24 @@
         VALUES (#{communityArticleLike.communityArticleId}, #{communityArticleLike.userId})
     </insert>
 
+    <insert id="saveCustomRecipeArticleLike" parameterType="kfoodbox.like.entity.CustomRecipeArticleLike">
+        INSERT INTO `kfoodbox`.`custom_recipe_article_like` (`custom_recipe_article_id`, `user_id`)
+        VALUES (#{customRecipeArticleLike.customRecipeArticleId}, #{customRecipeArticleLike.userId})
+    </insert>
+
     <select id="findCommunityArticleLikeByCommunityArticleIdAndUserId" resultType="kfoodbox.like.entity.CommunityArticleLike">
         SELECT *
         FROM `kfoodbox`.`community_article_like`
         WHERE
             `community_article_id` = #{communityArticleId}
+            AND `user_id` = #{userId}
+    </select>
+
+    <select id="findCustomRecipeArticleLikeByCustomRecipeArticleIdAndUserId" resultType="kfoodbox.like.entity.CustomRecipeArticleLike">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_article_like`
+        WHERE
+            `custom_recipe_article_id` = #{customRecipeArticleId}
             AND `user_id` = #{userId}
     </select>
 
@@ -20,5 +33,13 @@
         WHERE
             `community_article_id` = #{communityArticleLike.communityArticleId}
             AND `user_id` = #{communityArticleLike.userId}
+    </delete>
+
+    <delete id="deleteCustomRecipeArticleLike" parameterType="kfoodbox.like.entity.CustomRecipeArticleLike">
+        DELETE
+        FROM `kfoodbox`.`custom_recipe_article_like`
+        WHERE
+            `custom_recipe_article_id` = #{customRecipeArticleLike.customRecipeArticleId}
+            AND `user_id` = #{customRecipeArticleLike.userId}
     </delete>
 </mapper>
