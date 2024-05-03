@@ -11,6 +11,7 @@ import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodCategoryResponse;
 import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
+import kfoodbox.food.dto.response.LabelledFoodResponse;
 import kfoodbox.food.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,17 @@ public class FoodController {
     })
     public ResponseEntity<FoodResponse> findFood(@PathVariable("id") @Schema(description = "음식 id") Long id) {
         return ResponseEntity.ok(foodService.findFood(id));
+    }
+
+    @GetMapping("/labelled-foods/{id}")
+    @Operation(summary = "라벨링된 음식 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "404", description = "음식 정보 없음 (NO_FOOD)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<LabelledFoodResponse> findLabelledFood(@PathVariable("id") @Schema(description = "음식 라벨 id") Long labelId) {
+        return ResponseEntity.ok(foodService.findLabelledFood(labelId));
     }
 
     @GetMapping("/food-categories/{id}/foods")
