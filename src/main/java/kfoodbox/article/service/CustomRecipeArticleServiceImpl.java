@@ -70,7 +70,9 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
         customRecipeArticleRepository.saveCustomRecipeIngredients(ingredients);
 
         List<CustomRecipeArticleImage> images = CustomRecipeArticleImage.from(article.getId(), request);
-        customRecipeArticleRepository.saveCustomRecipeArticleImages(images);
+        if (!images.isEmpty()) {
+            customRecipeArticleRepository.saveCustomRecipeArticleImages(images);
+        }
     }
 
     @Override
