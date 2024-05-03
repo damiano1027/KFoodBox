@@ -6,13 +6,15 @@ import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodCategoryResponse;
 import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
-import kfoodbox.food.entity.FoodCategory;
+import kfoodbox.food.dto.response.LabelledFoodResponse;
+import kfoodbox.food.entity.Food;
 import kfoodbox.food.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,18 @@ public class FoodServiceImpl implements FoodService {
         }
 
         return response;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public LabelledFoodResponse findLabelledFood(Long labelId) {
+        Food food = foodRepository.findFoodEntityByLabelId(labelId);
+
+        if (Objects.isNull(food)) {
+            throw new NonCriticalException(ExceptionInformation.NO_FOOD);
+        }
+
+        return LabelledFoodResponse.from(food);
     }
 
     @Override
