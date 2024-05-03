@@ -34,6 +34,12 @@
         WHERE `id` = #{id}
     </select>
 
+    <select id="findFoodEntityByLabelId" parameterType="long" resultType="kfoodbox.food.entity.Food">
+        SELECT *
+        FROM `kfoodbox`.`food`
+        WHERE `label_id` = #{labelId}
+    </select>
+
     <select id="findFoodsByCategoryId" parameterType="long" resultType="kfoodbox.food.dto.response.FoodsResponse$Food">
         SELECT *
         FROM `kfoodbox`.`food`
