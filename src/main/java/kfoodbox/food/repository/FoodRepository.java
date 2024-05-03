@@ -13,6 +13,7 @@ import java.util.List;
 public interface FoodRepository {
     FoodResponse findFoodById(@Param("id") Long id);
     Food findFoodEntityById(@Param("id") Long id);
+    Food findFoodEntityByLabelId(@Param("labelId") Long labelId);
     List<FoodsResponse.Food> findFoodsByCategoryId(@Param("id") Long id);
     FoodCategoryResponse findFoodCategoryById(@Param("id") Long id);
     FoodCategory findFoodCategoryEntityById(@Param("id") Long id);
