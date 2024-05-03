@@ -28,10 +28,10 @@ public class CommunityArticleUpdateRequest {
     private String content;
 
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(max = 10)
     @Schema(description = "이미지 URL 리스트\n" +
-            "- Not null\n" +
-            "- 리스트의 길이가 1 이상 10 이하")
+                          "- Not null\n" +
+                          "- 리스트의 길이가 10 이하")
     private List<String> imageUrls;
 
     public Set<String> imageUrlSet() {

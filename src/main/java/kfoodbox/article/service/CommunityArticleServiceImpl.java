@@ -55,7 +55,10 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
                 .stream()
                 .map(imageUrl -> CommunityArticleImage.from(communityArticle.getId(), imageUrl))
                 .collect(Collectors.toList());
-        communityArticleRepository.saveCommunityArticleImages(communityArticleImages);
+
+        if (!communityArticleImages.isEmpty()) {
+            communityArticleRepository.saveCommunityArticleImages(communityArticleImages);
+        }
     }
 
     @Override
