@@ -1,5 +1,6 @@
 package kfoodbox.user.service;
 
+import kfoodbox.user.dto.request.LanguageUpdateRequest;
 import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupAuthenticationNumberSendRequest;
 import kfoodbox.user.dto.request.SignupAuthenticationNumberVerityRequest;
@@ -24,6 +25,7 @@ public interface UserService {
     MyEmailResponse getMyEmail();
     MyNicknameResponse getMyNickname();
     MyLanguageResponse getMyLanguage();
+    void updateMyLanguage(LanguageUpdateRequest request);
     void updateUser(UserUpdateRequest request);
     void deleteUser();
 }
