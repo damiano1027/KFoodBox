@@ -2,11 +2,13 @@ package kfoodbox.food.service;
 
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
+import kfoodbox.food.dto.request.FoodsCondition;
 import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodCategoryResponse;
 import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.dto.response.LabelledFoodResponse;
+import kfoodbox.food.dto.response.QueriedFoodsResponse;
 import kfoodbox.food.entity.Food;
 import kfoodbox.food.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +56,21 @@ public class FoodServiceImpl implements FoodService {
 
         List<FoodsResponse.Food> foods = foodRepository.findFoodsByCategoryId(id);
         return new FoodsResponse(foods);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public QueriedFoodsResponse findFoods(FoodsCondition condition) {
+        Long totalCount = foodRepository.getTotalCountOfFoodEntitiesByQuery(condition);
+        Long totalPage = condition.calculateTotalPage(totalCount);
+        Long currentPage = condition.getPage();
+
+        if (currentPage > totalPage) {
+            throw new NonCriticalException(ExceptionInformation.NO_PAGE);
+        }
+
+        List<Food> foods = foodRepository.findFoodEntitiesByCondition(condition.calculateCursor(), condition);
+        return QueriedFoodsResponse.from(totalCount, totalPage, currentPage, foods);
     }
 
     @Override
