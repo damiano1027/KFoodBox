@@ -15,9 +15,11 @@ public class CommunityArticlesCondition {
     @NotNull @Min(1) @Max(50)
     private Long limit;
 
-    private Type type = Type.ALL;
+    @NotNull
+    private Type type;
 
-    private Sort sort = Sort.LATEST;
+    @NotNull
+    private Sort sort;
 
     private String query;
 
