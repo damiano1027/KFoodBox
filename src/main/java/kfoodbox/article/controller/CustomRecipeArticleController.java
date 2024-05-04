@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kfoodbox.article.dto.request.CustomRecipeArticleCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeArticleUpdateRequest;
+import kfoodbox.article.dto.request.CustomRecipeArticlesCondition;
 import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentUpdateRequest;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
+import kfoodbox.article.dto.response.CustomRecipeArticlesResponse;
 import kfoodbox.article.dto.response.CustomRecipeCommentsResponse;
 import kfoodbox.article.service.CustomRecipeArticleService;
 import kfoodbox.common.authority.Authority;
@@ -163,5 +165,33 @@ public class CustomRecipeArticleController {
     public ResponseEntity<Void> deleteCustomRecipeComment(@PathVariable("id") @Schema(description = "댓글 id") Long id) {
         customRecipeArticleService.deleteCustomRecipeComment(id);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/custom-recipe-articles")
+    @Operation(summary = "레시피 게시판 게시물 리스트 조회", description = "- page (페이지 번호)\n" +
+                                                                 "  - Not null\n "+
+                                                                 "  - 양의 정수\n" +
+                                                                 "- limit (한 페이지의 최대 게시물 수)\n" +
+                                                                 "  - Not null\n" +
+                                                                 "  - 최소: 1, 최대: 50\n" +
+                                                                 "- type\n" +
+                                                                 "  - Not null\n" +
+                                                                 "  - `ALL`: 전체\n" +
+                                                                 "- sort (정렬 기준)\n" +
+                                                                 "  - Not null" +
+                                                                 "  - `LATEST`: 최신순\n" +
+                                                                 "  - `OLDEST`: 오랜된순\n" +
+                                                                 "  - `LIKES`: 좋아요순\n" +
+                                                                 "  - `COMMENTS`: 댓글순\n" +
+                                                                 "- query (검색어)\n" +
+                                                                 "  - 제목, 내용에 대해 검색됨\n" +
+                                                                 "- foodId (음식 id)")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<CustomRecipeArticlesResponse> getCustomRecipeArticles(@Valid CustomRecipeArticlesCondition condition) {
+        return ResponseEntity.ok(customRecipeArticleService.getCustomRecipeArticles(condition));
     }
 }

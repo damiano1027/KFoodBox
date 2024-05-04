@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class CommunityArticlesCondition {
+public class CustomRecipeArticlesCondition {
     @NotNull @Positive
     private Long page;
 
@@ -23,8 +23,10 @@ public class CommunityArticlesCondition {
 
     private String query;
 
+    private Long foodId;
+
     private enum Type {
-        ALL, NOTICE
+        ALL
     }
 
     private enum Sort {

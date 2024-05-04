@@ -3,9 +3,11 @@ package kfoodbox.article.service;
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CustomRecipeArticleCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeArticleUpdateRequest;
+import kfoodbox.article.dto.request.CustomRecipeArticlesCondition;
 import kfoodbox.article.dto.request.CustomRecipeCommentCreateRequest;
 import kfoodbox.article.dto.request.CustomRecipeCommentUpdateRequest;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
+import kfoodbox.article.dto.response.CustomRecipeArticlesResponse;
 import kfoodbox.article.dto.response.CustomRecipeCommentsResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
@@ -293,5 +295,20 @@ public class CustomRecipeArticleServiceImpl implements CustomRecipeArticleServic
         }
 
         customRecipeArticleRepository.deleteCustomRecipeCommentById(customRecipeCommentId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomRecipeArticlesResponse getCustomRecipeArticles(CustomRecipeArticlesCondition condition) {
+        Long totalCount = customRecipeArticleRepository.getTotalCountOfCustomRecipeArticlesByCondition(condition);
+        Long totalPage = condition.calculateTotalPage(totalCount);
+        Long currentPage = condition.getPage();
+
+        if (currentPage > totalPage) {
+            throw new NonCriticalException(ExceptionInformation.NO_PAGE);
+        }
+
+        List<CustomRecipeArticlesResponse.Article> articles = customRecipeArticleRepository.findCustomRecipeArticlesByCondition(condition.calculateCursor(), condition);
+        return CustomRecipeArticlesResponse.from(totalCount, totalPage, currentPage, articles);
     }
 }

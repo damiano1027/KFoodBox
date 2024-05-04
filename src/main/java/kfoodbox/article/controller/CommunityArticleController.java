@@ -159,9 +159,11 @@ public class CommunityArticleController {
                                                                  "  - Not null\n" +
                                                                  "  - 최소: 1, 최대: 50\n" +
                                                                  "- type (전체 or 공지글 여부)\n" +
+                                                                 "  - Not null\n" +
                                                                  "  - `ALL`: 전체\n" +
                                                                  "  - `NOTICE`: 공지\n" +
                                                                  "- sort (정렬 기준)\n" +
+                                                                 "  - Not null" +
                                                                  "  - `LATEST`: 최신순\n" +
                                                                  "  - `OLDEST`: 오랜된순\n" +
                                                                  "  - `LIKES`: 좋아요순\n" +
