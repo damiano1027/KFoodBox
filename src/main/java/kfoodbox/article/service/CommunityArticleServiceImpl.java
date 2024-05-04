@@ -3,9 +3,11 @@ package kfoodbox.article.service;
 import jakarta.servlet.http.HttpServletRequest;
 import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
 import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
+import kfoodbox.article.dto.request.CommunityArticlesCondition;
 import kfoodbox.article.dto.request.CommunityCommentCreateRequest;
 import kfoodbox.article.dto.request.CommunityCommentUpdateRequest;
 import kfoodbox.article.dto.response.CommunityArticleResponse;
+import kfoodbox.article.dto.response.CommunityArticlesResponse;
 import kfoodbox.article.dto.response.CommunityCommentsResponse;
 import kfoodbox.article.entity.CommunityArticle;
 import kfoodbox.article.entity.CommunityArticleImage;
@@ -234,5 +236,20 @@ public class CommunityArticleServiceImpl implements CommunityArticleService {
         }
 
         communityArticleRepository.deleteCommunityCommentById(communityCommentId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CommunityArticlesResponse getCommunityArticles(CommunityArticlesCondition condition) {
+        Long totalCount = communityArticleRepository.getTotalCountOfCommunityArticlesByCondition(condition);
+        Long totalPage = condition.calculateTotalPage(totalCount);
+        Long currentPage = condition.getPage();
+
+        if (currentPage > totalPage) {
+            throw new NonCriticalException(ExceptionInformation.NO_PAGE);
+        }
+
+        List<CommunityArticlesResponse.Article> articles = communityArticleRepository.findCommunityArticlesByCondition(condition.calculateCursor(), condition);
+        return CommunityArticlesResponse.from(totalCount, totalPage, currentPage, articles);
     }
 }

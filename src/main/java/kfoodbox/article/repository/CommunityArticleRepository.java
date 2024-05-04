@@ -1,6 +1,8 @@
 package kfoodbox.article.repository;
 
+import kfoodbox.article.dto.request.CommunityArticlesCondition;
 import kfoodbox.article.dto.response.CommunityArticleResponse;
+import kfoodbox.article.dto.response.CommunityArticlesResponse;
 import kfoodbox.article.dto.response.CommunityCommentsResponse;
 import kfoodbox.article.entity.CommunityArticle;
 import kfoodbox.article.entity.CommunityArticleImage;
@@ -23,4 +25,6 @@ public interface CommunityArticleRepository {
     void updateCommunityComment(@Param("communityComment") CommunityComment communityComment);
     List<CommunityCommentsResponse.Comment> findCommunityCommentsByCommunityArticleId(@Param("communityArticleId") Long communityArticleId);
     void deleteCommunityCommentById(@Param("id") Long id);
+    Long getTotalCountOfCommunityArticlesByCondition(@Param("condition") CommunityArticlesCondition condition);
+    List<CommunityArticlesResponse.Article> findCommunityArticlesByCondition(@Param("cursor") Long cursor, @Param("condition") CommunityArticlesCondition condition);
 }
