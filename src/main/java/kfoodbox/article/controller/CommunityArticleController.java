@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kfoodbox.article.dto.request.CommunityArticleCreateRequest;
 import kfoodbox.article.dto.request.CommunityArticleUpdateRequest;
+import kfoodbox.article.dto.request.CommunityArticlesCondition;
 import kfoodbox.article.dto.request.CommunityCommentCreateRequest;
 import kfoodbox.article.dto.request.CommunityCommentUpdateRequest;
 import kfoodbox.article.dto.response.CommunityArticleResponse;
+import kfoodbox.article.dto.response.CommunityArticlesResponse;
 import kfoodbox.article.dto.response.CommunityCommentsResponse;
 import kfoodbox.article.service.CommunityArticleService;
 import kfoodbox.common.authority.Authority;
@@ -147,5 +149,31 @@ public class CommunityArticleController {
     public ResponseEntity<Void> deleteCommunityComment(@PathVariable("id") @Schema(description = "댓글 id") Long id) {
         communityArticleService.deleteCommunityComment(id);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/community-articles")
+    @Operation(summary = "자유게시판 게시물 리스트 조회", description = "- page (페이지 번호)\n" +
+                                                                 "  - Not null\n "+
+                                                                 "  - 양의 정수\n" +
+                                                                 "- limit (한 페이지의 최대 게시물 수)\n" +
+                                                                 "  - Not null\n" +
+                                                                 "  - 최소: 1, 최대: 50\n" +
+                                                                 "- type (전체 or 공지글 여부)\n" +
+                                                                 "  - `ALL`: 전체\n" +
+                                                                 "  - `NOTICE`: 공지\n" +
+                                                                 "- sort (정렬 기준)\n" +
+                                                                 "  - `LATEST`: 최신순\n" +
+                                                                 "  - `OLDEST`: 오랜된순\n" +
+                                                                 "  - `LIKES`: 좋아요순\n" +
+                                                                 "  - `COMMENTS`: 댓글순\n" +
+                                                                 "- query (검색어)\n" +
+                                                                 "  - 제목, 내용에 대해 검색됨")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<CommunityArticlesResponse> getCommunityArticles(@Valid CommunityArticlesCondition condition) {
+        return ResponseEntity.ok(communityArticleService.getCommunityArticles(condition));
     }
 }
