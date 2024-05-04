@@ -1,5 +1,6 @@
 package kfoodbox.food.repository;
 
+import kfoodbox.food.dto.request.FoodsCondition;
 import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodCategoryResponse;
 import kfoodbox.food.dto.response.FoodResponse;
@@ -18,4 +19,6 @@ public interface FoodRepository {
     FoodCategoryResponse findFoodCategoryById(@Param("id") Long id);
     FoodCategory findFoodCategoryEntityById(@Param("id") Long id);
     List<AllFoodCategoriesResponse.FoodCategory> findAllFoodCategories();
+    Long getTotalCountOfFoodEntitiesByQuery(@Param("condition") FoodsCondition condition);
+    List<Food> findFoodEntitiesByCondition(@Param("cursor") Long cursor, @Param("condition") FoodsCondition condition);
 }
