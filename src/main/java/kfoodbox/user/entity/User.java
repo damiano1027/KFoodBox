@@ -36,6 +36,10 @@ public class User {
         this.password = password;
     }
 
+    public void changeLanguageId(long languageId) {
+        this.languageId = languageId;
+    }
+
     public boolean isIdSame(long id) {
         return this.id.equals(id);
     }
