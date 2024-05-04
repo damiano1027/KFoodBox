@@ -11,6 +11,7 @@ import kfoodbox.common.authority.Login;
 import kfoodbox.common.authority.Authority;
 import kfoodbox.common.exception.ExceptionResponse;
 import kfoodbox.common.exception.UnprocessableEntityExceptionResponse;
+import kfoodbox.user.dto.request.LanguageUpdateRequest;
 import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupAuthenticationNumberSendRequest;
 import kfoodbox.user.dto.request.SignupAuthenticationNumberVerityRequest;
@@ -175,6 +176,22 @@ public class UserController {
     })
     public ResponseEntity<MyLanguageResponse> getMyLanguage() {
         return ResponseEntity.ok(userService.getMyLanguage());
+    }
+
+    @Login(Authority.NORMAL)
+    @PutMapping("/my-language")
+    @Operation(summary = "나의 언어 수정")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "404", description = "회원 정보 없음 (NO_USER) | 언어 정보 없음 (NO_LANGUAGE)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<Void> updateMyLanguage(@RequestBody @Valid LanguageUpdateRequest request) {
+        userService.updateMyLanguage(request);
+        return ResponseEntity.ok(null);
     }
 
     @Login(Authority.NORMAL)
