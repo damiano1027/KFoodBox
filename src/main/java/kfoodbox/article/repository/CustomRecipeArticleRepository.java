@@ -1,6 +1,8 @@
 package kfoodbox.article.repository;
 
+import kfoodbox.article.dto.request.CustomRecipeArticlesCondition;
 import kfoodbox.article.dto.response.CustomRecipeArticleResponse;
+import kfoodbox.article.dto.response.CustomRecipeArticlesResponse;
 import kfoodbox.article.dto.response.CustomRecipeCommentsResponse;
 import kfoodbox.article.entity.CustomRecipeArticle;
 import kfoodbox.article.entity.CustomRecipeArticleImage;
@@ -33,4 +35,6 @@ public interface CustomRecipeArticleRepository {
     List<CustomRecipeIngredient> findCustomRecipeIngredientsByCustomRecipeArticleId(@Param("customRecipeArticleId") Long customRecipeArticleId);
     void deleteCustomRecipeIngredients(@Param("customRecipeIngredients") List<CustomRecipeIngredient> customRecipeIngredients);
     void updateCustomRecipeIngredients(@Param("customRecipeIngredients") List<CustomRecipeIngredient> customRecipeIngredients);
+    Long getTotalCountOfCustomRecipeArticlesByCondition(@Param("condition") CustomRecipeArticlesCondition condition);
+    List<CustomRecipeArticlesResponse.Article> findCustomRecipeArticlesByCondition(@Param("cursor") Long cursor, @Param("condition") CustomRecipeArticlesCondition condition);
 }
