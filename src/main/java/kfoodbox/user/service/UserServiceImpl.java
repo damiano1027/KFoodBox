@@ -8,6 +8,7 @@ import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
 import kfoodbox.common.util.EmailSender;
 import kfoodbox.common.util.RedisClient;
+import kfoodbox.user.dto.request.LanguageUpdateRequest;
 import kfoodbox.user.dto.request.LoginRequest;
 import kfoodbox.user.dto.request.SignupAuthenticationNumberSendRequest;
 import kfoodbox.user.dto.request.SignupAuthenticationNumberVerityRequest;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -189,6 +191,30 @@ public class UserServiceImpl implements UserService {
         }
 
         return new MyLanguageResponse(user.getLanguageId());
+    }
+
+    @Override
+    @Transactional
+    public void updateMyLanguage(LanguageUpdateRequest request) {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (userId == null) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new NonCriticalException(ExceptionInformation.NO_USER);
+        }
+
+        Language language = userRepository.findLanguageById(request.getLanguageId());
+        if (Objects.isNull(language)) {
+            throw new NonCriticalException(ExceptionInformation.NO_LANGUAGE);
+        }
+
+        user.changeLanguageId(request.getLanguageId());
+        userRepository.updateUser(user);
     }
 
     @Override
