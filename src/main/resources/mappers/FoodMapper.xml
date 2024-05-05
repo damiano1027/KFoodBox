@@ -69,6 +69,12 @@
         WHERE `name` LIKE CONCAT('%', #{condition.query}, '%')
     </select>
 
+    <select id="findFoodEntitiesByQuery" parameterType="string" resultType="kfoodbox.food.entity.Food">
+        SELECT *
+        FROM `kfoodbox`.`food`
+        WHERE `name` LIKE CONCAT('%', #{query}, '%')
+    </select>
+
     <select id="findFoodEntitiesByCondition" parameterType="kfoodbox.food.dto.request.FoodsCondition" resultType="kfoodbox.food.entity.Food">
         SELECT *
         FROM `kfoodbox`.`food`
