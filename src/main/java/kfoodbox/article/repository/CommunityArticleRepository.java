@@ -27,4 +27,5 @@ public interface CommunityArticleRepository {
     void deleteCommunityCommentById(@Param("id") Long id);
     Long getTotalCountOfCommunityArticlesByCondition(@Param("condition") CommunityArticlesCondition condition);
     List<CommunityArticlesResponse.Article> findCommunityArticlesByCondition(@Param("cursor") Long cursor, @Param("condition") CommunityArticlesCondition condition);
+    List<CommunityArticle> findCommunityArticlesByQuery(@Param("query") String query);
 }

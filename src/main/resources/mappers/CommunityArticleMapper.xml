@@ -217,6 +217,14 @@
         LIMIT #{cursor}, #{condition.limit}
     </select>
 
+    <select id="findCommunityArticlesByQuery" parameterType="string" resultType="kfoodbox.article.entity.CommunityArticle">
+        SELECT *
+        FROM `kfoodbox`.`community_article`
+        WHERE
+            `title` LIKE CONCAT('%', #{query}, '%')
+            OR `content` LIKE CONCAT('%', #{query}, '%')
+    </select>
+
     <resultMap id="CommunityArticle" type="kfoodbox.article.dto.response.CommunityArticleResponse">
         <id property="id" column="id"/>
         <result property="title" column="title"/>

@@ -20,5 +20,6 @@ public interface FoodRepository {
     FoodCategory findFoodCategoryEntityById(@Param("id") Long id);
     List<AllFoodCategoriesResponse.FoodCategory> findAllFoodCategories();
     Long getTotalCountOfFoodEntitiesByQuery(@Param("condition") FoodsCondition condition);
+    List<Food> findFoodEntitiesByQuery(@Param("query") String query);
     List<Food> findFoodEntitiesByCondition(@Param("cursor") Long cursor, @Param("condition") FoodsCondition condition);
 }
