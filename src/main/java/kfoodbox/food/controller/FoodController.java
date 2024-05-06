@@ -64,14 +64,14 @@ public class FoodController {
 
     @GetMapping("/foods")
     @Operation(summary = "검색어에 대한 음식 리스트 조회", description = "- page (페이지 번호)\n" +
-                                                                  "  - Not null\n "+
                                                                   "  - 양의 정수\n" +
+                                                                  "  - 기본값: 1\n" +
                                                                   "- limit (한 페이지의 최대 게시물 수)\n" +
-                                                                  "  - Not null\n" +
-                                                                  "  - 최소: 1, 최대: 50\n" +
+                                                                  "  - 최소: 1, 최대: 150\n" +
+                                                                  "  - 기본값: 20\n" +
                                                                   "- query (검색어)\n" +
-                                                                  "  - Not null\n" +
-                                                                  "  - 음식 이름에 대해 검색됨")
+                                                                  "  - 음식 이름(한글 기준)에 대해 검색됨\n" +
+                                                                  "  - 기본값: null")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
