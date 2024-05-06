@@ -2,24 +2,21 @@ package kfoodbox.article.dto.request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 public class CustomRecipeArticlesCondition {
-    @NotNull @Positive
-    private Long page;
+    @Positive
+    private Long page = 1L;
 
-    @NotNull @Min(1) @Max(50)
-    private Long limit;
+    @Min(1) @Max(50)
+    private Long limit = 20L;
 
-    @NotNull
-    private Type type;
+    private Type type = Type.ALL;
 
-    @NotNull
-    private Sort sort;
+    private Sort sort = Sort.LATEST;
 
     private String query;
 

@@ -66,7 +66,9 @@
     <select id="getTotalCountOfFoodEntitiesByQuery" parameterType="kfoodbox.food.dto.request.FoodsCondition" resultType="long">
         SELECT COUNT(*)
         FROM `kfoodbox`.`food`
-        WHERE `name` LIKE CONCAT('%', #{condition.query}, '%')
+        <if test="condition.query != null">
+            WHERE `name` LIKE CONCAT('%', #{condition.query}, '%')
+        </if>
     </select>
 
     <select id="findFoodEntitiesByQuery" parameterType="string" resultType="kfoodbox.food.entity.Food">
@@ -78,7 +80,9 @@
     <select id="findFoodEntitiesByCondition" parameterType="kfoodbox.food.dto.request.FoodsCondition" resultType="kfoodbox.food.entity.Food">
         SELECT *
         FROM `kfoodbox`.`food`
-        WHERE `name` LIKE CONCAT('%', #{condition.query}, '%')
+        <if test="condition.query != null">
+            WHERE `name` LIKE CONCAT('%', #{condition.query}, '%')
+        </if>
         LIMIT #{cursor}, #{condition.limit}
     </select>
 
