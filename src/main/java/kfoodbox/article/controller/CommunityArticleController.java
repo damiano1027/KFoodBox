@@ -153,23 +153,24 @@ public class CommunityArticleController {
 
     @GetMapping("/community-articles")
     @Operation(summary = "자유게시판 게시물 리스트 조회", description = "- page (페이지 번호)\n" +
-                                                                 "  - Not null\n "+
                                                                  "  - 양의 정수\n" +
+                                                                 "  - 기본값: 1\n" +
                                                                  "- limit (한 페이지의 최대 게시물 수)\n" +
-                                                                 "  - Not null\n" +
                                                                  "  - 최소: 1, 최대: 50\n" +
+                                                                 "  - 기본값: 20\n" +
                                                                  "- type (전체 or 공지글 여부)\n" +
-                                                                 "  - Not null\n" +
                                                                  "  - `ALL`: 전체\n" +
                                                                  "  - `NOTICE`: 공지\n" +
+                                                                 "  - 기본값: ALL\n" +
                                                                  "- sort (정렬 기준)\n" +
-                                                                 "  - Not null" +
                                                                  "  - `LATEST`: 최신순\n" +
                                                                  "  - `OLDEST`: 오랜된순\n" +
                                                                  "  - `LIKES`: 좋아요순\n" +
                                                                  "  - `COMMENTS`: 댓글순\n" +
+                                                                 "  - 기본값: LATEST\n" +
                                                                  "- query (검색어)\n" +
-                                                                 "  - 제목, 내용에 대해 검색됨")
+                                                                 "  - 제목, 내용에 대해 검색됨\n" +
+                                                                 "  - 기본값: null")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
