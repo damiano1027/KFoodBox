@@ -11,6 +11,7 @@ public interface UserRepository {
     void updateUser(@Param("user") User user);
     void deleteUserById(@Param("id") Long id);
     User findUserById(@Param("id") Long id);
+    List<User> findAllUsers();
     User findUserByEmail(@Param("email") String email);
     User findUserByNickname(@Param("nickname") String nickname);
     Language findLanguageById(@Param("id") Long id);

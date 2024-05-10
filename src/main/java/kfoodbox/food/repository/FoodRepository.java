@@ -7,6 +7,7 @@ import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.entity.Food;
 import kfoodbox.food.entity.FoodCategory;
+import kfoodbox.food.entity.FoodImage;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public interface FoodRepository {
     FoodResponse findFoodById(@Param("id") Long id);
     Food findFoodEntityById(@Param("id") Long id);
+    List<Food> findAllFoodEntities();
     Food findFoodEntityByLabelId(@Param("labelId") Long labelId);
     List<FoodsResponse.Food> findFoodsByCategoryId(@Param("id") Long id);
     FoodCategoryResponse findFoodCategoryById(@Param("id") Long id);
@@ -22,4 +24,5 @@ public interface FoodRepository {
     Long getTotalCountOfFoodEntitiesByQuery(@Param("condition") FoodsCondition condition);
     List<Food> findFoodEntitiesByQuery(@Param("query") String query);
     List<Food> findFoodEntitiesByCondition(@Param("cursor") Long cursor, @Param("condition") FoodsCondition condition);
+    FoodImage findTopFoodImageByFoodId(@Param("foodId") Long foodId);
 }

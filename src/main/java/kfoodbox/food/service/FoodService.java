@@ -7,6 +7,7 @@ import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.dto.response.LabelledFoodResponse;
 import kfoodbox.food.dto.response.QueriedFoodsResponse;
+import kfoodbox.food.dto.response.RecommendedFoodsResponse;
 
 public interface FoodService {
     FoodResponse findFood(Long id);
@@ -15,4 +16,5 @@ public interface FoodService {
     QueriedFoodsResponse findFoods(FoodsCondition condition);
     FoodCategoryResponse findFoodCategory(Long id);
     AllFoodCategoriesResponse findAllFoodCategories();
+    RecommendedFoodsResponse getRecommendedFoods();
 }
