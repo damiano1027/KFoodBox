@@ -34,6 +34,11 @@
         WHERE `id` = #{id}
     </select>
 
+    <select id="findAllFoodEntities" resultType="kfoodbox.food.entity.Food">
+        SELECT *
+        FROM `kfoodbox`.`food`
+    </select>
+
     <select id="findFoodEntityByLabelId" parameterType="long" resultType="kfoodbox.food.entity.Food">
         SELECT *
         FROM `kfoodbox`.`food`
@@ -84,6 +89,13 @@
             WHERE `name` LIKE CONCAT('%', #{condition.query}, '%')
         </if>
         LIMIT #{cursor}, #{condition.limit}
+    </select>
+
+    <select id="findTopFoodImageByFoodId" resultType="kfoodbox.food.entity.FoodImage">
+        SELECT *
+        FROM `kfoodbox`.`food_image`
+        WHERE `food_id` = #{foodId}
+        LIMIT 0, 1
     </select>
 
     <resultMap id="Food" type="kfoodbox.food.dto.response.FoodResponse">

@@ -102,4 +102,9 @@
             `user_id` = #{foodBookmark.userId}
             AND `food_id` = #{foodBookmark.foodId}
     </delete>
+
+    <select id="findAllFoodBookmarks" resultType="kfoodbox.bookmark.entity.FoodBookmark">
+        SELECT *
+        FROM `kfoodbox`.`food_bookmark`
+    </select>
 </mapper>
