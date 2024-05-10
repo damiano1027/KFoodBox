@@ -16,6 +16,7 @@ import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.dto.response.LabelledFoodResponse;
 import kfoodbox.food.dto.response.QueriedFoodsResponse;
+import kfoodbox.food.dto.response.RecommendedFoodsResponse;
 import kfoodbox.food.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -101,5 +102,15 @@ public class FoodController {
     })
     public ResponseEntity<AllFoodCategoriesResponse> findAllFoodCategories() {
         return ResponseEntity.ok(foodService.findAllFoodCategories());
+    }
+
+    @GetMapping("/recommended-foods")
+    @Operation(summary = "추천 음식 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<RecommendedFoodsResponse> getRecommendedFoods() {
+        return ResponseEntity.ok(foodService.getRecommendedFoods());
     }
 }
