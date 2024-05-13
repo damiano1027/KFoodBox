@@ -7,15 +7,21 @@ import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
 import kfoodbox.common.request.RequestApproacher;
 import kfoodbox.food.dto.request.FoodsCondition;
+import kfoodbox.food.dto.request.KoreaRestaurantsCondition;
 import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodCategoryResponse;
 import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
+import kfoodbox.food.dto.response.KoreaRestaurantsResponse;
 import kfoodbox.food.dto.response.LabelledFoodResponse;
 import kfoodbox.food.dto.response.QueriedFoodsResponse;
 import kfoodbox.food.dto.response.RecommendedFoodsResponse;
 import kfoodbox.food.entity.Food;
 import kfoodbox.food.entity.FoodImage;
+import kfoodbox.food.entity.KoreaRegion;
+import kfoodbox.food.entity.KoreaRestaurant;
+import kfoodbox.food.entity.KoreaRestaurantTag;
+import kfoodbox.food.entity.RestaurantCategory;
 import kfoodbox.food.repository.FoodRepository;
 import kfoodbox.user.entity.User;
 import kfoodbox.user.repository.UserRepository;
@@ -209,6 +215,25 @@ public class FoodServiceImpl implements FoodService {
             foodImages.add(foodRepository.findTopFoodImageByFoodId(food.getId()));
         }
         return RecommendedFoodsResponse.from(foods, foodImages);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public KoreaRestaurantsResponse findKoreaRestaurants(KoreaRestaurantsCondition condition) {
+        KoreaRegion koreaRegion = foodRepository.findKoreaRegionById(condition.getKoreaRegionId());
+        if (Objects.isNull(koreaRegion)) {
+            throw new NonCriticalException(ExceptionInformation.NO_REGION);
+        }
+
+        RestaurantCategory restaurantCategory = foodRepository.findRestaurantCategoryById(condition.getRestaurantCategoryId());
+        if (Objects.isNull(restaurantCategory)) {
+            throw new NonCriticalException(ExceptionInformation.NO_RESTAURANT_CATEGORY);
+        }
+
+        KoreaRestaurantTag tag = foodRepository.findKoreaRestaurantTagByKoreaRegionIdAndRestaurantCategoryId(condition.getKoreaRegionId(), condition.getRestaurantCategoryId());
+        List<KoreaRestaurant> restaurants = foodRepository.findKoreaRestaurantsByKoreaRestaurantTagId(tag.getId());
+
+        return KoreaRestaurantsResponse.from(restaurants);
     }
 
     private static double calculateCosineSimilarity(double[] vector1, double[] vector2) {
