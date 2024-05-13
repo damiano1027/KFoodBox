@@ -7,13 +7,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import kfoodbox.common.authority.Authority;
+import kfoodbox.common.authority.Login;
 import kfoodbox.common.exception.ExceptionResponse;
 import kfoodbox.common.exception.UnprocessableEntityExceptionResponse;
 import kfoodbox.food.dto.request.FoodsCondition;
+import kfoodbox.food.dto.request.KoreaRestaurantsCondition;
 import kfoodbox.food.dto.response.AllFoodCategoriesResponse;
 import kfoodbox.food.dto.response.FoodCategoryResponse;
 import kfoodbox.food.dto.response.FoodResponse;
 import kfoodbox.food.dto.response.FoodsResponse;
+import kfoodbox.food.dto.response.KoreaRestaurantsResponse;
 import kfoodbox.food.dto.response.LabelledFoodResponse;
 import kfoodbox.food.dto.response.QueriedFoodsResponse;
 import kfoodbox.food.dto.response.RecommendedFoodsResponse;
@@ -22,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "음식", description = "음식 API")
@@ -112,5 +117,19 @@ public class FoodController {
     })
     public ResponseEntity<RecommendedFoodsResponse> getRecommendedFoods() {
         return ResponseEntity.ok(foodService.getRecommendedFoods());
+    }
+
+    @GetMapping("/korea-restaurants")
+    @Operation(summary = "대한민국에 있는 맛집 리스트 조회", description = "koreaRegionId (한국 지역 id)\n" +
+                                                                   "- Not null\n\n" +
+                                                                   "restaurantCategoryId (식당 카테고리 id)\n" +
+                                                                   "- Not null")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "422", description = "요청 데이터 제약조건 위반 (UNPROCESSABLE_ENTITY)", content = @Content(schema = @Schema(implementation = UnprocessableEntityExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<KoreaRestaurantsResponse> findKoreaRestaurants(@Valid KoreaRestaurantsCondition condition) {
+        return ResponseEntity.ok(foodService.findKoreaRestaurants(condition));
     }
 }
