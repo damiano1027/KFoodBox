@@ -6,6 +6,7 @@ import lombok.Getter;
 public class FoodCategory {
     private Long id;
     private String name;
+    private String englishName;
     private String explanation;
     private String imageUrl;
 }

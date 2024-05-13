@@ -18,6 +18,8 @@ public class AllFoodCategoriesResponse {
         private Long id;
         @Schema(description = "이름")
         private String name;
+        @Schema(description = "영어 이름")
+        private String englishName;
         @Schema(description = "이미지 URL")
         private String imageUrl;
     }

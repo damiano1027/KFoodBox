@@ -16,11 +16,15 @@ public class LabelledFoodResponse {
     @Schema(description = "이름")
     private String name;
 
+    @Schema(description = "영어 이름")
+    private String englishName;
+
     public static LabelledFoodResponse from(Food food) {
         return LabelledFoodResponse.builder()
                 .id(food.getId())
                 .labelId(food.getLabelId())
                 .name(food.getName())
+                .englishName(food.getEnglishName())
                 .build();
     }
 }
