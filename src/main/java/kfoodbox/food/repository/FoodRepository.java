@@ -8,6 +8,10 @@ import kfoodbox.food.dto.response.FoodsResponse;
 import kfoodbox.food.entity.Food;
 import kfoodbox.food.entity.FoodCategory;
 import kfoodbox.food.entity.FoodImage;
+import kfoodbox.food.entity.KoreaRegion;
+import kfoodbox.food.entity.KoreaRestaurant;
+import kfoodbox.food.entity.KoreaRestaurantTag;
+import kfoodbox.food.entity.RestaurantCategory;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,4 +29,8 @@ public interface FoodRepository {
     List<Food> findFoodEntitiesByQuery(@Param("query") String query);
     List<Food> findFoodEntitiesByCondition(@Param("cursor") Long cursor, @Param("condition") FoodsCondition condition);
     FoodImage findTopFoodImageByFoodId(@Param("foodId") Long foodId);
+    KoreaRegion findKoreaRegionById(@Param("id") Long id);
+    RestaurantCategory findRestaurantCategoryById(@Param("id") Long id);
+    KoreaRestaurantTag findKoreaRestaurantTagByKoreaRegionIdAndRestaurantCategoryId(@Param("koreaRegionId") Long koreaRegionId, @Param("restaurantCategoryId") Long restaurantCategoryId);
+    List<KoreaRestaurant> findKoreaRestaurantsByKoreaRestaurantTagId(@Param("koreaRestaurantTagId") Long koreaRestaurantTagId);
 }

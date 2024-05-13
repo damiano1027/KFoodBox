@@ -98,6 +98,32 @@
         LIMIT 0, 1
     </select>
 
+    <select id="findKoreaRegionById" parameterType="long" resultType="kfoodbox.food.entity.KoreaRegion">
+        SELECT *
+        FROM `kfoodbox`.`korea_region`
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="findRestaurantCategoryById" parameterType="long" resultType="kfoodbox.food.entity.RestaurantCategory">
+        SELECT *
+        FROM `kfoodbox`.`restaurant_category`
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="findKoreaRestaurantTagByKoreaRegionIdAndRestaurantCategoryId" resultType="kfoodbox.food.entity.KoreaRestaurantTag">
+        SELECT *
+        FROM `kfoodbox`.`korea_restaurant_tag`
+        WHERE
+            `korea_region_id` = #{koreaRegionId}
+            AND `restaurant_category_id` = #{restaurantCategoryId}
+    </select>
+
+    <select id="findKoreaRestaurantsByKoreaRestaurantTagId" parameterType="long" resultType="kfoodbox.food.entity.KoreaRestaurant">
+        SELECT *
+        FROM `kfoodbox`.`korea_restaurant`
+        WHERE `korea_restaurant_tag_id` = #{koreaRestaurantTagId}
+    </select>
+
     <resultMap id="Food" type="kfoodbox.food.dto.response.FoodResponse">
         <id property="id" column="food.id"/>
         <result property="name" column="food.name"/>
