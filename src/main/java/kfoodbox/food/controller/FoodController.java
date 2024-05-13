@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import kfoodbox.common.authority.Authority;
-import kfoodbox.common.authority.Login;
 import kfoodbox.common.exception.ExceptionResponse;
 import kfoodbox.common.exception.UnprocessableEntityExceptionResponse;
 import kfoodbox.food.dto.request.FoodsCondition;
@@ -26,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "음식", description = "음식 API")
