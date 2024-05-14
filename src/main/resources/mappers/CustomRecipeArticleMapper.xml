@@ -29,10 +29,10 @@
             UPDATE `kfoodbox`.`custom_recipe_sequence`
             SET
                 `content` = #{item.content},
-                `image_url` = #{item.image_url}
+                `image_url` = #{item.imageUrl}
             WHERE
-                `custom_recipe_article_id` = #{item.custom_recipe_article_id}
-                AND `sequence_number` = #{item.sequence_number}
+                `custom_recipe_article_id` = #{item.customRecipeArticleId}
+                AND `sequence_number` = #{item.sequenceNumber}
         </foreach>
     </update>
 
@@ -221,7 +221,7 @@
             SET
                 `quantity` = #{item.quantity}
             WHERE
-                `custom_recipe_article_id` = #{item.custom_recipe_article_id}
+                `custom_recipe_article_id` = #{item.customRecipeArticleId}
                 AND `name` = #{item.name}
         </foreach>
     </update>
