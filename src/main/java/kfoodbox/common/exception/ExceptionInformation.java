@@ -25,7 +25,9 @@ public enum ExceptionInformation {
     NO_FOOD_CATEGORY("음식 카테고리가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     NO_BOOKMARK("북마크 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     NO_LIKE("좋아요 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-    NO_PAGE("없는 페이지입니다.", HttpStatus.NOT_FOUND);
+    NO_PAGE("없는 페이지입니다.", HttpStatus.NOT_FOUND),
+    NO_REGION("지역 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    NO_RESTAURANT_CATEGORY("식당 카테고리 정보가 존재하지 않습니다,", HttpStatus.NOT_FOUND);
 
     private final String message;
     private final HttpStatus httpStatus;
