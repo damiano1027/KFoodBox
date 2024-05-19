@@ -38,4 +38,5 @@ public interface CustomRecipeArticleRepository {
     Long getTotalCountOfCustomRecipeArticlesByCondition(@Param("condition") CustomRecipeArticlesCondition condition);
     List<CustomRecipeArticlesResponse.Article> findCustomRecipeArticlesByCondition(@Param("cursor") Long cursor, @Param("condition") CustomRecipeArticlesCondition condition);
     List<CustomRecipeArticle> findCustomRecipeArticlesByQuery(@Param("query") String query);
+    List<CustomRecipeArticle> findCustomRecipeArticlesByUserId(@Param("userId") Long userId);
 }

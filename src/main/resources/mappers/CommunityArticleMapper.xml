@@ -225,6 +225,12 @@
             OR `content` LIKE CONCAT('%', #{query}, '%')
     </select>
 
+    <select id="findCommunityArticlesByUserId" parameterType="long" resultType="kfoodbox.article.entity.CommunityArticle">
+        SELECT *
+        FROM `kfoodbox`.`community_article`
+        WHERE `user_id` = #{userId}
+    </select>
+
     <resultMap id="CommunityArticle" type="kfoodbox.article.dto.response.CommunityArticleResponse">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
