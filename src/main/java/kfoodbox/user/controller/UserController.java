@@ -19,6 +19,7 @@ import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
+import kfoodbox.user.dto.response.MyArticlesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
 import kfoodbox.user.dto.response.MyLanguageResponse;
 import kfoodbox.user.dto.response.MyNicknameResponse;
@@ -223,5 +224,18 @@ public class UserController {
     public ResponseEntity<Void> deleteUser() {
         userService.deleteUser();
         return ResponseEntity.ok(null);
+    }
+
+    @Login(Authority.NORMAL)
+    @GetMapping("/my-articles")
+    @Operation(summary = "내가 작성한 게시물 리스트 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증된 회원이 아님 (UNAUTHORIZED)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한이 없음 (FORBIDDEN)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러 (INTERNAL_SERVER_ERROR)", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<MyArticlesResponse> getMyArticles() {
+        return ResponseEntity.ok(userService.getMyArticles());
     }
 }
