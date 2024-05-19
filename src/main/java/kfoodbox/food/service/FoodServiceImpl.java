@@ -197,7 +197,7 @@ public class FoodServiceImpl implements FoodService {
 
             List<Food> tempFoods = new ArrayList<>();
             for (int i = 0; i < otherVector.length; i++) {
-                if (otherVector[i] != myVector[i]) {
+                if (otherVector[i] == 1.0 && myVector[i] == 0.0) {
                     tempFoods.add(allFoods.get(i));
                 }
             }
@@ -239,8 +239,9 @@ public class FoodServiceImpl implements FoodService {
     private static double calculateCosineSimilarity(double[] vector1, double[] vector2) {
         RealVector realVector1 = new ArrayRealVector(vector1);
         RealVector realVector2 = new ArrayRealVector(vector2);
+        double dotProduct = realVector1.dotProduct(realVector2);
 
-        return realVector1.dotProduct(realVector2) / (realVector1.getNorm() * realVector2.getNorm());
+        return dotProduct == 0.0 ? 0.0 : dotProduct / (realVector1.getNorm() * realVector2.getNorm());
     }
 
     private static List<Food> getRandomFoods(List<Food> foods, int maxSize) {
