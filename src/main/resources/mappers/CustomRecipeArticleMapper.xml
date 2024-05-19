@@ -324,6 +324,12 @@
             OR `content` LIKE CONCAT('%', #{query}, '%')
     </select>
 
+    <select id="findCustomRecipeArticlesByUserId" parameterType="long" resultType="kfoodbox.article.entity.CustomRecipeArticle">
+        SELECT *
+        FROM `kfoodbox`.`custom_recipe_article`
+        WHERE `user_id` = #{userId}
+    </select>
+
     <resultMap id="CustomRecipeArticle" type="kfoodbox.article.dto.response.CustomRecipeArticleResponse">
         <id property="id" column="custom_recipe_article.id"/>
         <result property="title" column="custom_recipe_article.title"/>

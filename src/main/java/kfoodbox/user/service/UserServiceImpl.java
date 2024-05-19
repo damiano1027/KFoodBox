@@ -2,6 +2,10 @@ package kfoodbox.user.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import kfoodbox.article.entity.CommunityArticle;
+import kfoodbox.article.entity.CustomRecipeArticle;
+import kfoodbox.article.repository.CommunityArticleRepository;
+import kfoodbox.article.repository.CustomRecipeArticleRepository;
 import kfoodbox.common.exception.CriticalException;
 import kfoodbox.common.exception.ExceptionInformation;
 import kfoodbox.common.exception.NonCriticalException;
@@ -16,6 +20,7 @@ import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
+import kfoodbox.user.dto.response.MyArticlesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
 import kfoodbox.user.dto.response.MyLanguageResponse;
 import kfoodbox.user.dto.response.MyNicknameResponse;
@@ -37,6 +42,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final CommunityArticleRepository communityArticleRepository;
+    private final CustomRecipeArticleRepository customRecipeArticleRepository;
     private final EmailSender emailSender;
     private final RedisClient redisClient;
 
@@ -257,5 +264,21 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.deleteUserById(userId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MyArticlesResponse getMyArticles() {
+        HttpServletRequest servletRequest = RequestApproacher.getHttpServletRequest();
+        Long userId = (Long) servletRequest.getAttribute("userId");
+
+        if (Objects.isNull(userId)) {
+            throw new CriticalException(ExceptionInformation.INTERNAL_SERVER_ERROR);
+        }
+
+        List<CommunityArticle> communityArticles = communityArticleRepository.findCommunityArticlesByUserId(userId);
+        List<CustomRecipeArticle> customRecipeArticles = customRecipeArticleRepository.findCustomRecipeArticlesByUserId(userId);
+
+        return MyArticlesResponse.of(communityArticles, customRecipeArticles);
     }
 }

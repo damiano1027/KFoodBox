@@ -28,4 +28,5 @@ public interface CommunityArticleRepository {
     Long getTotalCountOfCommunityArticlesByCondition(@Param("condition") CommunityArticlesCondition condition);
     List<CommunityArticlesResponse.Article> findCommunityArticlesByCondition(@Param("cursor") Long cursor, @Param("condition") CommunityArticlesCondition condition);
     List<CommunityArticle> findCommunityArticlesByQuery(@Param("query") String query);
+    List<CommunityArticle> findCommunityArticlesByUserId(@Param("userId") Long userId);
 }

@@ -8,6 +8,7 @@ import kfoodbox.user.dto.request.SignupRequest;
 import kfoodbox.user.dto.request.UserUpdateRequest;
 import kfoodbox.user.dto.response.EmailExistenceResponse;
 import kfoodbox.user.dto.response.LanguagesResponse;
+import kfoodbox.user.dto.response.MyArticlesResponse;
 import kfoodbox.user.dto.response.MyEmailResponse;
 import kfoodbox.user.dto.response.MyLanguageResponse;
 import kfoodbox.user.dto.response.MyNicknameResponse;
@@ -28,4 +29,5 @@ public interface UserService {
     void updateMyLanguage(LanguageUpdateRequest request);
     void updateUser(UserUpdateRequest request);
     void deleteUser();
+    MyArticlesResponse getMyArticles();
 }
