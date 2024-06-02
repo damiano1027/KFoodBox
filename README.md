@@ -1,8 +1,9 @@
 ## 세계인을 위한 한식 정보 제공 서비스 (K-Food Box) API
-2024학년도 한국기술교육대학교 컴퓨터공학부 졸업연구 우수작품 `K-Food Box` 애플리케이션의 백엔드 API
+`K-Food Box` 애플리케이션의 백엔드 API
 
 ### 서비스 소개
-세계인이 한식 관련 정보를 쉽고 빠르게 알아볼 수 있고, 한식에 관한 생각이나 경험을 자유롭게 공유하며 소통할 수 있는 모바일 애플리케이션
+- 세계인이 한식 관련 정보를 쉽고 빠르게 알아볼 수 있고, 한식에 관한 생각이나 경험을 자유롭게 공유하며 소통할 수 있는 모바일 애플리케이션
+- 2024학년도 한국기술교육대학교 컴퓨터공학부 `졸업연구 우수작품 선정`
 
 <img width="1148" alt="image" src="https://github.com/damiano1027/KFoodBox-API/assets/56067949/145591c5-13c6-4176-be86-7a2afe82bdad">
 
@@ -64,13 +65,6 @@
 <img width="200" alt="image" src="https://github.com/damiano1027/KFoodBox-API/assets/56067949/673d2239-70f8-4fe4-ae94-cb6085148ce8">
 <img width="200" alt="image" src="https://github.com/damiano1027/KFoodBox-API/assets/56067949/65735ab1-32bd-4594-9969-5ca04a0f11dc">
 <img width="200" alt="image" src="https://github.com/damiano1027/KFoodBox-API/assets/56067949/edbeb08f-d0d1-446d-9347-fce4e1a2a542">
-
-
-
-
-
-
-
 
 </details>
 
