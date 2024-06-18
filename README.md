@@ -67,4 +67,4 @@
 
 
 ### 시연 영상
-https://github.com/damiano1027/KFoodBox-API/assets/56067949/6f46cd4a-03ea-4c63-85de-6944b8ab656e
+https://github.com/damiano1027/KFoodBox-BackEnd/assets/56067949/13aa6cba-564d-44cb-a114-26b0d28406fc
